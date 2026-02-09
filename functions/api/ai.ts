@@ -2,26 +2,52 @@ import { Env, UserData } from './types';
 
 export const onRequestPost: PagesFunction<Env> = async (context) => {
     const { request, env } = context;
-    const body = await request.json() as any;
-    const { username, prompt, config: configOverride } = body;
+    let body: any;
+    try {
+        body = await request.json();
+    } catch (e) {
+        return new Response(JSON.stringify({ error: 'Request body is not valid JSON' }), { status: 400 });
+    }
+
+    const { username, prompt } = body;
+    const configOverride = body.config;
 
     if (!username || !prompt) {
-        return new Response(JSON.stringify({ error: 'Username and prompt are required' }), { status: 400 });
+        return new Response(JSON.stringify({
+            error: 'Username and prompt are required',
+            debug: {
+                hasUsername: !!username,
+                hasPrompt: !!prompt,
+                receivedKeys: Object.keys(body || {}),
+                bodyPreview: JSON.stringify(body).slice(0, 200)
+            }
+        }), { status: 400, headers: { 'Content-Type': 'application/json' } });
     }
 
     let config = configOverride;
 
     if (!config) {
-        // 获取持久化的用户配置
+        // 尝试从 profile 获取 (新逻辑)
         const profileKey = `profile:${username}`;
         const profileJson = await env.WRITING_KV.get(profileKey);
-        if (!profileJson) return new Response(JSON.stringify({ error: 'Profile not found' }), { status: 404 });
-        const profile = JSON.parse(profileJson);
-        config = profile.config;
+        if (profileJson) {
+            const profile = JSON.parse(profileJson);
+            config = profile.config;
+        }
+
+        // 如果 profile 没找到或没配置，尝试从 user 获取 (旧逻辑/兼容性)
+        if (!config) {
+            const userKey = `user:${username}`;
+            const userJson = await env.WRITING_KV.get(userKey);
+            if (userJson) {
+                const user = JSON.parse(userJson);
+                config = user.config;
+            }
+        }
     }
 
     if (!config || !config.apiKey) {
-        return new Response(JSON.stringify({ error: 'AI API Key not configured' }), { status: 400 });
+        return new Response(JSON.stringify({ error: 'AI API Key not configured. Please go to Settings.' }), { status: 400 });
     }
 
     try {
