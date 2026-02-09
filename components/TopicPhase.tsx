@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { StudentLevel, AppLanguage } from '../types';
 import { generateTopics } from '../services/aiService';
 import { translations } from '../translations';
+import { getTranslation } from '../translations';
 import { Sparkles, ArrowRight, Loader2 } from 'lucide-react';
 
 interface TopicPhaseProps {
@@ -12,7 +13,7 @@ interface TopicPhaseProps {
 }
 
 const TopicPhase: React.FC<TopicPhaseProps> = ({ username, level, lang, onConfirm }) => {
-  const t = translations[lang];
+  const t = getTranslation(lang);
   const [customTopic, setCustomTopic] = useState('');
   const [generatedTopics, setGeneratedTopics] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
@@ -29,7 +30,7 @@ const TopicPhase: React.FC<TopicPhaseProps> = ({ username, level, lang, onConfir
     }
   };
 
-  const levelName = t.levelNames[level];
+  const levelName = (t.levelNames as any)[level];
 
   return (
     <div className="max-w-2xl mx-auto py-8 px-4 animate-fade-in space-y-8">

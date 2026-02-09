@@ -13,7 +13,7 @@ interface LearningPhaseProps {
 }
 
 const LearningPhase: React.FC<LearningPhaseProps> = ({ username, level, topic, lang, onProceed }) => {
-  const t = translations[lang];
+  const t = getTranslation(lang);
   const [material, setMaterial] = useState<TopicMaterial | null>(null);
   const [loading, setLoading] = useState(true);
 
