@@ -31,6 +31,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     const currentProfile = JSON.parse(await env.WRITING_KV.get(profileKey) || '{"points":0,"badges":[],"level":null,"config":null}');
 
     const newProfile = {
+        username, // Ensure username is preserved
         ...currentProfile,
         points: points !== undefined ? points : currentProfile.points,
         badges: badges !== undefined ? badges : currentProfile.badges,
