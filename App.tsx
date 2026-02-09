@@ -58,22 +58,33 @@ const App: React.FC = () => {
 
   const handleAuthSuccess = async (name: string) => {
     setInitializing(true);
-    const profile = await getProfile(name);
-    if (profile) {
-      setUserProfile(profile);
-      localStorage.setItem('yingyu_xiezuo_current_user', name);
+    let profile = await getProfile(name);
 
-      // Load history
-      const hist = await getHistory(name);
-      setHistory(hist);
+    if (!profile) {
+      // Initialize a default profile for new users
+      profile = {
+        username: name,
+        language: 'cn',
+        level: null,
+        points: 0,
+        badges: [],
+        config: null
+      };
+    }
 
-      if (!profile.config) {
-        setAppState(AppState.Config);
-      } else if (!profile.level) {
-        setAppState(AppState.Welcome);
-      } else {
-        setAppState(AppState.Dashboard);
-      }
+    setUserProfile(profile);
+    localStorage.setItem('yingyu_xiezuo_current_user', name);
+
+    // Load history (will be empty for new users)
+    const hist = await getHistory(name);
+    setHistory(hist);
+
+    if (!profile.config) {
+      setAppState(AppState.Config);
+    } else if (!profile.level) {
+      setAppState(AppState.Welcome);
+    } else {
+      setAppState(AppState.Dashboard);
     }
     setInitializing(false);
   };
