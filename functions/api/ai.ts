@@ -13,8 +13,9 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     const configOverride = body.config;
 
     if (!username || !prompt) {
+        const receivedKeys = Object.keys(body || {}).join(', ');
         return new Response(JSON.stringify({
-            error: 'Username and prompt are required',
+            error: `Missing params. Received keys: [${receivedKeys}]. HasUser: ${!!username}, HasPrompt: ${!!prompt}`,
             debug: {
                 hasUsername: !!username,
                 hasPrompt: !!prompt,
