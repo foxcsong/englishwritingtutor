@@ -9,7 +9,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         return new Response(JSON.stringify({ error: 'Request body is not valid JSON' }), { status: 400 });
     }
 
-    const { username, prompt } = body;
+    const { username, prompt, image } = body;
     const configOverride = body.config;
 
     if (!username || !prompt) {
@@ -55,17 +55,53 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         let resp: Response;
         if (config.provider === 'gemini') {
             const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${config.model}:generateContent?key=${config.apiKey}`;
+
+            // Construct parts array
+            const parts: any[] = [{ text: prompt }];
+            if (image) {
+                // Image is expected to be base64 string without data URI prefix for Gemini API inlineData
+                // But frontend usually sends full data URI. Let's strip it if present.
+                const base64Data = image.split(',').pop();
+                parts.push({
+                    inline_data: {
+                        mime_type: "image/jpeg", // As a simplification, assuming jpeg or letting API detect. 
+                        // Better to detect from prefix if available: data:image/png;base64,...
+                        // But for now, let's try to extract mime from prefix or default to jpeg/png
+                        data: base64Data
+                    }
+                });
+            }
+
             resp = await fetch(endpoint, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    contents: [{ parts: [{ text: prompt }] }],
+                    contents: [{ parts }],
                     generationConfig: {
                         responseMimeType: "application/json"
                     }
                 })
             });
         } else if (config.provider === 'openai') {
+            const messages: any[] = [{
+                role: 'user',
+                content: [
+                    { type: "text", text: prompt }
+                ]
+            }];
+
+            if (image) {
+                // OpenAI expects data URL or URL. We have base64 data URL.
+                // Ensure it's a full data URL.
+                const imageUrl = image.startsWith('data:') ? image : `data:image/jpeg;base64,${image}`;
+                (messages[0].content as any[]).push({
+                    type: "image_url",
+                    image_url: {
+                        url: imageUrl
+                    }
+                });
+            }
+
             resp = await fetch('https://api.openai.com/v1/chat/completions', {
                 method: 'POST',
                 headers: {
@@ -74,7 +110,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
                 },
                 body: JSON.stringify({
                     model: config.model,
-                    messages: [{ role: 'user', content: prompt }],
+                    messages: messages,
                     response_format: { type: "json_object" }
                 })
             });

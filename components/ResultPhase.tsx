@@ -117,6 +117,24 @@ ${result.improvedVersion}
           </div>
           <h2 className="text-2xl font-black text-slate-800 mb-2">{t.assessmentComplete}</h2>
           <p className="text-sm text-slate-500 font-medium px-4">{topic}</p>
+
+          {result.handwritingScore !== undefined && (
+            <div className="mt-6 bg-slate-50 rounded-2xl p-4 w-full flex items-center justify-between border border-slate-100">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-white rounded-xl shadow-sm border border-slate-100 text-indigo-500">
+                  <span className="text-xl">✍️</span>
+                </div>
+                <div className="text-left">
+                  <p className="text-[10px] font-black uppercase text-slate-400 tracking-wider">Handwriting</p>
+                  <p className="text-xs font-medium text-slate-600 line-clamp-1">{result.handwritingComment || 'Good effort!'}</p>
+                </div>
+              </div>
+              <div className="text-right">
+                <span className="text-2xl font-black text-slate-800">{result.handwritingScore}</span>
+                <span className="text-xs text-slate-400 font-bold">/10</span>
+              </div>
+            </div>
+          )}
         </div>
 
         <div className="lg:col-span-8 bg-indigo-600 p-10 rounded-[40px] shadow-2xl shadow-indigo-200 text-white relative overflow-hidden">

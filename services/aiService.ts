@@ -103,12 +103,13 @@ export const evaluateWriting = async (
     mode: PracticeMode,
     topic: string,
     content: string,
-    lang: AppLanguage
+    lang: AppLanguage,
+    imageBase64?: string
 ): Promise<EvaluationResult> => {
     const explainLang = lang === 'cn' ? 'Chinese (Simplified)' : 'English';
     const wordCount = LEVEL_WORD_COUNTS[level];
 
-    const prompt = `
+    let prompt = `
     English teacher evaluation. Level: ${level}. Topic: "${topic.replace(/"/g, "'")}". Mode: ${mode}. Feedback Language: ${explainLang}.
     Expected Length: ${wordCount.min}-${wordCount.max} words.
     Evaluate: "${content.replace(/"/g, "'")}"
@@ -116,10 +117,31 @@ export const evaluateWriting = async (
     Return JSON: {"score": 0-100, "generalFeedback": "...", "detailedCorrections": [{"original": "...", "correction": "...", "explanation": "..."}], "improvedVersion": "..."}
   `;
 
+    if (imageBase64) {
+        prompt = `
+    TASK: Handwritten Essay Evaluation.
+    1. RECOGNIZE: Read the handwritten English text from the provided image.
+    2. EVALUATE TRANSCRIPTION: Treat the recognized text as the student's submission.
+    3. ASSESS HANDWRITING: Rate the neatness/legibility on a scale of 0-10 (0=illegible, 10=perfect calligraphy). Provide a short comment on the handwriting style.
+    4. GRADE CONTENT: Grade the essay based on Level: ${level}, Topic: "${topic}". Feedback Language: ${explainLang}.
+    
+    Return JSON format:
+    {
+        "score": 0-100, 
+        "handwritingScore": 0-10,
+        "handwritingComment": "Short comment on neatness...",
+        "transcribedText": "The full text recognized from the image...",
+        "generalFeedback": "...", 
+        "detailedCorrections": [{"original": "...", "correction": "...", "explanation": "..."}], 
+        "improvedVersion": "..."
+    }
+    `;
+    }
+
     const res = await fetch(`${API_BASE}/ai`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, prompt })
+        body: JSON.stringify({ username, prompt, image: imageBase64 })
     });
 
     const data = await res.json();

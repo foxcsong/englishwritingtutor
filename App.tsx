@@ -169,7 +169,7 @@ const App: React.FC = () => {
     setCurrentContent('');
   };
 
-  const handleSubmitWriting = async (content: string) => {
+  const handleSubmitWriting = async (content: string, image?: string) => {
     if (!userProfile?.username || !userProfile.level) return;
     setProcessing(true);
     setCurrentContent(content);
@@ -181,9 +181,14 @@ const App: React.FC = () => {
         currentMode,
         currentTopic,
         content,
-        userProfile.language
+        userProfile.language,
+        image
       );
       setEvaluation(result);
+
+      // If we have transcribed text (from image mode), use it as the content
+      const finalContent = result.transcribedText || content;
+      if (result.transcribedText) setCurrentContent(finalContent);
 
       const { profile: updatedProfile, newBadges } = await updatePointsAndBadges(userProfile,
         currentMode === PracticeMode.Essay ? POINTS_PER_ESSAY : POINTS_PER_SENTENCE);
@@ -194,7 +199,7 @@ const App: React.FC = () => {
         level: userProfile.level,
         topic: currentTopic,
         mode: currentMode,
-        userContent: content,
+        userContent: finalContent,
         evaluation: result
       };
       await addHistory(userProfile.username, record);

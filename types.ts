@@ -38,6 +38,9 @@ export interface EvaluationResult {
   generalFeedback: string;
   detailedCorrections: CorrectionItem[];
   improvedVersion: string;
+  handwritingScore?: number;
+  handwritingComment?: string;
+  transcribedText?: string;
 }
 
 export interface HistoryRecord {
