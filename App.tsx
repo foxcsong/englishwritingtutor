@@ -246,8 +246,8 @@ const App: React.FC = () => {
       </header>
 
       <main className="flex-1">
-        {/* Render fallback if userProfile is missing but we're not in login state */}
-        {!userProfile && appState !== AppState.Login ? (
+        {/* Render fallback if userProfile is missing but we're not in login state or admin */}
+        {!userProfile && appState !== AppState.Login && appState !== AppState.Admin ? (
           <div className="text-center py-20">
             <p className="text-slate-500 mb-4">Session error. Please login again.</p>
             <button onClick={handleLogout} className="text-indigo-600 font-bold">Back to Login</button>
