@@ -365,6 +365,7 @@ const App: React.FC = () => {
                 userContent={currentContent}
                 topic={currentTopic}
                 lang={currentLang}
+                username={userProfile.username}
                 onHome={() => setAppState(AppState.Dashboard)}
               />
             )}

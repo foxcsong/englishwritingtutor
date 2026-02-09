@@ -1,19 +1,42 @@
 import React from 'react';
 import { EvaluationResult, AppLanguage } from '../types';
 import { translations } from '../translations';
-import { Download, Check, RefreshCcw, FileText, Layout, Award } from 'lucide-react';
+import { Download, Check, RefreshCcw, FileText, Layout, Award, Share2, Loader2 } from 'lucide-react';
 import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
+import * as htmlToImage from 'html-to-image';
+import download from 'downloadjs';
+import ShareCard from './ShareCard';
 
 interface ResultPhaseProps {
   result: EvaluationResult;
   userContent: string;
   topic: string;
   lang: AppLanguage;
+  username: string;
   onHome: () => void;
 }
 
-const ResultPhase: React.FC<ResultPhaseProps> = ({ result, userContent, topic, lang, onHome }) => {
+const ResultPhase: React.FC<ResultPhaseProps> = ({ result, userContent, topic, lang, username, onHome }) => {
   const t = translations[lang];
+  const cardRef = React.useRef<HTMLDivElement>(null);
+  const [isExporting, setIsExporting] = React.useState(false);
+
+  const handleShareImage = async () => {
+    if (!cardRef.current) return;
+    setIsExporting(true);
+    try {
+      const dataUrl = await htmlToImage.toPng(cardRef.current, {
+        cacheBust: true,
+        style: { transform: 'scale(1)' } // Prevent scaling issues
+      });
+      download(dataUrl, `Report-${topic.slice(0, 10)}.png`);
+    } catch (error) {
+      console.error('Failed to export image', error);
+      alert('Failed to generate image. Please try again.');
+    } finally {
+      setIsExporting(false);
+    }
+  };
 
   const handleExport = () => {
     const markdown = `
@@ -110,6 +133,14 @@ ${result.improvedVersion}
               >
                 <Download size={20} /> {t.downloadReport}
               </button>
+              <button
+                onClick={handleShareImage}
+                disabled={isExporting}
+                className="px-6 py-3 bg-indigo-500 text-white rounded-2xl font-black shadow-lg flex items-center gap-3 hover:bg-indigo-400 hover:scale-105 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {isExporting ? <Loader2 size={20} className="animate-spin" /> : <Share2 size={20} />}
+                Share Image
+              </button>
             </div>
           </div>
         </div>
@@ -177,6 +208,17 @@ ${result.improvedVersion}
         </button>
       </div>
 
+      {/* Hidden ShareCard for Capture */}
+      <div className="absolute left-[-9999px] top-[-9999px]">
+        <ShareCard
+          ref={cardRef}
+          score={result.score}
+          topic={topic}
+          evaluation={result}
+          lang={lang}
+          username={username}
+        />
+      </div>
     </div>
   );
 };
