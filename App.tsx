@@ -11,7 +11,8 @@ import LearningPhase from './components/LearningPhase';
 import WritingPhase from './components/WritingPhase';
 import ResultPhase from './components/ResultPhase';
 import AIConfigModal from './components/AIConfigModal';
-import { Loader2, Globe, LogOut, Settings, Key, User } from 'lucide-react';
+import AdminPanel from './components/AdminPanel';
+import { Loader2, Globe, LogOut, Settings, Key, User, ShieldCheck } from 'lucide-react';
 
 enum AppState {
   Login,
@@ -21,7 +22,8 @@ enum AppState {
   TopicSelection,
   Learning,
   Writing,
-  Result
+  Result,
+  Admin
 }
 
 const App: React.FC = () => {
@@ -295,8 +297,24 @@ const App: React.FC = () => {
                   >
                     {processing ? <Loader2 className="animate-spin mx-auto" /> : t.login}
                   </button>
+
+                  <div className="pt-4 text-center">
+                    <button
+                      onClick={() => setAppState(AppState.Admin)}
+                      className="text-xs text-slate-300 hover:text-indigo-400 font-bold flex items-center justify-center gap-1 mx-auto transition-colors"
+                    >
+                      <ShieldCheck size={12} /> Admin Access
+                    </button>
+                  </div>
                 </div>
               </div>
+            )}
+
+            {appState === AppState.Admin && (
+              <AdminPanel onBack={() => {
+                if (userProfile) setAppState(AppState.Dashboard);
+                else setAppState(AppState.Login);
+              }} />
             )}
 
             {/* Config Modal */}
