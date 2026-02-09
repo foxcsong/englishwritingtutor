@@ -1,4 +1,4 @@
-import { StudentLevel, TopicMaterial, EvaluationResult, PracticeMode, AppLanguage } from '../types';
+import { StudentLevel, TopicMaterial, EvaluationResult, PracticeMode, AppLanguage, UserConfig } from '../types';
 import { LEVEL_PROMPTS } from '../constants';
 
 const API_BASE = '/api';
@@ -122,4 +122,26 @@ export const evaluateWriting = async (
 
     const resContent = data.candidates?.[0]?.content?.parts?.[0]?.text || data.choices?.[0]?.message?.content || "";
     return extractJson(resContent) as EvaluationResult;
+};
+
+/**
+ * 测试 AI 配置是否可用
+ */
+export const testAIConfig = async (username: string, config: UserConfig): Promise<void> => {
+    const res = await fetch(`${API_BASE}/ai`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            username,
+            prompt: "Ping test. Please reply with a short JSON: {\"status\": \"ok\"}",
+            config
+        })
+    });
+
+    const data = await res.json();
+    if (!res.ok) {
+        // 如果后端返回了具体的错误详情，抛出它
+        const detail = data.details?.error?.message || data.details?.message || data.error;
+        throw new Error(detail || "AI 配置验证失败，请检查 Key 或模型名称");
+    }
 };

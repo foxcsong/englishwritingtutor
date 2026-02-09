@@ -2,7 +2,7 @@ import React from 'react';
 import { UserProfile, AppLanguage, HistoryRecord } from '../types';
 import { BADGES } from '../constants';
 import { getTranslation } from '../translations';
-import { Trophy, History, Star, BookOpen, PenTool, Award } from 'lucide-react';
+import { Trophy, History, Star, BookOpen, PenTool, Award, Settings } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 
 interface DashboardProps {
@@ -11,10 +11,19 @@ interface DashboardProps {
   lang: AppLanguage;
   onStartNew: () => void;
   onSelectLevel: () => void;
+  onOpenConfig: () => void;
 }
 
-const Dashboard: React.FC<DashboardProps> = ({ profile, history, lang, onStartNew, onSelectLevel }) => {
+const Dashboard: React.FC<DashboardProps> = ({ profile, history, lang, onStartNew, onSelectLevel, onOpenConfig }) => {
   const t = getTranslation(lang);
+
+  // Calculate stats
+  const stats = {
+    totalPoints: profile.points || 0,
+    completedCount: history.length,
+    badgesCount: profile.badges.length
+  };
+
   const lastHistory = history.slice(0, 5); // Last 5 items
 
   // Prepare data for the chart (last 10 scores)
@@ -31,10 +40,19 @@ const Dashboard: React.FC<DashboardProps> = ({ profile, history, lang, onStartNe
   return (
     <div className="space-y-8 animate-fade-in">
       {/* Greeting */}
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-black text-slate-800">
-          {t.greeting}, <span className="text-indigo-600">{profile.username}</span>! 👋
-        </h1>
+      <div className="flex justify-between items-end">
+        <div>
+          <h1 className="text-3xl font-black text-slate-800">
+            {t.greeting}, <span className="text-indigo-600">{profile.username}</span>! 👋
+          </h1>
+          <p className="text-slate-400 font-bold text-sm mt-1 uppercase tracking-tight">{t.readyToPractice}</p>
+        </div>
+        <button
+          onClick={onOpenConfig}
+          className="flex items-center gap-2 px-5 py-2.5 bg-white rounded-2xl shadow-sm border border-slate-100 hover:border-indigo-200 hover:text-indigo-600 transition-all font-bold text-sm text-slate-500"
+        >
+          <Settings size={18} /> {t.aiConfig}
+        </button>
       </div>
 
       {/* Header Stats */}

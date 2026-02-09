@@ -21,20 +21,21 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
 // POST /api/profile
 export const onRequestPost: PagesFunction<Env> = async (context) => {
     const { request, env } = context;
-    const { username, points, badges, level } = await request.json() as any;
+    const { username, points, badges, level, config } = await request.json() as any;
 
     if (!username) {
         return new Response(JSON.stringify({ error: 'Username is required' }), { status: 400 });
     }
 
     const profileKey = `profile:${username}`;
-    const currentProfile = JSON.parse(await env.WRITING_KV.get(profileKey) || '{"points":0,"badges":[],"level":null}');
+    const currentProfile = JSON.parse(await env.WRITING_KV.get(profileKey) || '{"points":0,"badges":[],"level":null,"config":null}');
 
     const newProfile = {
         ...currentProfile,
         points: points !== undefined ? points : currentProfile.points,
         badges: badges !== undefined ? badges : currentProfile.badges,
-        level: level !== undefined ? level : currentProfile.level
+        level: level !== undefined ? level : currentProfile.level,
+        config: config !== undefined ? config : currentProfile.config
     };
 
     await env.WRITING_KV.put(profileKey, JSON.stringify(newProfile));

@@ -2,19 +2,23 @@ import { Env, UserData } from './types';
 
 export const onRequestPost: PagesFunction<Env> = async (context) => {
     const { request, env } = context;
-    const { username, prompt, type } = await request.json() as { username: string, prompt: string, type: 'gemini' | 'openai' };
+    const body = await request.json() as any;
+    const { username, prompt, config: configOverride } = body;
 
     if (!username || !prompt) {
         return new Response(JSON.stringify({ error: 'Username and prompt are required' }), { status: 400 });
     }
 
-    // 获取用户配置
-    const userKey = `user:${username}`;
-    const userJson = await env.WRITING_KV.get(userKey);
-    if (!userJson) return new Response(JSON.stringify({ error: 'User not found' }), { status: 404 });
+    let config = configOverride;
 
-    const user = JSON.parse(userJson) as UserData;
-    const config = user.config;
+    if (!config) {
+        // 获取持久化的用户配置
+        const profileKey = `profile:${username}`;
+        const profileJson = await env.WRITING_KV.get(profileKey);
+        if (!profileJson) return new Response(JSON.stringify({ error: 'Profile not found' }), { status: 404 });
+        const profile = JSON.parse(profileJson);
+        config = profile.config;
+    }
 
     if (!config || !config.apiKey) {
         return new Response(JSON.stringify({ error: 'AI API Key not configured' }), { status: 400 });

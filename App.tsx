@@ -10,6 +10,7 @@ import TopicPhase from './components/TopicPhase';
 import LearningPhase from './components/LearningPhase';
 import WritingPhase from './components/WritingPhase';
 import ResultPhase from './components/ResultPhase';
+import AIConfigModal from './components/AIConfigModal';
 import { Loader2, Globe, LogOut, Settings, Key, User } from 'lucide-react';
 
 enum AppState {
@@ -122,15 +123,9 @@ const App: React.FC = () => {
     }
   };
 
-  const handleSaveConfig = async () => {
-    if (!userProfile || !tempApiKey) return;
-    setProcessing(true);
+  const handleSaveConfig = async (config: UserConfig) => {
+    if (!userProfile) return;
     try {
-      const config: UserConfig = {
-        apiKey: tempApiKey,
-        provider: tempProvider,
-        model: tempModel
-      };
       await saveAIConfig(userProfile.username, config);
       const updatedProfile = { ...userProfile, config };
       setUserProfile(updatedProfile);
@@ -141,9 +136,7 @@ const App: React.FC = () => {
         setAppState(AppState.Dashboard);
       }
     } catch (e) {
-      alert("Failed to save configuration.");
-    } finally {
-      setProcessing(false);
+      throw e; // Rethrow to let the modal handle error UI
     }
   };
 
@@ -306,67 +299,18 @@ const App: React.FC = () => {
               </div>
             )}
 
-            {/* Config Screen */}
+            {/* Config Modal */}
             {appState === AppState.Config && userProfile && (
-              <div className="max-w-xl mx-auto mt-12 px-4 animate-fade-in">
-                <div className="bg-white p-10 rounded-3xl shadow-xl border border-slate-100">
-                  <h2 className="text-2xl font-bold mb-2 flex items-center gap-2">
-                    <Settings className="text-indigo-600" /> {t.aiConfig}
-                  </h2>
-                  <p className="text-slate-500 mb-8 text-sm leading-relaxed">{t.configDesc}</p>
-
-                  <div className="space-y-6">
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-xs font-bold text-slate-400 uppercase mb-2 ml-1">{t.providerLabel}</label>
-                        <select
-                          className="w-full px-4 py-3 rounded-xl bg-slate-50 border-none focus:ring-2 focus:ring-indigo-500 font-medium appearance-none"
-                          value={tempProvider}
-                          onChange={(e) => {
-                            const p = e.target.value as any;
-                            setTempProvider(p);
-                            setTempModel(p === 'gemini' ? 'gemini-2.0-flash' : 'gpt-4o');
-                          }}
-                        >
-                          <option value="gemini">Google Gemini</option>
-                          <option value="openai">OpenAI</option>
-                        </select>
-                      </div>
-                      <div>
-                        <label className="block text-xs font-bold text-slate-400 uppercase mb-2 ml-1">{t.modelLabel}</label>
-                        <input
-                          type="text"
-                          className="w-full px-4 py-3 rounded-xl bg-slate-50 border-none focus:ring-2 focus:ring-indigo-500 font-medium"
-                          value={tempModel}
-                          onChange={(e) => setTempModel(e.target.value)}
-                        />
-                      </div>
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-bold text-slate-400 uppercase mb-2 ml-1">{t.apiKeyLabel}</label>
-                      <input
-                        type="password"
-                        className="w-full px-4 py-3 rounded-xl bg-slate-50 border-none focus:ring-2 focus:ring-indigo-500 font-medium"
-                        placeholder="sk-..."
-                        value={tempApiKey}
-                        onChange={(e) => setTempApiKey(e.target.value)}
-                      />
-                    </div>
-
-                    <button
-                      onClick={handleSaveConfig}
-                      disabled={processing || !tempApiKey}
-                      className="w-full py-4 bg-slate-800 text-white rounded-2xl font-bold hover:bg-slate-900 active:scale-[0.98] transition-all disabled:opacity-50"
-                    >
-                      {processing ? <Loader2 className="animate-spin mx-auto" /> : t.saveConfig}
-                    </button>
-                    {userProfile.config && (
-                      <button onClick={() => setAppState(AppState.Dashboard)} className="w-full py-2 text-slate-400 font-medium text-sm hover:text-slate-600">Cancel</button>
-                    )}
-                  </div>
-                </div>
-              </div>
+              <AIConfigModal
+                username={userProfile.username}
+                initialConfig={userProfile.config}
+                lang={currentLang}
+                onSave={handleSaveConfig}
+                onClose={() => {
+                  if (userProfile.config) setAppState(AppState.Dashboard);
+                  else setAppState(AppState.Login);
+                }}
+              />
             )}
 
             {appState === AppState.Welcome && userProfile && <LevelSelector lang={currentLang} onSelect={handleLevelSelect} />}
@@ -379,6 +323,7 @@ const App: React.FC = () => {
                   lang={currentLang}
                   onStartNew={startNewSession}
                   onSelectLevel={() => setAppState(AppState.Welcome)}
+                  onOpenConfig={() => setAppState(AppState.Config)}
                 />
               </div>
             )}
