@@ -21,8 +21,10 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     }
 
     try {
+        let resp: Response;
         if (config.provider === 'gemini') {
-            const resp = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${config.model}:generateContent?key=${config.apiKey}`, {
+            const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${config.model}:generateContent?key=${config.apiKey}`;
+            resp = await fetch(endpoint, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -32,11 +34,8 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
                     }
                 })
             });
-            const data = await resp.json();
-            // 这里的解析逻辑需要匹配前端之前的格式
-            return new Response(JSON.stringify(data), { headers: { 'Content-Type': 'application/json' } });
         } else if (config.provider === 'openai') {
-            const resp = await fetch('https://api.openai.com/v1/chat/completions', {
+            resp = await fetch('https://api.openai.com/v1/chat/completions', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -48,12 +47,21 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
                     response_format: { type: "json_object" }
                 })
             });
-            const data = await resp.json();
-            return new Response(JSON.stringify(data), { headers: { 'Content-Type': 'application/json' } });
+        } else {
+            return new Response(JSON.stringify({ error: 'Unsupported provider' }), { status: 400 });
         }
 
-        return new Response(JSON.stringify({ error: 'Unsupported provider' }), { status: 400 });
-    } catch (error) {
-        return new Response(JSON.stringify({ error: 'AI request failed' }), { status: 500 });
+        const data = await resp.json();
+        if (!resp.ok) {
+            return new Response(JSON.stringify({
+                error: 'AI Provider Error',
+                details: data,
+                status: resp.status
+            }), { status: resp.status });
+        }
+
+        return new Response(JSON.stringify(data), { headers: { 'Content-Type': 'application/json' } });
+    } catch (error: any) {
+        return new Response(JSON.stringify({ error: 'AI request failed', details: error.message }), { status: 500 });
     }
 };

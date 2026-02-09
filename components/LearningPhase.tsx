@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { StudentLevel, TopicMaterial, PracticeMode, AppLanguage } from '../types';
 import { generateLearningMaterial } from '../services/aiService';
-import { translations } from '../translations';
+import { translations, getTranslation } from '../translations';
 import { BookOpen, ArrowRight, Loader2, FileText, CheckCircle2 } from 'lucide-react';
 
 interface LearningPhaseProps {
@@ -16,6 +16,7 @@ const LearningPhase: React.FC<LearningPhaseProps> = ({ username, level, topic, l
   const t = getTranslation(lang);
   const [material, setMaterial] = useState<TopicMaterial | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     let mounted = true;
@@ -23,7 +24,8 @@ const LearningPhase: React.FC<LearningPhaseProps> = ({ username, level, topic, l
       try {
         const data = await generateLearningMaterial(username, level, topic, lang);
         if (mounted) setMaterial(data);
-      } catch (e) {
+      } catch (e: any) {
+        if (mounted) setError(e.message);
         console.error(e);
       } finally {
         if (mounted) setLoading(false);
@@ -41,6 +43,19 @@ const LearningPhase: React.FC<LearningPhaseProps> = ({ username, level, topic, l
       </div>
     );
   }
+
+  if (error) return (
+    <div className="text-center py-20 px-4">
+      <div className="text-red-500 font-bold mb-4">{t.failLoad}</div>
+      <p className="text-slate-500 text-sm mb-6">{error}</p>
+      <button
+        onClick={() => window.location.reload()}
+        className="px-6 py-2 bg-slate-800 text-white rounded-xl font-medium"
+      >
+        刷新页面重试
+      </button>
+    </div>
+  );
 
   if (!material) return <div className="text-center py-20 text-red-500">{t.failLoad}</div>;
 

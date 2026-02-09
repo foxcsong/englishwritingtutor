@@ -7,74 +7,37 @@ const API_BASE = '/api';
  * 助手函数：从 AI 返回的文本中提取并解析 JSON
  */
 const extractJson = (text: string) => {
+    const cleanText = text.trim();
     try {
-        // 尝试直接解析
-        return JSON.parse(text);
+        return JSON.parse(cleanText);
     } catch (e) {
         // 尝试从 markdown 代码块中提取
-        const match = text.match(/```json\s?([\s\S]*?)\s?```/) || text.match(/```\s?([\s\S]*?)\s?```/);
+        const match = cleanText.match(/```json\s?([\s\S]*?)\s?```/) || cleanText.match(/```\s?([\s\S]*?)\s?```/);
         if (match && match[1]) {
             try {
                 return JSON.parse(match[1].trim());
-            } catch (e2) {
-                // 如果提取后仍失败，尝试查找第一个 { 和最后一个 }
-                const fallbackMatch = text.match(/(\{[\s\S]*\}|\[[\s\S]*\])/);
-                if (fallbackMatch) {
-                    try {
-                        return JSON.parse(fallbackMatch[0]);
-                    } catch (e3) {
-                        throw new Error("Failed to parse AI response as JSON");
-                    }
-                }
-            }
+            } catch (e2) { }
         }
-        throw e;
+
+        // 尝试查找第一个 { 或 [ 到最后一个 } 或 ]
+        const fallbackMatch = cleanText.match(/(\{[\s\S]*\}|\[[\s\S]*\])/);
+        if (fallbackMatch) {
+            try {
+                return JSON.parse(fallbackMatch[0]);
+            } catch (e3) { }
+        }
+
+        console.error("Failed to parse JSON. Original text:", text);
+        throw new Error("AI 返回格式不正确，无法解析 JSON");
     }
 };
 
 export const generateTopics = async (username: string, level: StudentLevel): Promise<string[]> => {
     const levelContext = LEVEL_PROMPTS[level];
     const prompt = `
-    You are an English teacher for students. 
-    Target Level: ${level} (${levelContext}). 
-    Generate 3 distinct, engaging, and age-appropriate English writing topics (titles) for this level.
-    Only provide the titles in a JSON array of strings, e.g., ["Topic 1", "Topic 2", "Topic 3"].
-    Do not include any other text.
-  `;
-
-    try {
-        const res = await fetch(`${API_BASE}/ai`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, prompt })
-        });
-
-        const data = await res.json();
-        const content = data.candidates?.[0]?.content?.parts?.[0]?.text || data.choices?.[0]?.message?.content || "";
-        return extractJson(content);
-    } catch (e) {
-        console.error("Topic generation error:", e);
-        // 即使失败也返回一些随机话题，保证功能可用
-        const fallbacks = [
-            ["My Hobby", "A Memorable Day", "The Importance of Reading"],
-            ["My Favorite Food", "Life in the Future", "Protecting our Environment"],
-            ["A Hero in My Mind", "My School Life", "The Power of Friendship"],
-            ["Traveling around the World", "The Benefits of Sports", "Online Learning vs Traditional Learning"]
-        ];
-        return fallbacks[Math.floor(Math.random() * fallbacks.length)];
-    }
-};
-
-export const generateLearningMaterial = async (username: string, level: StudentLevel, topic: string, lang: AppLanguage): Promise<TopicMaterial> => {
-    const levelContext = LEVEL_PROMPTS[level];
-    const explainLang = lang === 'cn' ? 'Chinese (Simplified)' : 'English';
-
-    const prompt = `
-    You are an expert English teacher. Level: ${level}. Topic: "${topic}". Explanation Language: ${explainLang}.
-    1. Write a brief introduction (in ${explainLang}).
-    2. Provide a sample essay.
-    3. Provide a detailed analysis (in ${explainLang}).
-    Output structured JSON: {"topic": "${topic}", "introduction": "...", "sampleEssay": "...", "analysis": "..."}
+    You are an English teacher. Target Level: ${level} (${levelContext}). 
+    Generate 3 distinct, engaging, and age-appropriate English writing topics (titles).
+    Return format: ["Topic 1", "Topic 2", "Topic 3"]
   `;
 
     const res = await fetch(`${API_BASE}/ai`, {
@@ -83,9 +46,49 @@ export const generateLearningMaterial = async (username: string, level: StudentL
         body: JSON.stringify({ username, prompt })
     });
 
-    if (!res.ok) throw new Error("AI Service Error");
+    const data = await res.json();
+    if (!res.ok) {
+        throw new Error(data.error || "话题生成失败");
+    }
+
+    const content = data.candidates?.[0]?.content?.parts?.[0]?.text || data.choices?.[0]?.message?.content || "";
+    const parsed = extractJson(content);
+
+    // 适配可能的对象封装，如 {"topics": [...]}
+    if (Array.isArray(parsed)) return parsed;
+    if (parsed.topics && Array.isArray(parsed.topics)) return parsed.topics;
+    if (typeof parsed === 'object') {
+        const values = Object.values(parsed).find(v => Array.isArray(v));
+        if (values) return values as string[];
+    }
+
+    throw new Error("未能从 AI 响应中提取到话题列表");
+};
+
+export const generateLearningMaterial = async (username: string, level: StudentLevel, topic: string, lang: AppLanguage): Promise<TopicMaterial> => {
+    const levelContext = LEVEL_PROMPTS[level];
+    const explainLang = lang === 'cn' ? 'Chinese (Simplified)' : 'English';
+
+    const prompt = `
+    You are an expert English teacher. Level: ${level}. Topic: "${topic.replace(/"/g, "'")}". Feedback Language: ${explainLang}.
+    Provide:
+    1. Introduction (in ${explainLang})
+    2. Sample Essay (English)
+    3. Key Points/Analysis (in ${explainLang})
+    Return JSON: {"topic": "${topic.replace(/"/g, "'")}", "introduction": "...", "sampleEssay": "...", "analysis": "..."}
+  `;
+
+    const res = await fetch(`${API_BASE}/ai`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, prompt })
+    });
 
     const data = await res.json();
+    if (!res.ok) {
+        throw new Error(data.error || "学习资料生成失败");
+    }
+
     const content = data.candidates?.[0]?.content?.parts?.[0]?.text || data.choices?.[0]?.message?.content || "";
     return extractJson(content) as TopicMaterial;
 };
@@ -101,10 +104,9 @@ export const evaluateWriting = async (
     const explainLang = lang === 'cn' ? 'Chinese (Simplified)' : 'English';
 
     const prompt = `
-    Act as a strict but encouraging English teacher. Level: ${level}. Task: ${topic}. 
-    Mode: ${mode === PracticeMode.Sentence ? 'Sentence Drilling' : 'Essay Writing'}. Feedback Language: ${explainLang}.
-    Student Submission: "${content}"
-    Evaluate and output JSON: {"score": 0-100, "generalFeedback": "...", "detailedCorrections": [{"original": "...", "correction": "...", "explanation": "..."}], "improvedVersion": "..."}
+    English teacher evaluation. Level: ${level}. Topic: "${topic.replace(/"/g, "'")}". Mode: ${mode}. Feedback Language: ${explainLang}.
+    Evaluate: "${content.replace(/"/g, "'")}"
+    Return JSON: {"score": 0-100, "generalFeedback": "...", "detailedCorrections": [{"original": "...", "correction": "...", "explanation": "..."}], "improvedVersion": "..."}
   `;
 
     const res = await fetch(`${API_BASE}/ai`, {
@@ -113,9 +115,11 @@ export const evaluateWriting = async (
         body: JSON.stringify({ username, prompt })
     });
 
-    if (!res.ok) throw new Error("AI Service Error");
-
     const data = await res.json();
+    if (!res.ok) {
+        throw new Error(data.error || "评估失败");
+    }
+
     const resContent = data.candidates?.[0]?.content?.parts?.[0]?.text || data.choices?.[0]?.message?.content || "";
     return extractJson(resContent) as EvaluationResult;
 };

@@ -23,8 +23,8 @@ const TopicPhase: React.FC<TopicPhaseProps> = ({ username, level, lang, onConfir
     try {
       const topics = await generateTopics(username, level);
       setGeneratedTopics(topics);
-    } catch (e) {
-      alert(t.aiBusy);
+    } catch (e: any) {
+      alert(e.message || t.aiBusy);
     } finally {
       setLoading(false);
     }
