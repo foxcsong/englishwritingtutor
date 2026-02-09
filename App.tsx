@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { UserProfile, StudentLevel, PracticeMode, EvaluationResult, HistoryRecord, UserConfig } from './types';
+import { UserProfile, StudentLevel, PracticeMode, EvaluationResult, HistoryRecord, UserConfig, AppLanguage } from './types';
 import { getProfile, saveProfile, updatePointsAndBadges, addHistory, getHistory, saveAIConfig, logoutUser } from './services/storageService';
 import { evaluateWriting } from './services/aiService';
 import { POINTS_PER_ESSAY, POINTS_PER_SENTENCE } from './constants';
@@ -58,35 +58,45 @@ const App: React.FC = () => {
 
   const handleAuthSuccess = async (name: string) => {
     setInitializing(true);
-    let profile = await getProfile(name);
+    try {
+      let profile = await getProfile(name);
 
-    if (!profile) {
-      // Initialize a default profile for new users
-      profile = {
-        username: name,
-        language: 'cn',
-        level: null,
-        points: 0,
-        badges: [],
-        config: null
-      };
+      if (!profile || !profile.username) {
+        // Initialize a default profile for new users or corrupted data
+        profile = {
+          username: name,
+          language: 'cn',
+          level: null,
+          points: 0,
+          badges: [],
+          config: null
+        };
+      }
+
+      setUserProfile(profile);
+      localStorage.setItem('yingyu_xiezuo_current_user', name);
+
+      // Load history
+      try {
+        const hist = await getHistory(name);
+        setHistory(Array.isArray(hist) ? hist : []);
+      } catch (e) {
+        setHistory([]);
+      }
+
+      if (!profile.config) {
+        setAppState(AppState.Config);
+      } else if (!profile.level) {
+        setAppState(AppState.Welcome);
+      } else {
+        setAppState(AppState.Dashboard);
+      }
+    } catch (error) {
+      console.error("Auth success logic failed", error);
+      setAuthError("Failed to initialize user session.");
+    } finally {
+      setInitializing(false);
     }
-
-    setUserProfile(profile);
-    localStorage.setItem('yingyu_xiezuo_current_user', name);
-
-    // Load history (will be empty for new users)
-    const hist = await getHistory(name);
-    setHistory(hist);
-
-    if (!profile.config) {
-      setAppState(AppState.Config);
-    } else if (!profile.level) {
-      setAppState(AppState.Welcome);
-    } else {
-      setAppState(AppState.Dashboard);
-    }
-    setInitializing(false);
   };
 
   const handleLogin = async () => {
@@ -99,10 +109,10 @@ const App: React.FC = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })
       });
-      const data = await res.json();
       if (res.ok) {
-        handleAuthSuccess(username);
+        await handleAuthSuccess(username);
       } else {
+        const data = await res.json().catch(() => ({ error: 'Auth failed' }));
         setAuthError(data.error || 'Auth failed');
       }
     } catch (e) {
@@ -115,21 +125,26 @@ const App: React.FC = () => {
   const handleSaveConfig = async () => {
     if (!userProfile || !tempApiKey) return;
     setProcessing(true);
-    const config: UserConfig = {
-      apiKey: tempApiKey,
-      provider: tempProvider,
-      model: tempModel
-    };
-    await saveAIConfig(userProfile.username, config);
-    const updatedProfile = { ...userProfile, config };
-    setUserProfile(updatedProfile);
+    try {
+      const config: UserConfig = {
+        apiKey: tempApiKey,
+        provider: tempProvider,
+        model: tempModel
+      };
+      await saveAIConfig(userProfile.username, config);
+      const updatedProfile = { ...userProfile, config };
+      setUserProfile(updatedProfile);
 
-    if (!updatedProfile.level) {
-      setAppState(AppState.Welcome);
-    } else {
-      setAppState(AppState.Dashboard);
+      if (!updatedProfile.level) {
+        setAppState(AppState.Welcome);
+      } else {
+        setAppState(AppState.Dashboard);
+      }
+    } catch (e) {
+      alert("Failed to save configuration.");
+    } finally {
+      setProcessing(false);
     }
-    setProcessing(false);
   };
 
   const handleLogout = () => {
@@ -143,9 +158,13 @@ const App: React.FC = () => {
 
   const handleLevelSelect = async (level: StudentLevel) => {
     if (!userProfile) return;
-    const updatedProfile = await saveProfile({ ...userProfile, level });
-    setUserProfile(updatedProfile);
-    setAppState(AppState.Dashboard);
+    try {
+      const updatedProfile = await saveProfile({ ...userProfile, level });
+      setUserProfile(updatedProfile);
+      setAppState(AppState.Dashboard);
+    } catch (e) {
+      alert("Failed to save level selection.");
+    }
   };
 
   const startNewSession = () => {
@@ -185,9 +204,7 @@ const App: React.FC = () => {
       };
       await addHistory(userProfile.username, record);
 
-      // Update local history
       setHistory([record, ...history]);
-
       setUserProfile(updatedProfile);
       if (newBadges.length > 0) setTimeout(() => alert(`🎉 ${newBadges.join(', ')}`), 500);
       setAppState(AppState.Result);
@@ -198,10 +215,10 @@ const App: React.FC = () => {
     }
   };
 
-  if (initializing) return <div className="h-screen flex items-center justify-center bg-slate-50"><Loader2 className="animate-spin text-indigo-600" /></div>;
+  const safeLang = (u: UserProfile | null): AppLanguage => (u?.language === 'en' || u?.language === 'cn') ? u.language : 'cn';
+  const t = translations[safeLang(userProfile)];
 
-  const currentLang = userProfile ? userProfile.language : 'cn';
-  const t = translations[currentLang];
+  if (initializing) return <div className="h-screen flex items-center justify-center bg-slate-50"><Loader2 className="animate-spin text-indigo-600" /></div>;
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col font-sans">
@@ -219,9 +236,9 @@ const App: React.FC = () => {
                   <Settings size={20} />
                 </button>
                 <div className="flex items-center gap-3 bg-slate-100 px-3 py-1.5 rounded-full">
-                  <span className="text-sm font-bold text-indigo-600">{userProfile.points} pts</span>
+                  <span className="text-sm font-bold text-indigo-600">{userProfile.points || 0} pts</span>
                   <div className="h-6 w-6 rounded-full bg-indigo-600 flex items-center justify-center text-[10px] font-bold text-white uppercase">
-                    {userProfile.username[0]}
+                    {(userProfile.username || 'U')[0]}
                   </div>
                 </div>
                 <button onClick={handleLogout} className="text-slate-400 hover:text-red-500 transition-colors">
@@ -234,167 +251,179 @@ const App: React.FC = () => {
       </header>
 
       <main className="flex-1">
-        {/* Login Screen */}
-        {appState === AppState.Login && (
-          <div className="max-w-md mx-auto mt-20 px-4 scale-in-center">
-            <div className="text-center mb-8">
-              <h1 className="text-4xl font-black text-slate-900 mb-2">{t.welcome}</h1>
-              <p className="text-slate-500 font-medium">Step into a world of better writing.</p>
-            </div>
-            <div className="bg-white p-8 rounded-3xl shadow-xl shadow-indigo-100/50 border border-slate-100 space-y-5">
-              <div>
-                <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 ml-1">{t.username}</label>
-                <div className="relative">
-                  <User className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-                  <input
-                    type="text"
-                    className="w-full pl-11 pr-4 py-3.5 rounded-2xl bg-slate-50 border-none focus:ring-2 focus:ring-indigo-500 transition-all font-medium"
-                    placeholder={t.namePlaceholder}
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                  />
-                </div>
-              </div>
-              <div>
-                <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 ml-1">{t.password}</label>
-                <div className="relative">
-                  <Key className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-                  <input
-                    type="password"
-                    className="w-full pl-11 pr-4 py-3.5 rounded-2xl bg-slate-50 border-none focus:ring-2 focus:ring-indigo-500 transition-all font-medium"
-                    placeholder={t.passwordPlaceholder}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
-                  />
-                </div>
-              </div>
-              {authError && <p className="text-red-500 text-sm font-medium text-center">{authError}</p>}
-              <button
-                onClick={handleLogin}
-                disabled={processing || !username || !password}
-                className="w-full py-4 bg-indigo-600 text-white rounded-2xl font-bold shadow-lg shadow-indigo-200 hover:bg-indigo-700 active:scale-[0.98] transition-all disabled:opacity-50"
-              >
-                {processing ? <Loader2 className="animate-spin mx-auto" /> : t.login}
-              </button>
-            </div>
+        {/* Render fallback if userProfile is missing but we're not in login state */}
+        {!userProfile && appState !== AppState.Login ? (
+          <div className="text-center py-20">
+            <p className="text-slate-500 mb-4">Session error. Please login again.</p>
+            <button onClick={handleLogout} className="text-indigo-600 font-bold">Back to Login</button>
           </div>
-        )}
-
-        {/* Config Screen */}
-        {appState === AppState.Config && userProfile && (
-          <div className="max-w-xl mx-auto mt-12 px-4 animate-fade-in">
-            <div className="bg-white p-10 rounded-3xl shadow-xl border border-slate-100">
-              <h2 className="text-2xl font-bold mb-2 flex items-center gap-2">
-                <Settings className="text-indigo-600" /> {t.aiConfig}
-              </h2>
-              <p className="text-slate-500 mb-8 text-sm leading-relaxed">{t.configDesc}</p>
-
-              <div className="space-y-6">
-                <div className="grid grid-cols-2 gap-4">
+        ) : (
+          <>
+            {/* Login Screen */}
+            {appState === AppState.Login && (
+              <div className="max-w-md mx-auto mt-20 px-4 scale-in-center">
+                <div className="text-center mb-8">
+                  <h1 className="text-4xl font-black text-slate-900 mb-2">{t.welcome}</h1>
+                  <p className="text-slate-500 font-medium">Step into a world of better writing.</p>
+                </div>
+                <div className="bg-white p-8 rounded-3xl shadow-xl shadow-indigo-100/50 border border-slate-100 space-y-5">
                   <div>
-                    <label className="block text-xs font-bold text-slate-400 uppercase mb-2 ml-1">{t.providerLabel}</label>
-                    <select
-                      className="w-full px-4 py-3 rounded-xl bg-slate-50 border-none focus:ring-2 focus:ring-indigo-500 font-medium appearance-none"
-                      value={tempProvider}
-                      onChange={(e) => {
-                        const p = e.target.value as any;
-                        setTempProvider(p);
-                        setTempModel(p === 'gemini' ? 'gemini-2.0-flash' : 'gpt-4o');
-                      }}
+                    <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 ml-1">{t.username}</label>
+                    <div className="relative">
+                      <User className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+                      <input
+                        type="text"
+                        className="w-full pl-11 pr-4 py-3.5 rounded-2xl bg-slate-50 border-none focus:ring-2 focus:ring-indigo-500 transition-all font-medium"
+                        placeholder={t.namePlaceholder}
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 ml-1">{t.password}</label>
+                    <div className="relative">
+                      <Key className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+                      <input
+                        type="password"
+                        className="w-full pl-11 pr-4 py-3.5 rounded-2xl bg-slate-50 border-none focus:ring-2 focus:ring-indigo-500 transition-all font-medium"
+                        placeholder={t.passwordPlaceholder}
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
+                      />
+                    </div>
+                  </div>
+                  {authError && <p className="text-red-500 text-sm font-medium text-center">{authError}</p>}
+                  <button
+                    onClick={handleLogin}
+                    disabled={processing || !username || !password}
+                    className="w-full py-4 bg-indigo-600 text-white rounded-2xl font-bold shadow-lg shadow-indigo-200 hover:bg-indigo-700 active:scale-[0.98] transition-all disabled:opacity-50"
+                  >
+                    {processing ? <Loader2 className="animate-spin mx-auto" /> : t.login}
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* Config Screen */}
+            {appState === AppState.Config && userProfile && (
+              <div className="max-w-xl mx-auto mt-12 px-4 animate-fade-in">
+                <div className="bg-white p-10 rounded-3xl shadow-xl border border-slate-100">
+                  <h2 className="text-2xl font-bold mb-2 flex items-center gap-2">
+                    <Settings className="text-indigo-600" /> {t.aiConfig}
+                  </h2>
+                  <p className="text-slate-500 mb-8 text-sm leading-relaxed">{t.configDesc}</p>
+
+                  <div className="space-y-6">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-xs font-bold text-slate-400 uppercase mb-2 ml-1">{t.providerLabel}</label>
+                        <select
+                          className="w-full px-4 py-3 rounded-xl bg-slate-50 border-none focus:ring-2 focus:ring-indigo-500 font-medium appearance-none"
+                          value={tempProvider}
+                          onChange={(e) => {
+                            const p = e.target.value as any;
+                            setTempProvider(p);
+                            setTempModel(p === 'gemini' ? 'gemini-2.0-flash' : 'gpt-4o');
+                          }}
+                        >
+                          <option value="gemini">Google Gemini</option>
+                          <option value="openai">OpenAI</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label className="block text-xs font-bold text-slate-400 uppercase mb-2 ml-1">{t.modelLabel}</label>
+                        <input
+                          type="text"
+                          className="w-full px-4 py-3 rounded-xl bg-slate-50 border-none focus:ring-2 focus:ring-indigo-500 font-medium"
+                          value={tempModel}
+                          onChange={(e) => setTempModel(e.target.value)}
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-bold text-slate-400 uppercase mb-2 ml-1">{t.apiKeyLabel}</label>
+                      <input
+                        type="password"
+                        className="w-full px-4 py-3 rounded-xl bg-slate-50 border-none focus:ring-2 focus:ring-indigo-500 font-medium"
+                        placeholder="sk-..."
+                        value={tempApiKey}
+                        onChange={(e) => setTempApiKey(e.target.value)}
+                      />
+                    </div>
+
+                    <button
+                      onClick={handleSaveConfig}
+                      disabled={processing || !tempApiKey}
+                      className="w-full py-4 bg-slate-800 text-white rounded-2xl font-bold hover:bg-slate-900 active:scale-[0.98] transition-all disabled:opacity-50"
                     >
-                      <option value="gemini">Google Gemini</option>
-                      <option value="openai">OpenAI</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block text-xs font-bold text-slate-400 uppercase mb-2 ml-1">{t.modelLabel}</label>
-                    <input
-                      type="text"
-                      className="w-full px-4 py-3 rounded-xl bg-slate-50 border-none focus:ring-2 focus:ring-indigo-500 font-medium"
-                      value={tempModel}
-                      onChange={(e) => setTempModel(e.target.value)}
-                    />
+                      {processing ? <Loader2 className="animate-spin mx-auto" /> : t.saveConfig}
+                    </button>
+                    {userProfile.config && (
+                      <button onClick={() => setAppState(AppState.Dashboard)} className="w-full py-2 text-slate-400 font-medium text-sm hover:text-slate-600">Cancel</button>
+                    )}
                   </div>
                 </div>
-
-                <div>
-                  <label className="block text-xs font-bold text-slate-400 uppercase mb-2 ml-1">{t.apiKeyLabel}</label>
-                  <input
-                    type="password"
-                    className="w-full px-4 py-3 rounded-xl bg-slate-50 border-none focus:ring-2 focus:ring-indigo-500 font-medium"
-                    placeholder="sk-..."
-                    value={tempApiKey}
-                    onChange={(e) => setTempApiKey(e.target.value)}
-                  />
-                </div>
-
-                <button
-                  onClick={handleSaveConfig}
-                  disabled={processing || !tempApiKey}
-                  className="w-full py-4 bg-slate-800 text-white rounded-2xl font-bold hover:bg-slate-900 active:scale-[0.98] transition-all disabled:opacity-50"
-                >
-                  {processing ? <Loader2 className="animate-spin mx-auto" /> : t.saveConfig}
-                </button>
-                <button onClick={() => setAppState(AppState.Dashboard)} className="w-full py-2 text-slate-400 font-medium text-sm hover:text-slate-600">Cancel</button>
               </div>
-            </div>
-          </div>
-        )}
+            )}
 
-        {appState === AppState.Welcome && userProfile && <LevelSelector lang={userProfile.language} onSelect={handleLevelSelect} />}
+            {appState === AppState.Welcome && userProfile && <LevelSelector lang={safeLang(userProfile)} onSelect={handleLevelSelect} />}
 
-        {appState === AppState.Dashboard && userProfile && (
-          <div className="max-w-6xl mx-auto py-8 px-4">
-            <Dashboard
-              profile={userProfile}
-              history={history}
-              lang={userProfile.language}
-              onStartNew={startNewSession}
-              onSelectLevel={() => setAppState(AppState.Welcome)}
-            />
-          </div>
-        )}
+            {appState === AppState.Dashboard && userProfile && (
+              <div className="max-w-6xl mx-auto py-8 px-4">
+                <Dashboard
+                  profile={userProfile}
+                  history={history}
+                  lang={safeLang(userProfile)}
+                  onStartNew={startNewSession}
+                  onSelectLevel={() => setAppState(AppState.Welcome)}
+                />
+              </div>
+            )}
 
-        {appState === AppState.TopicSelection && userProfile && userProfile.level && (
-          <TopicPhase username={userProfile.username} level={userProfile.level} lang={userProfile.language} onConfirm={(topic) => {
-            setCurrentTopic(topic);
-            setAppState(AppState.Learning);
-          }} />
-        )}
+            {appState === AppState.TopicSelection && userProfile && userProfile.level && (
+              <TopicPhase username={userProfile.username} level={userProfile.level} lang={safeLang(userProfile)} onConfirm={(topic) => {
+                setCurrentTopic(topic);
+                setAppState(AppState.Learning);
+              }} />
+            )}
 
-        {appState === AppState.Learning && userProfile && userProfile.level && (
-          <LearningPhase
-            username={userProfile.username}
-            level={userProfile.level}
-            topic={currentTopic}
-            lang={userProfile.language}
-            onProceed={(mode) => {
-              setCurrentMode(mode);
-              setAppState(AppState.Writing);
-            }}
-          />
-        )}
+            {appState === AppState.Learning && userProfile && userProfile.level && (
+              <LearningPhase
+                username={userProfile.username}
+                level={userProfile.level}
+                topic={currentTopic}
+                lang={safeLang(userProfile)}
+                onProceed={(mode) => {
+                  setCurrentMode(mode);
+                  setAppState(AppState.Writing);
+                }}
+              />
+            )}
 
-        {appState === AppState.Writing && userProfile && userProfile.level && (
-          <WritingPhase
-            level={userProfile.level}
-            mode={currentMode}
-            topic={currentTopic}
-            lang={userProfile.language}
-            onSubmit={handleSubmitWriting}
-            loading={processing}
-          />
-        )}
+            {appState === AppState.Writing && userProfile && userProfile.level && (
+              <WritingPhase
+                level={userProfile.level}
+                mode={currentMode}
+                topic={currentTopic}
+                lang={safeLang(userProfile)}
+                onSubmit={handleSubmitWriting}
+                loading={processing}
+              />
+            )}
 
-        {appState === AppState.Result && userProfile && evaluation && (
-          <ResultPhase
-            result={evaluation}
-            userContent={currentContent}
-            topic={currentTopic}
-            lang={userProfile.language}
-            onHome={() => setAppState(AppState.Dashboard)}
-          />
+            {appState === AppState.Result && userProfile && evaluation && (
+              <ResultPhase
+                result={evaluation}
+                userContent={currentContent}
+                topic={currentTopic}
+                lang={safeLang(userProfile)}
+                onHome={() => setAppState(AppState.Dashboard)}
+              />
+            )}
+          </>
         )}
       </main>
     </div>
