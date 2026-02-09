@@ -16,6 +16,7 @@ interface DashboardProps {
 
 const Dashboard: React.FC<DashboardProps> = ({ profile, history, lang, onStartNew, onSelectLevel, onOpenConfig }) => {
   const t = getTranslation(lang);
+  const [showAllBadges, setShowAllBadges] = React.useState(false);
 
   // Calculate stats
   const stats = {
@@ -32,6 +33,7 @@ const Dashboard: React.FC<DashboardProps> = ({ profile, history, lang, onStartNe
     .reverse()
     .map((h, i) => ({
       name: `Ex ${i + 1}`,
+      displayDate: new Date(h.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }),
       score: h.evaluation.score,
     }));
 
@@ -122,14 +124,14 @@ const Dashboard: React.FC<DashboardProps> = ({ profile, history, lang, onStartNe
                 <History className="text-indigo-500" size={20} /> {t.perfHistory}
               </h3>
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={chartData}>
-                  <XAxis dataKey="name" hide />
-                  <YAxis domain={[0, 100]} hide />
+                <BarChart data={chartData} margin={{ top: 20, right: 30, left: -20, bottom: 5 }}>
+                  <XAxis dataKey="displayDate" axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: '#94a3b8' }} dy={10} />
+                  <YAxis domain={[0, 100]} axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: '#94a3b8' }} />
                   <Tooltip
                     cursor={{ fill: '#f8fafc' }}
                     contentStyle={{ borderRadius: '16px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)', padding: '12px' }}
                   />
-                  <Bar dataKey="score" radius={[8, 8, 8, 8]} barSize={32}>
+                  <Bar dataKey="score" radius={[8, 8, 8, 8]} barSize={24} animationDuration={1000}>
                     {chartData.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={entry.score >= 80 ? '#10b981' : entry.score >= 60 ? '#f59e0b' : '#ef4444'} />
                     ))}
@@ -150,24 +152,36 @@ const Dashboard: React.FC<DashboardProps> = ({ profile, history, lang, onStartNe
             <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-6 flex items-center gap-2">
               <Award size={18} className="text-amber-500" /> {t.badgesEarned}
             </h3>
-            <div className="grid grid-cols-4 gap-3">
-              {BADGES.map((badge) => {
+            <div className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-3 transition-all">
+              {(showAllBadges ? BADGES : BADGES.slice(0, 16)).map((badge) => {
                 const isUnlocked = profile.badges.includes(badge.id);
                 return (
                   <div key={badge.id} className="relative group">
-                    <div className={`aspect-square rounded-2xl flex items-center justify-center text-2xl border-2 transition-all duration-500 ${isUnlocked ? 'bg-amber-50 border-amber-200 shadow-sm' : 'bg-slate-50 border-slate-100 opacity-20 grayscale'}`}>
+                    <div className={`aspect-square rounded-2xl flex items-center justify-center text-2xl border-2 transition-all duration-500 ${isUnlocked ? 'bg-amber-50 border-amber-200 shadow-sm scale-100' : 'bg-slate-50 border-slate-100 opacity-30 grayscale scale-95'}`}>
                       <span role="img" aria-label={badge.name}> {badge.icon}</span>
                     </div>
                     {/* Tooltip */}
-                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 hidden group-hover:block w-40 bg-slate-900/90 backdrop-blur-md text-white text-[10px] rounded-xl p-3 text-center z-20 shadow-xl">
-                      <p className="font-black mb-1 text-xs">{lang === 'cn' ? badge.name : badge.name}</p>
-                      <p className="opacity-70 leading-relaxed">{badge.description}</p>
-                      <div className="absolute top-full left-1/2 -translate-x-1/2 border-8 border-transparent border-t-slate-900/90"></div>
+                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block w-32 bg-slate-900/90 backdrop-blur-md text-white text-[10px] rounded-xl p-2 text-center z-20 shadow-xl pointer-events-none">
+                      <p className="font-black mb-0.5 text-xs truncate">{badge.name}</p>
+                      <p className="opacity-70 leading-tight text-[9px]">{badge.description}</p>
+                      <div className={`mt-1 text-[9px] font-bold ${isUnlocked ? 'text-emerald-400' : 'text-slate-500'}`}>
+                        {isUnlocked ? 'UNLOCKED' : 'LOCKED'}
+                      </div>
                     </div>
                   </div>
                 );
               })}
             </div>
+            {BADGES.length > 16 && (
+              <div className="mt-6 text-center">
+                <button
+                  onClick={() => setShowAllBadges(!showAllBadges)}
+                  className="px-4 py-2 bg-slate-50 hover:bg-slate-100 text-slate-500 rounded-xl text-xs font-bold transition-colors"
+                >
+                  {showAllBadges ? 'Show Less' : `Show All (${BADGES.length})`}
+                </button>
+              </div>
+            )}
           </div>
 
           <div className="bg-white rounded-3xl shadow-sm p-6 border border-slate-100">
