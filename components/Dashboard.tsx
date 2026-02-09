@@ -1,7 +1,7 @@
 import React from 'react';
 import { UserProfile, AppLanguage, HistoryRecord } from '../types';
 import { BADGES } from '../constants';
-import { translations } from '../translations';
+import { getTranslation } from '../translations';
 import { Trophy, History, Star, BookOpen, PenTool, Award } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 
@@ -14,7 +14,7 @@ interface DashboardProps {
 }
 
 const Dashboard: React.FC<DashboardProps> = ({ profile, history, lang, onStartNew, onSelectLevel }) => {
-  const t = translations[lang];
+  const t = getTranslation(lang);
   const lastHistory = history.slice(0, 5); // Last 5 items
 
   // Prepare data for the chart (last 10 scores)
@@ -26,7 +26,7 @@ const Dashboard: React.FC<DashboardProps> = ({ profile, history, lang, onStartNe
       score: h.evaluation.score,
     }));
 
-  const levelDisplay = profile.level ? t.levelNames[profile.level] : '';
+  const levelDisplay = profile.level ? (t.levelNames as any)[profile.level] : '';
 
   return (
     <div className="space-y-8 animate-fade-in">
@@ -138,7 +138,7 @@ const Dashboard: React.FC<DashboardProps> = ({ profile, history, lang, onStartNe
                 return (
                   <div key={badge.id} className="relative group">
                     <div className={`aspect-square rounded-2xl flex items-center justify-center text-2xl border-2 transition-all duration-500 ${isUnlocked ? 'bg-amber-50 border-amber-200 shadow-sm' : 'bg-slate-50 border-slate-100 opacity-20 grayscale'}`}>
-                      {badge.icon}
+                      <span role="img" aria-label={badge.name}> {badge.icon}</span>
                     </div>
                     {/* Tooltip */}
                     <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 hidden group-hover:block w-40 bg-slate-900/90 backdrop-blur-md text-white text-[10px] rounded-xl p-3 text-center z-20 shadow-xl">
@@ -165,7 +165,7 @@ const Dashboard: React.FC<DashboardProps> = ({ profile, history, lang, onStartNe
                     <div className="min-w-0">
                       <p className="text-sm font-bold text-slate-800 truncate">{item.topic}</p>
                       <p className="text-[10px] text-slate-400 font-bold uppercase">
-                        {new Date(item.date).toLocaleDateString()} • {item.mode.split(' ')[0]}
+                        {new Date(item.date).toLocaleDateString()} • {item.mode?.split(' ')[0] || ''}
                       </p>
                     </div>
                     <div className={`ml-4 h-10 w-10 shrink-0 rounded-full flex items-center justify-center text-xs font-black border-2 ${item.evaluation.score >= 80 ? 'bg-emerald-50 border-emerald-100 text-emerald-600' : item.evaluation.score >= 60 ? 'bg-amber-50 border-amber-100 text-amber-600' : 'bg-red-50 border-red-100 text-red-600'}`}>
