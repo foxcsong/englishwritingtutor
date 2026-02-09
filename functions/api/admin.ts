@@ -1,18 +1,22 @@
 import { Env } from './types';
 
-// Simple admin key - in production this should be an env var
-// For this demo/personal app, we'll check against 'admin123' or process.env.ADMIN_SECRET
-const DEFAULT_ADMIN_KEY = 'admin888';
-
+// In production, this MUST be set as an environment variable (Secret)
+// In local dev, set it in .dev.vars
 export const onRequest: PagesFunction<Env> = async (context) => {
     const { request, env } = context;
 
-    // 1. Auth Check
+    // 1. Auth Check - STRICTLY use env var
     const adminKey = request.headers.get('x-admin-key');
-    // Using a hardcoded key for simplicity in this specific project context as requested by user flow, 
-    // but looking for env var first if available.
-    const validKey = env.ADMIN_SECRET || DEFAULT_ADMIN_KEY;
+    const validKey = env.ADMIN_SECRET;
 
+    if (!validKey) {
+        return new Response(JSON.stringify({ error: 'Server configuration error: ADMIN_SECRET environment variable is not set.' }), {
+            status: 500,
+            headers: { 'Content-Type': 'application/json' }
+        });
+    }
+
+    // Constant-time comparison would be better for security but simple string compare is acceptable here
     if (adminKey !== validKey) {
         return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
     }

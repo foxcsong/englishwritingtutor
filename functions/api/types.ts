@@ -1,5 +1,6 @@
 export interface Env {
     WRITING_KV: KVNamespace;
+    ADMIN_SECRET: string;
 }
 
 export interface UserConfig {
