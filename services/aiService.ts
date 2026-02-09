@@ -1,5 +1,5 @@
 import { StudentLevel, TopicMaterial, EvaluationResult, PracticeMode, AppLanguage, UserConfig } from '../types';
-import { LEVEL_PROMPTS } from '../constants';
+import { LEVEL_PROMPTS, LEVEL_WORD_COUNTS } from '../constants';
 
 const API_BASE = '/api';
 
@@ -68,13 +68,15 @@ export const generateTopics = async (username: string, level: StudentLevel): Pro
 
 export const generateLearningMaterial = async (username: string, level: StudentLevel, topic: string, lang: AppLanguage): Promise<TopicMaterial> => {
     const levelContext = LEVEL_PROMPTS[level];
+    const wordCount = LEVEL_WORD_COUNTS[level];
     const explainLang = lang === 'cn' ? 'Chinese (Simplified)' : 'English';
 
     const prompt = `
     You are an expert English teacher. Level: ${level}. Topic: "${topic.replace(/"/g, "'")}". Feedback Language: ${explainLang}.
+    Target Word Count: ${wordCount.min}-${wordCount.max} words (${wordCount.label}).
     Provide:
     1. Introduction (in ${explainLang})
-    2. Sample Essay (English)
+    2. Sample Essay (English, STRICTLY within ${wordCount.min}-${wordCount.max} words)
     3. Key Points/Analysis (in ${explainLang})
     Return JSON: {"topic": "${topic.replace(/"/g, "'")}", "introduction": "...", "sampleEssay": "...", "analysis": "..."}
   `;
@@ -104,10 +106,13 @@ export const evaluateWriting = async (
     lang: AppLanguage
 ): Promise<EvaluationResult> => {
     const explainLang = lang === 'cn' ? 'Chinese (Simplified)' : 'English';
+    const wordCount = LEVEL_WORD_COUNTS[level];
 
     const prompt = `
     English teacher evaluation. Level: ${level}. Topic: "${topic.replace(/"/g, "'")}". Mode: ${mode}. Feedback Language: ${explainLang}.
+    Expected Length: ${wordCount.min}-${wordCount.max} words.
     Evaluate: "${content.replace(/"/g, "'")}"
+    Check if the length is appropriate (Standard: ${wordCount.min}-${wordCount.max} words). If significantly too short or long, mention it in generalFeedback.
     Return JSON: {"score": 0-100, "generalFeedback": "...", "detailedCorrections": [{"original": "...", "correction": "...", "explanation": "..."}], "improvedVersion": "..."}
   `;
 
