@@ -48,7 +48,8 @@ export const generateTopics = async (username: string, level: StudentLevel): Pro
 
     const data = await res.json();
     if (!res.ok) {
-        throw new Error(data.error || "话题生成失败");
+        const debugInfo = data.debug ? `\nDebug: ${JSON.stringify(data.debug)}` : '';
+        throw new Error((data.error || "话题生成失败") + debugInfo);
     }
 
     const content = data.candidates?.[0]?.content?.parts?.[0]?.text || data.choices?.[0]?.message?.content || "";
@@ -86,7 +87,8 @@ export const generateLearningMaterial = async (username: string, level: StudentL
 
     const data = await res.json();
     if (!res.ok) {
-        throw new Error(data.error || "学习资料生成失败");
+        const debugInfo = data.debug ? `\nDebug: ${JSON.stringify(data.debug)}` : '';
+        throw new Error((data.error || "学习资料生成失败") + debugInfo);
     }
 
     const content = data.candidates?.[0]?.content?.parts?.[0]?.text || data.choices?.[0]?.message?.content || "";
@@ -117,7 +119,8 @@ export const evaluateWriting = async (
 
     const data = await res.json();
     if (!res.ok) {
-        throw new Error(data.error || "评估失败");
+        const debugInfo = data.debug ? `\nDebug: ${JSON.stringify(data.debug)}` : '';
+        throw new Error((data.error || "评估失败") + debugInfo);
     }
 
     const resContent = data.candidates?.[0]?.content?.parts?.[0]?.text || data.choices?.[0]?.message?.content || "";
