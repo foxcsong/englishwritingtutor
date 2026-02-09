@@ -19,6 +19,12 @@ const TopicPhase: React.FC<TopicPhaseProps> = ({ username, level, lang, onConfir
   const [loading, setLoading] = useState(false);
 
   const handleGenerate = async () => {
+    if (!username) {
+      console.error("TopicPhase: username is missing!", { username, level });
+      alert("Error: User session invalid. Please re-login.");
+      return;
+    }
+
     setLoading(true);
     try {
       const topics = await generateTopics(username, level);
