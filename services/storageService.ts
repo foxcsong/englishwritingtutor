@@ -22,7 +22,8 @@ export const saveProfile = async (profile: UserProfile): Promise<UserProfile> =>
       username: profile.username,
       points: profile.points,
       badges: profile.badges,
-      level: profile.level
+      level: profile.level,
+      config: profile.config
     })
   });
   return await res.json();
