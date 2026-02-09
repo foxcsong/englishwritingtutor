@@ -3,7 +3,7 @@ import { UserProfile, StudentLevel, PracticeMode, EvaluationResult, HistoryRecor
 import { getProfile, saveProfile, updatePointsAndBadges, addHistory, getHistory, saveAIConfig, logoutUser } from './services/storageService';
 import { evaluateWriting } from './services/aiService';
 import { POINTS_PER_ESSAY, POINTS_PER_SENTENCE } from './constants';
-import { translations } from './translations';
+import { translations, getTranslation } from './translations';
 import LevelSelector from './components/LevelSelector';
 import Dashboard from './components/Dashboard';
 import TopicPhase from './components/TopicPhase';
@@ -215,8 +215,8 @@ const App: React.FC = () => {
     }
   };
 
-  const safeLang = (u: UserProfile | null): AppLanguage => (u?.language === 'en' || u?.language === 'cn') ? u.language : 'cn';
-  const t = translations[safeLang(userProfile)];
+  const currentLang: AppLanguage = userProfile?.language === 'en' ? 'en' : 'cn';
+  const t = getTranslation(currentLang);
 
   if (initializing) return <div className="h-screen flex items-center justify-center bg-slate-50"><Loader2 className="animate-spin text-indigo-600" /></div>;
 
@@ -369,14 +369,14 @@ const App: React.FC = () => {
               </div>
             )}
 
-            {appState === AppState.Welcome && userProfile && <LevelSelector lang={safeLang(userProfile)} onSelect={handleLevelSelect} />}
+            {appState === AppState.Welcome && userProfile && <LevelSelector lang={currentLang} onSelect={handleLevelSelect} />}
 
             {appState === AppState.Dashboard && userProfile && (
               <div className="max-w-6xl mx-auto py-8 px-4">
                 <Dashboard
                   profile={userProfile}
                   history={history}
-                  lang={safeLang(userProfile)}
+                  lang={currentLang}
                   onStartNew={startNewSession}
                   onSelectLevel={() => setAppState(AppState.Welcome)}
                 />
@@ -384,7 +384,7 @@ const App: React.FC = () => {
             )}
 
             {appState === AppState.TopicSelection && userProfile && userProfile.level && (
-              <TopicPhase username={userProfile.username} level={userProfile.level} lang={safeLang(userProfile)} onConfirm={(topic) => {
+              <TopicPhase username={userProfile.username} level={userProfile.level} lang={currentLang} onConfirm={(topic) => {
                 setCurrentTopic(topic);
                 setAppState(AppState.Learning);
               }} />
@@ -395,7 +395,7 @@ const App: React.FC = () => {
                 username={userProfile.username}
                 level={userProfile.level}
                 topic={currentTopic}
-                lang={safeLang(userProfile)}
+                lang={currentLang}
                 onProceed={(mode) => {
                   setCurrentMode(mode);
                   setAppState(AppState.Writing);
@@ -408,7 +408,7 @@ const App: React.FC = () => {
                 level={userProfile.level}
                 mode={currentMode}
                 topic={currentTopic}
-                lang={safeLang(userProfile)}
+                lang={currentLang}
                 onSubmit={handleSubmitWriting}
                 loading={processing}
               />
@@ -419,7 +419,7 @@ const App: React.FC = () => {
                 result={evaluation}
                 userContent={currentContent}
                 topic={currentTopic}
-                lang={safeLang(userProfile)}
+                lang={currentLang}
                 onHome={() => setAppState(AppState.Dashboard)}
               />
             )}

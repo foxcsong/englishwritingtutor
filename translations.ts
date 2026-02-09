@@ -178,3 +178,13 @@ export const translations = {
     }
   }
 };
+
+/**
+ * 防御性翻译获取函数
+ * @param lang 目标语言
+ * @returns 对应的翻译对象，如果找不到则返回中文 fallback
+ */
+export const getTranslation = (lang: string | null | undefined) => {
+  if (lang === 'en') return translations.en;
+  return translations.cn;
+};
