@@ -15,7 +15,7 @@ interface AIConfigModalProps {
 const AIConfigModal: React.FC<AIConfigModalProps> = ({ username, initialConfig, lang, onSave, onClose }) => {
     const t = getTranslation(lang);
     const [provider, setProvider] = useState<'openai' | 'gemini'>(initialConfig?.provider || 'gemini');
-    const [model, setModel] = useState(initialConfig?.model || (provider === 'gemini' ? 'gemini-2.0-flash' : 'gpt-4o'));
+    const [model, setModel] = useState(initialConfig?.model || (provider === 'gemini' ? 'gemini-3-flash-preview' : 'gpt-4o'));
     const [apiKey, setApiKey] = useState(initialConfig?.apiKey || '');
 
     const [testing, setTesting] = useState(false);
@@ -79,7 +79,7 @@ const AIConfigModal: React.FC<AIConfigModalProps> = ({ username, initialConfig, 
                                 onChange={(e) => {
                                     const p = e.target.value as any;
                                     setProvider(p);
-                                    if (p === 'gemini') setModel('gemini-2.0-flash');
+                                    if (p === 'gemini') setModel('gemini-3-flash-preview');
                                     else setModel('gpt-4o');
                                 }}
                             >
@@ -94,7 +94,7 @@ const AIConfigModal: React.FC<AIConfigModalProps> = ({ username, initialConfig, 
                                 className="w-full px-6 py-4 rounded-2xl bg-slate-50 border-none focus:ring-2 focus:ring-indigo-500 font-bold text-slate-700 shadow-inner"
                                 value={model}
                                 onChange={(e) => setModel(e.target.value)}
-                                placeholder="e.g. gemini-2.0-flash"
+                                placeholder="e.g. gemini-3-flash-preview"
                             />
                         </div>
                     </div>
@@ -136,8 +136,8 @@ const AIConfigModal: React.FC<AIConfigModalProps> = ({ username, initialConfig, 
                             onClick={handleSave}
                             disabled={testing || !apiKey}
                             className={`w-full py-5 rounded-3xl font-black text-xl shadow-2xl transition-all flex items-center justify-center gap-3 active:scale-[0.98] ${testing || !apiKey
-                                    ? 'bg-slate-200 text-slate-400 cursor-not-allowed shadow-none'
-                                    : 'bg-indigo-600 text-white hover:bg-indigo-700 shadow-indigo-200'
+                                ? 'bg-slate-200 text-slate-400 cursor-not-allowed shadow-none'
+                                : 'bg-indigo-600 text-white hover:bg-indigo-700 shadow-indigo-200'
                                 }`}
                         >
                             {testing ? (
