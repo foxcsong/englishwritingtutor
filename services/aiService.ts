@@ -114,9 +114,9 @@ export const generateLearningMaterial = async (username: string, level: StudentL
     Tone: ${config.toneInstruction}
     
     Task: Create learning materials and specific writing requirements.
-    1. Introduction (in ${explainLang}): Brief and engaging.
+    1. Introduction (in ${explainLang}): Brief and engaging. **MUST be in ${explainLang}.**
     2. Sample Essay (English): STRICTLY ${wordCount.min}-${wordCount.max} words. Use vocabulary suitable for ${config.vocabularyConstraint}.
-    3. Key Points/Analysis (in ${explainLang}): Highlight 2-3 key vocabulary or grammar points used in the sample.
+    3. Key Points/Analysis (in ${explainLang}): Highlight 2-3 key vocabulary or grammar points used in the sample. **MUST be in ${explainLang}.**
     4. Writing Requirements (to guide student):
        - General Goal: What is the main objective?
        - Content Scope: What specific points must be covered?
@@ -214,8 +214,10 @@ export const evaluateWriting = async (
     1. Check length (${wordCount.min}-${wordCount.max} words).
     2. Check if Specific Writing Requirements are met (if provided).
     3. Give a Score (0-100) based on appropriate criteria for this level.
-    4. Provide General Feedback using this template style: "${config.feedbackTemplate}"
+    4. Provide General Feedback using this template style: "${config.feedbackTemplate}". 
+       **CRITICAL: Write the feedback in ${explainLang}. Translate the template if necessary.**
     5. Provide Detailed Corrections. ONLY focus on: ${config.correctionFocus.join(', ')}. Do NOT be too nitpicky for lower levels.
+       **CRITICAL: The 'explanation' must be in ${explainLang}.**
     6. Provide an Improved Version that elevates the writing while keeping it reachable for this level.
     
     Return JSON: 
