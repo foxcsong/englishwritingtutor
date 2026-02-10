@@ -274,6 +274,7 @@ export const evaluateWriting = async (
         2. **必须**将所有原本打算用英文表达的建议、评价、规则解释全部翻译成**中文**。
         3. 给出评分 (0-100)。
         4. 总体评价: 必须包含鼓励性的中文开场白。
+        5. **改进建议 (improvedVersion)**: 必须基于学生原文进行润色，禁止脱离原文重新创作。保持原有的结构、想法和逻辑，仅在语法、遣词造句和表达流畅度上进行优化。
 
         【正确示例 (JSON)】:
         {
@@ -364,6 +365,7 @@ export const evaluateWriting = async (
             2. Score (0-100).
             3. Feedback template: "${config.feedbackTemplate}"
             4. Detailed Corrections.
+            5. **Improved Version Guidelines**: The "improvedVersion" must be based on the student's original text. Polishing and refining only. Do NOT rewrite a new essay from scratch. Keep the original structure, ideas, and flow; only improve grammar, vocabulary, and sentence variety.
             
             Return JSON: 
             {
