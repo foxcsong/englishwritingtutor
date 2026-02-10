@@ -2,8 +2,39 @@ import { Env, UserData } from './types';
 
 export const onRequestPost: PagesFunction<Env> = async (context) => {
     const { request, env } = context;
-    const { username, password } = await request.json() as any;
+    const url = new URL(request.url);
+    const action = url.searchParams.get('action');
 
+    const body = await request.json() as any;
+    const { username, password } = body;
+
+    // --- Action: Change Password ---
+    if (action === 'change-password') {
+        const { oldPassword, newPassword } = body;
+        if (!username || !oldPassword || !newPassword) {
+            return new Response(JSON.stringify({ error: 'Missing required fields' }), { status: 400 });
+        }
+
+        const userKey = `user:${username}`;
+        const userJson = await env.WRITING_KV.get(userKey);
+        if (!userJson) {
+            return new Response(JSON.stringify({ error: 'User not found' }), { status: 404 });
+        }
+
+        const userData = JSON.parse(userJson) as UserData;
+        if (userData.passwordHash !== oldPassword) {
+            return new Response(JSON.stringify({ error: 'Incorrect old password' }), { status: 401 });
+        }
+
+        userData.passwordHash = newPassword;
+        await env.WRITING_KV.put(userKey, JSON.stringify(userData));
+
+        return new Response(JSON.stringify({ message: 'Password changed successfully' }), {
+            headers: { 'Content-Type': 'application/json' }
+        });
+    }
+
+    // --- Action: Default (Login/Register) ---
     if (!username || !password) {
         return new Response(JSON.stringify({ error: 'Username and password are required' }), {
             status: 400,
@@ -11,10 +42,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         });
     }
 
-    // 简单的密码哈希模拟（在实际生产中应使用更强的库，但在 CF Workers 边缘环境下需注意性能和库兼容性）
-    // 这里暂时使用文本，实际建议使用 Web Crypto API
     const passwordHash = password;
-
     const userKey = `user:${username}`;
     const existingUserJson = await env.WRITING_KV.get(userKey);
 

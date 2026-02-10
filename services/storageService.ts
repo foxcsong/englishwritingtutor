@@ -72,3 +72,16 @@ export const getHistory = async (username: string): Promise<HistoryRecord[]> => 
 export const logoutUser = () => {
   localStorage.removeItem('yingyu_xiezuo_current_user');
 };
+
+export const changePassword = async (username: string, oldPassword: string, newPassword: string): Promise<void> => {
+  const res = await fetch(`${API_BASE}/auth?action=change-password`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username, oldPassword, newPassword })
+  });
+
+  if (!res.ok) {
+    const data = await res.json().catch(() => ({ error: 'Failed to change password' }));
+    throw new Error(data.error || 'Failed to change password');
+  }
+};

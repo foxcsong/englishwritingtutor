@@ -11,6 +11,7 @@ import LearningPhase from './components/LearningPhase';
 import WritingPhase from './components/WritingPhase';
 import ResultPhase from './components/ResultPhase';
 import AIConfigModal from './components/AIConfigModal';
+import ChangePasswordModal from './components/ChangePasswordModal';
 import AdminPanel from './components/AdminPanel';
 import { Loader2, Globe, LogOut, Settings, Key, User, ShieldCheck } from 'lucide-react';
 
@@ -23,7 +24,8 @@ enum AppState {
   Learning,
   Writing,
   Result,
-  Admin
+  Admin,
+  ChangePassword
 }
 
 const App: React.FC = () => {
@@ -230,8 +232,11 @@ const App: React.FC = () => {
           <div className="flex items-center gap-4">
             {userProfile && (
               <>
-                <button onClick={() => setAppState(AppState.Config)} className="p-2 text-slate-500 hover:text-indigo-600 transition-colors">
+                <button onClick={() => setAppState(AppState.Config)} className="p-2 text-slate-500 hover:text-indigo-600 transition-colors" title={currentLang === 'cn' ? '设置' : 'Settings'}>
                   <Settings size={20} />
+                </button>
+                <button onClick={() => setAppState(AppState.ChangePassword)} className="p-2 text-slate-500 hover:text-indigo-600 transition-colors" title={currentLang === 'cn' ? '修改密码' : 'Change Password'}>
+                  <Key size={18} />
                 </button>
                 <div className="flex items-center gap-3 bg-slate-100 px-3 py-1.5 rounded-full">
                   <span className="text-sm font-bold text-indigo-600">{userProfile.points || 0} pts</span>
@@ -331,6 +336,15 @@ const App: React.FC = () => {
                   if (userProfile.config) setAppState(AppState.Dashboard);
                   else setAppState(AppState.Login);
                 }}
+              />
+            )}
+
+            {/* Change Password Modal */}
+            {appState === AppState.ChangePassword && userProfile && (
+              <ChangePasswordModal
+                username={userProfile.username}
+                lang={currentLang}
+                onClose={() => setAppState(AppState.Dashboard)}
               />
             )}
 
