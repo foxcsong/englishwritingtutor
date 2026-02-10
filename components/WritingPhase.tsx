@@ -38,9 +38,9 @@ const WritingPhase: React.FC<WritingPhaseProps> = ({ level, mode, topic, lang, r
   const wordCount = content.trim().split(/\s+/).filter(w => w.length > 0).length;
 
   return (
-    <div className="max-w-3xl mx-auto py-8 px-4 animate-fade-in flex flex-col gap-6">
+    <div className="max-w-3xl mx-auto py-6 px-4 animate-fade-in flex flex-col gap-4 h-[calc(100vh-64px)]">
       {/* Header */}
-      <div className="flex justify-between items-start">
+      <div className="flex justify-between items-start shrink-0">
         <div>
           <div className="flex items-center gap-2 text-sm text-slate-500 mb-1">
             <span className="px-2 py-0.5 bg-slate-100 rounded text-xs font-semibold uppercase">{mode === PracticeMode.Essay ? t.essay : t.drill}</span>
@@ -58,42 +58,42 @@ const WritingPhase: React.FC<WritingPhaseProps> = ({ level, mode, topic, lang, r
 
       {/* Writing Requirements Card */}
       {requirements && (
-        <div className="bg-white rounded-xl shadow-sm border border-indigo-100 p-5 space-y-3">
-          <h3 className="text-sm font-bold text-indigo-800 uppercase tracking-wide flex items-center gap-2">
-            <CheckSquare size={16} /> Writing Guidelines
+        <div className="bg-white rounded-xl shadow-sm border border-indigo-100 p-4 space-y-2 shrink-0">
+          <h3 className="text-xs font-bold text-indigo-800 uppercase tracking-wide flex items-center gap-2">
+            <CheckSquare size={14} /> Writing Guidelines
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-            <div className="space-y-2">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+            <div className="space-y-1.5">
               <div className="flex items-start gap-2">
-                <Target size={14} className="text-slate-400 mt-1 shrink-0" />
-                <span className="text-slate-600"><strong className="text-slate-800">Goal:</strong> {requirements.generalGoal}</span>
+                <Target size={12} className="text-slate-400 mt-0.5 shrink-0" />
+                <span className="text-slate-600 leading-tight"><strong className="text-slate-800">Goal:</strong> {requirements.generalGoal}</span>
               </div>
               <div className="flex items-start gap-2">
-                <Layout size={14} className="text-slate-400 mt-1 shrink-0" />
-                <span className="text-slate-600"><strong className="text-slate-800">Scope:</strong> {requirements.contentScope}</span>
+                <Layout size={12} className="text-slate-400 mt-0.5 shrink-0" />
+                <span className="text-slate-600 leading-tight"><strong className="text-slate-800">Scope:</strong> {requirements.contentScope}</span>
               </div>
               <div className="flex items-start gap-2">
-                <PenTool size={14} className="text-slate-400 mt-1 shrink-0" />
-                <span className="text-slate-600"><strong className="text-slate-800">Style:</strong> {requirements.style}</span>
+                <PenTool size={12} className="text-slate-400 mt-0.5 shrink-0" />
+                <span className="text-slate-600 leading-tight"><strong className="text-slate-800">Style:</strong> {requirements.style}</span>
               </div>
             </div>
-            <div className="space-y-2">
+            <div className="space-y-1.5">
               <div className="flex items-start gap-2">
-                <Hash size={14} className="text-slate-400 mt-1 shrink-0" />
-                <span className="text-slate-600">
+                <Hash size={12} className="text-slate-400 mt-0.5 shrink-0" />
+                <span className="text-slate-600 leading-tight">
                   <strong className="text-slate-800">Keywords:</strong>
                   <div className="flex flex-wrap gap-1 mt-1">
                     {requirements.keywords.map((kw, i) => (
-                      <span key={i} className="px-1.5 py-0.5 bg-slate-100 text-slate-600 rounded text-xs border border-slate-200">{kw}</span>
+                      <span key={i} className="px-1.5 py-0.5 bg-slate-100 text-slate-600 rounded-[4px] border border-slate-200">{kw}</span>
                     ))}
                   </div>
                 </span>
               </div>
-              <div className="flex items-start gap-2">
-                <span className="px-2 py-0.5 bg-indigo-50 text-indigo-700 rounded text-xs font-bold border border-indigo-100">
+              <div className="flex items-start gap-2 mt-1">
+                <span className="px-1.5 py-0.5 bg-indigo-50 text-indigo-700 rounded text-[10px] font-bold border border-indigo-100">
                   {requirements.wordCountRange}
                 </span>
-                <span className="px-2 py-0.5 bg-amber-50 text-amber-700 rounded text-xs font-bold border border-amber-100">
+                <span className="px-1.5 py-0.5 bg-amber-50 text-amber-700 rounded text-[10px] font-bold border border-amber-100">
                   {requirements.structure}
                 </span>
               </div>
@@ -103,7 +103,7 @@ const WritingPhase: React.FC<WritingPhaseProps> = ({ level, mode, topic, lang, r
       )}
 
       {/* Editor */}
-      <div className="flex-1 min-h-[50vh] relative">
+      <div className="flex-1 relative min-h-0">
         {capturedImage ? (
           <div className="w-full h-full p-4 rounded-2xl border-2 border-dashed border-indigo-200 bg-slate-50 flex items-center justify-center relative group">
             <img src={capturedImage} alt="Essay" className="max-h-[60vh] max-w-full object-contain rounded-lg shadow-sm" />
