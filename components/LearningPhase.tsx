@@ -115,6 +115,14 @@ const LearningPhase: React.FC<LearningPhaseProps> = ({ username, level, topic, l
           </div>
         </div>
       </div>
+
+      {/* Debug Log (Temporary) */}
+      <div className="mt-12 p-4 bg-slate-900 text-slate-400 font-mono text-xs rounded-lg whitespace-pre-wrap">
+        <p className="mb-2 font-bold text-slate-200">Debug Info (For Development):</p>
+        <div>
+          {JSON.stringify(material, null, 2)}
+        </div>
+      </div>
     </div>
   );
 };

@@ -122,7 +122,12 @@ export const generateLearningMaterial = async (username: string, level: StudentL
     }
 
     const content = data.candidates?.[0]?.content?.parts?.[0]?.text || data.choices?.[0]?.message?.content || "";
-    return extractJson(content) as TopicMaterial;
+    console.log('[AI Debug] Raw Content:', content);
+
+    const parsed = extractJson(content);
+    console.log('[AI Debug] Parsed JSON:', parsed);
+
+    return parsed as TopicMaterial;
 };
 
 export const evaluateWriting = async (
