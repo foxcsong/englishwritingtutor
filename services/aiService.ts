@@ -202,7 +202,42 @@ export const evaluateWriting = async (
     Mode: ${mode}
     `;
 
-    let prompt = `
+    let prompt = '';
+
+    if (imageBase64) {
+        prompt = `
+    ${systemPrompt}
+    
+    TASK: Handwritten Essay Evaluation.
+    1. RECOGNIZE: Read the handwritten English text from the provided image.
+    2. EVALUATE TRANSCRIPTION: Treat the recognized text as the student's submission.
+    3. ASSESS HANDWRITING: Rate the neatness/legibility on a scale of 0-10 (0=illegible, 10=perfect calligraphy). 
+       - ${config.toneInstruction} (Apply this tone to the handwriting comment too)
+       - Provide a short comment on the handwriting style. **MUST be in ${explainLang}.**
+    4. GRADE CONTENT: Follow the standard evaluation criteria for Level ${level}.
+       - Focus corrections on: ${config.correctionFocus.join(', ')}
+       - Use the feedback style: "${config.feedbackTemplate}"
+       ${requirementPrompt ? `- CHECK REQUIREMENTS: ${requirementPrompt}` : ''}
+    
+    IMPORTANT: 
+    - All comments, feedback, explanations, and requirement checks MUST be in ${explainLang}.
+    - Translate the feedback template if necessary.
+    
+    Return JSON format:
+    {
+        "score": 0-100, 
+        "handwritingScore": 0-10,
+        "handwritingComment": "Short comment in ${explainLang}...",
+        "transcribedText": "The full text recognized...",
+        "requirementCheck": { "met": boolean, "feedback": "Feedback in ${explainLang}..." },
+        "generalFeedback": "Feedback in ${explainLang}...", 
+        "detailedCorrections": [{"original": "...", "correction": "...", "explanation": "Explanation in ${explainLang}..."}], 
+        "improvedVersion": "..."
+    }
+    `;
+    } else {
+        // Reinforce language for text-only mode too (since we already did some, but let's be thorough)
+        prompt = `
     ${systemPrompt}
     
     Task: Evaluate the following student writing.
@@ -220,43 +255,17 @@ export const evaluateWriting = async (
        **CRITICAL: The 'explanation' must be in ${explainLang}.**
     6. Provide an Improved Version that elevates the writing while keeping it reachable for this level.
     
+    IMPORTANT: All output text (except the English corrections/samples) MUST be in ${explainLang}.
+
     Return JSON: 
     {
       "score": 0-100, 
-      "requirementCheck": { "met": boolean, "feedback": "Short comment on which requirements were met/missed" },
+      "requirementCheck": { "met": boolean, "feedback": "Short comment in ${explainLang} on which requirements were met/missed" },
       "generalFeedback": "...", 
       "detailedCorrections": [{"original": "...", "correction": "...", "explanation": "..."}], 
       "improvedVersion": "..."
     }
   `;
-
-    if (imageBase64) {
-        prompt = `
-    ${systemPrompt}
-    
-    TASK: Handwritten Essay Evaluation.
-    1. RECOGNIZE: Read the handwritten English text from the provided image.
-    2. EVALUATE TRANSCRIPTION: Treat the recognized text as the student's submission.
-    3. ASSESS HANDWRITING: Rate the neatness/legibility on a scale of 0-10 (0=illegible, 10=perfect calligraphy). 
-       - ${config.toneInstruction} (Apply this tone to the handwriting comment too)
-       - Provide a short comment on the handwriting style.
-    4. GRADE CONTENT: Follow the standard evaluation criteria for Level ${level}.
-       - Focus corrections on: ${config.correctionFocus.join(', ')}
-       - Use the feedback style: "${config.feedbackTemplate}"
-       ${requirementPrompt ? `- CHECK REQUIREMENTS: ${requirementPrompt}` : ''}
-    
-    Return JSON format:
-    {
-        "score": 0-100, 
-        "handwritingScore": 0-10,
-        "handwritingComment": "Short comment...",
-        "transcribedText": "The full text recognized...",
-        "requirementCheck": { "met": boolean, "feedback": "..." },
-        "generalFeedback": "...", 
-        "detailedCorrections": [{"original": "...", "correction": "...", "explanation": "..."}], 
-        "improvedVersion": "..."
-    }
-    `;
     }
 
     const res = await fetch(`${API_BASE}/ai`, {

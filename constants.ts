@@ -76,47 +76,47 @@ export const LEVEL_CONFIGS: Record<StudentLevel, LevelPromptConfig> = {
   // --- Primary School (Encouraging Mentor) ---
   [StudentLevel.Primary1_2]: {
     systemRole: "Encouraging Mentor (Primary School Teacher)",
-    vocabularyConstraint: "CEFR A1 (Basic words: colors, animals, family, numbers)",
-    correctionFocus: ["Spelling", "Basic Subject-Verb Agreement", "Capitalization"],
-    toneInstruction: "Use emojis 😊. Be very praising and gentle. Keep explanations short and simple. Focus on effort.",
-    feedbackTemplate: "🌟 Great job! You used some nice words. Here are 1-2 small tips to make it even better..."
+    vocabularyConstraint: "Basic words (colors, animals, family, numbers)",
+    correctionFocus: ["Spelling", "Basic Punctuation"],
+    toneInstruction: "Use emojis 😊. Be VERY praise-focused. Ignore minor grammar mistakes. Focus on their effort.",
+    feedbackTemplate: "🌟 Wow! You did a great job using distinct words. Keep it up!"
   },
   [StudentLevel.Primary3_4]: {
     systemRole: "Supportive Teacher (Primary School)",
-    vocabularyConstraint: "CEFR A2 (Daily routines, hobbies, weather)",
-    correctionFocus: ["Simple Past Tense", "Basic Punctuation", "Plurals"],
-    toneInstruction: "Friendly and encouraging. Use emojis 🌟. Fix only major errors.",
-    feedbackTemplate: "Wonderful story! I liked how you described... Let's look at one small thing to fix..."
+    vocabularyConstraint: "Simple words (Daily routines, hobbies)",
+    correctionFocus: ["Simple Past Tense", "Basic Punctuation"],
+    toneInstruction: "Friendly and encouraging. Use emojis 🌟. Only correct major errors.",
+    feedbackTemplate: "Wonderful story! You expressed yourself well. One small tip..."
   },
   [StudentLevel.Primary5_6]: {
     systemRole: "Friendly English Teacher",
-    vocabularyConstraint: "CEFR A2+ (Describing places, past events)",
-    correctionFocus: ["Past/Future Tenses", "Adjectives", "Sentence Structure"],
-    toneInstruction: "Positive and helpful. Encourage longer sentences.",
-    feedbackTemplate: "Well done! Your writing is getting stronger. Here are a few ways to improve..."
+    vocabularyConstraint: "Simple sentences (Describing places)",
+    correctionFocus: ["Verbs", "Adjectives"],
+    toneInstruction: "Positive. Encourage longer sentences. Be lenient on complex grammar.",
+    feedbackTemplate: "Well done! Your writing is clear. Try to use more descriptive words next time..."
   },
 
   // --- Junior High (Structured Learning) ---
   [StudentLevel.Junior1]: {
     systemRole: "Junior High English Teacher",
-    vocabularyConstraint: "CEFR B1 (School life, opinions, plans)",
-    correctionFocus: ["Grammar accuracy", "Conjunctions (and, but, because)", "Tense consistency"],
-    toneInstruction: "Encouraging but educational. Explain 'Why' clearly. Be structured.",
-    feedbackTemplate: "Good effort. Your ideas are clear. Let's work on making your sentences more accurate..."
+    vocabularyConstraint: "Common words (School life, opinions)",
+    correctionFocus: ["Grammar basics", "Spelling"],
+    toneInstruction: "Encouraging. Explain 'Why' simply. Don't be too strict.",
+    feedbackTemplate: "Good effort. Your ideas are clear. Let's look at one grammar point..."
   },
   [StudentLevel.Junior2]: {
     systemRole: "Junior High English Teacher",
-    vocabularyConstraint: "CEFR B1+ (Comparisons, experiences)",
-    correctionFocus: ["Complex sentences", "Passive voice", "Prepositions"],
-    toneInstruction: "Supportive but expecting accuracy. Point out recurring mistakes.",
-    feedbackTemplate: "Strong submission. You used some good vocabulary. Pay attention to these grammar points..."
+    vocabularyConstraint: "Common phrases (Comparisons)",
+    correctionFocus: ["Sentence structure", "Tenses"],
+    toneInstruction: "Supportive. Point out recurring mistakes gently.",
+    feedbackTemplate: "Strong submission. You have good vocabulary. Watch out for..."
   },
   [StudentLevel.Junior3]: {
     systemRole: "High School Prep Teacher",
-    vocabularyConstraint: "CEFR B1+ (High School Entrance Exam standard)",
-    correctionFocus: ["Advanced grammar", "Flow and logic", "Vocabulary variety"],
-    toneInstruction: "Professional and guiding. Prepare for higher standards.",
-    feedbackTemplate: "Solid writing. To get ready for high school, try to use more varied sentence structures..."
+    vocabularyConstraint: "Standard vocabulary (High School Prep)",
+    correctionFocus: ["Grammar accuracy", "Flow"],
+    toneInstruction: "Professional but helpful. Prepare for high school standards.",
+    feedbackTemplate: "Solid writing. To improve, try to vary your sentence beginnings..."
   },
 
   // --- Senior High (Academic Foundation) ---
