@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
-import { StudentLevel, PracticeMode, AppLanguage } from '../types';
+import { StudentLevel, PracticeMode, AppLanguage, WritingRequirements } from '../types';
 import { getTranslation } from '../translations';
-import { Send, Clock, Camera, X, Image as ImageIcon } from 'lucide-react';
+import { Send, Clock, Camera, X, Image as ImageIcon, CheckSquare, Target, PenTool, Hash, Layout } from 'lucide-react';
 
 interface WritingPhaseProps {
   level: StudentLevel;
   mode: PracticeMode;
   topic: string;
   lang: AppLanguage;
+  requirements?: WritingRequirements;
   onSubmit: (content: string, image?: string) => void;
   loading: boolean;
 }
 
-const WritingPhase: React.FC<WritingPhaseProps> = ({ level, mode, topic, lang, onSubmit, loading }) => {
+const WritingPhase: React.FC<WritingPhaseProps> = ({ level, mode, topic, lang, requirements, onSubmit, loading }) => {
   const t = getTranslation(lang);
   const [content, setContent] = useState('');
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
@@ -37,9 +38,9 @@ const WritingPhase: React.FC<WritingPhaseProps> = ({ level, mode, topic, lang, o
   const wordCount = content.trim().split(/\s+/).filter(w => w.length > 0).length;
 
   return (
-    <div className="max-w-3xl mx-auto py-8 px-4 animate-fade-in h-[calc(100vh-80px)] flex flex-col">
+    <div className="max-w-3xl mx-auto py-8 px-4 animate-fade-in flex flex-col gap-6">
       {/* Header */}
-      <div className="flex justify-between items-start mb-6">
+      <div className="flex justify-between items-start">
         <div>
           <div className="flex items-center gap-2 text-sm text-slate-500 mb-1">
             <span className="px-2 py-0.5 bg-slate-100 rounded text-xs font-semibold uppercase">{mode === PracticeMode.Essay ? t.essay : t.drill}</span>
@@ -55,11 +56,57 @@ const WritingPhase: React.FC<WritingPhaseProps> = ({ level, mode, topic, lang, o
         </div>
       </div>
 
+      {/* Writing Requirements Card */}
+      {requirements && (
+        <div className="bg-white rounded-xl shadow-sm border border-indigo-100 p-5 space-y-3">
+          <h3 className="text-sm font-bold text-indigo-800 uppercase tracking-wide flex items-center gap-2">
+            <CheckSquare size={16} /> Writing Guidelines
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+            <div className="space-y-2">
+              <div className="flex items-start gap-2">
+                <Target size={14} className="text-slate-400 mt-1 shrink-0" />
+                <span className="text-slate-600"><strong className="text-slate-800">Goal:</strong> {requirements.generalGoal}</span>
+              </div>
+              <div className="flex items-start gap-2">
+                <Layout size={14} className="text-slate-400 mt-1 shrink-0" />
+                <span className="text-slate-600"><strong className="text-slate-800">Scope:</strong> {requirements.contentScope}</span>
+              </div>
+              <div className="flex items-start gap-2">
+                <PenTool size={14} className="text-slate-400 mt-1 shrink-0" />
+                <span className="text-slate-600"><strong className="text-slate-800">Style:</strong> {requirements.style}</span>
+              </div>
+            </div>
+            <div className="space-y-2">
+              <div className="flex items-start gap-2">
+                <Hash size={14} className="text-slate-400 mt-1 shrink-0" />
+                <span className="text-slate-600">
+                  <strong className="text-slate-800">Keywords:</strong>
+                  <div className="flex flex-wrap gap-1 mt-1">
+                    {requirements.keywords.map((kw, i) => (
+                      <span key={i} className="px-1.5 py-0.5 bg-slate-100 text-slate-600 rounded text-xs border border-slate-200">{kw}</span>
+                    ))}
+                  </div>
+                </span>
+              </div>
+              <div className="flex items-start gap-2">
+                <span className="px-2 py-0.5 bg-indigo-50 text-indigo-700 rounded text-xs font-bold border border-indigo-100">
+                  {requirements.wordCountRange}
+                </span>
+                <span className="px-2 py-0.5 bg-amber-50 text-amber-700 rounded text-xs font-bold border border-amber-100">
+                  {requirements.structure}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Editor */}
-      <div className="flex-1 relative">
+      <div className="flex-1 min-h-[50vh] relative">
         {capturedImage ? (
           <div className="w-full h-full p-4 rounded-2xl border-2 border-dashed border-indigo-200 bg-slate-50 flex items-center justify-center relative group">
-            <img src={capturedImage} alt="Essay" className="max-h-full max-w-full object-contain rounded-lg shadow-sm" />
+            <img src={capturedImage} alt="Essay" className="max-h-[60vh] max-w-full object-contain rounded-lg shadow-sm" />
             <button
               onClick={clearImage}
               className="absolute top-4 right-4 p-2 bg-red-500 text-white rounded-full shadow-lg hover:bg-red-600 transition-colors"
@@ -84,7 +131,7 @@ const WritingPhase: React.FC<WritingPhaseProps> = ({ level, mode, topic, lang, o
       </div>
 
       {/* Footer Action */}
-      <div className="mt-6 flex justify-between items-center">
+      <div className="flex justify-between items-center bg-white p-4 rounded-2xl border border-slate-200 shadow-sm sticky bottom-4 z-10">
         <div>
           <input
             type="file"
@@ -97,10 +144,10 @@ const WritingPhase: React.FC<WritingPhaseProps> = ({ level, mode, topic, lang, o
           {!capturedImage && (
             <label
               htmlFor="essay-upload"
-              className={`px-6 py-4 rounded-xl font-bold bg-white border border-slate-200 shadow-sm text-slate-600 flex items-center gap-2 hover:bg-slate-50 hover:text-indigo-600 transition-all cursor-pointer ${loading ? 'opacity-50 pointer-events-none' : ''}`}
+              className={`px-4 py-3 rounded-xl font-bold bg-slate-50 border border-slate-200 text-slate-600 flex items-center gap-2 hover:bg-white hover:text-indigo-600 hover:border-indigo-200 transition-all cursor-pointer ${loading ? 'opacity-50 pointer-events-none' : ''}`}
             >
               <Camera size={18} />
-              <span>Upload Handwriting</span>
+              <span className="hidden sm:inline">Upload Handwriting</span>
             </label>
           )}
         </div>
@@ -108,7 +155,7 @@ const WritingPhase: React.FC<WritingPhaseProps> = ({ level, mode, topic, lang, o
         <button
           onClick={() => onSubmit(content, capturedImage || undefined)}
           disabled={content.length < 5 || loading}
-          className={`px-8 py-4 rounded-xl font-bold text-white shadow-lg flex items-center gap-3 transition-all ${content.length < 5 || loading
+          className={`px-8 py-3 rounded-xl font-bold text-white shadow-lg flex items-center gap-3 transition-all ${content.length < 5 || loading
             ? 'bg-slate-300 cursor-not-allowed'
             : 'bg-indigo-600 hover:bg-indigo-700 hover:scale-[1.02]'
             }`}

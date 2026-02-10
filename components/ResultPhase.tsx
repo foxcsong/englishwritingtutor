@@ -1,7 +1,7 @@
 import React from 'react';
 import { EvaluationResult, AppLanguage } from '../types';
 import { translations } from '../translations';
-import { Download, Check, RefreshCcw, FileText, Layout, Award, Share2, Loader2 } from 'lucide-react';
+import { Download, Check, RefreshCcw, FileText, Layout, Award, Share2, Loader2, Target, AlertTriangle, CheckCircle2 } from 'lucide-react';
 import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 import * as htmlToImage from 'html-to-image';
 import download from 'downloadjs';
@@ -117,6 +117,25 @@ ${result.improvedVersion}
           </div>
           <h2 className="text-2xl font-black text-slate-800 mb-2">{t.assessmentComplete}</h2>
           <p className="text-sm text-slate-500 font-medium px-4">{topic}</p>
+
+          {/* Requirement Check */}
+          {result.requirementCheck && (
+            <div className={`mt-6 rounded-2xl p-4 w-full text-left border ${result.requirementCheck.met ? 'bg-emerald-50 border-emerald-100' : 'bg-amber-50 border-amber-100'}`}>
+              <div className="flex items-center gap-2 mb-1">
+                {result.requirementCheck.met ? (
+                  <CheckCircle2 size={16} className="text-emerald-500" />
+                ) : (
+                  <AlertTriangle size={16} className="text-amber-500" />
+                )}
+                <span className={`text-xs font-black uppercase tracking-wider ${result.requirementCheck.met ? 'text-emerald-600' : 'text-amber-600'}`}>
+                  Requirements Check
+                </span>
+              </div>
+              <p className={`text-xs font-medium leading-normal ${result.requirementCheck.met ? 'text-emerald-700' : 'text-amber-700'}`}>
+                {result.requirementCheck.feedback}
+              </p>
+            </div>
+          )}
 
           {result.handwritingScore !== undefined && (
             <div className="mt-6 bg-slate-50 rounded-2xl p-4 w-full flex items-center justify-between border border-slate-100">

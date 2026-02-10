@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { UserProfile, StudentLevel, PracticeMode, EvaluationResult, HistoryRecord, UserConfig, AppLanguage } from './types';
+import { UserProfile, StudentLevel, PracticeMode, EvaluationResult, HistoryRecord, UserConfig, AppLanguage, WritingRequirements } from './types';
 import { getProfile, saveProfile, updatePointsAndBadges, addHistory, getHistory, saveAIConfig, logoutUser } from './services/storageService';
 import { evaluateWriting } from './services/aiService';
 import { POINTS_PER_ESSAY, POINTS_PER_SENTENCE } from './constants';
@@ -37,15 +37,11 @@ const App: React.FC = () => {
   const [password, setPassword] = useState('');
   const [authError, setAuthError] = useState('');
 
-  // Config State
-  const [tempApiKey, setTempApiKey] = useState('');
-  const [tempProvider, setTempProvider] = useState<'openai' | 'gemini'>('gemini');
-  const [tempModel, setTempModel] = useState('gemini-2.0-flash');
-
   // Session State
   const [currentTopic, setCurrentTopic] = useState<string>('');
   const [currentMode, setCurrentMode] = useState<PracticeMode>(PracticeMode.Essay);
   const [currentContent, setCurrentContent] = useState<string>('');
+  const [currentRequirements, setCurrentRequirements] = useState<WritingRequirements | null>(null);
   const [evaluation, setEvaluation] = useState<EvaluationResult | null>(null);
   const [processing, setProcessing] = useState(false);
 
@@ -167,6 +163,7 @@ const App: React.FC = () => {
     setCurrentTopic('');
     setEvaluation(null);
     setCurrentContent('');
+    setCurrentRequirements(null);
   };
 
   const handleSubmitWriting = async (content: string, image?: string) => {
@@ -182,7 +179,8 @@ const App: React.FC = () => {
         currentTopic,
         content,
         userProfile.language,
-        image
+        image,
+        currentRequirements || undefined
       );
       setEvaluation(result);
 
@@ -364,8 +362,9 @@ const App: React.FC = () => {
                 level={userProfile.level}
                 topic={currentTopic}
                 lang={currentLang}
-                onProceed={(mode) => {
+                onProceed={(mode, requirements) => {
                   setCurrentMode(mode);
+                  setCurrentRequirements(requirements || null);
                   setAppState(AppState.Writing);
                 }}
               />
@@ -377,6 +376,7 @@ const App: React.FC = () => {
                 mode={currentMode}
                 topic={currentTopic}
                 lang={currentLang}
+                requirements={currentRequirements || undefined}
                 onSubmit={handleSubmitWriting}
                 loading={processing}
               />

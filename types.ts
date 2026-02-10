@@ -20,11 +20,21 @@ export enum PracticeMode {
   Essay = 'Full Writing (文章写作)'
 }
 
+export interface WritingRequirements {
+  generalGoal: string;
+  contentScope: string;
+  style: string;
+  keywords: string[];
+  structure: string;
+  wordCountRange: string;
+}
+
 export interface TopicMaterial {
   topic: string;
   introduction: string;
   sampleEssay: string;
   analysis: string;
+  requirements?: WritingRequirements; // Added
 }
 
 export interface CorrectionItem {
@@ -41,6 +51,7 @@ export interface EvaluationResult {
   handwritingScore?: number;
   handwritingComment?: string;
   transcribedText?: string;
+  requirementCheck?: { met: boolean; feedback: string }; // Added
 }
 
 export interface HistoryRecord {

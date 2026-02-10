@@ -9,7 +9,7 @@ interface LearningPhaseProps {
   level: StudentLevel;
   topic: string;
   lang: AppLanguage;
-  onProceed: (mode: PracticeMode) => void;
+  onProceed: (mode: PracticeMode, requirements?: any) => void;
 }
 
 const LearningPhase: React.FC<LearningPhaseProps> = ({ username, level, topic, lang, onProceed }) => {
@@ -101,13 +101,13 @@ const LearningPhase: React.FC<LearningPhaseProps> = ({ username, level, topic, l
           <p className="text-slate-600 font-medium hidden sm:block">{t.readyToPractice}</p>
           <div className="flex gap-4 w-full sm:w-auto">
             <button
-              onClick={() => onProceed(PracticeMode.Sentence)}
+              onClick={() => onProceed(PracticeMode.Sentence, material?.requirements)}
               className="flex-1 sm:flex-none px-6 py-3 rounded-xl border-2 border-slate-200 font-semibold text-slate-700 hover:border-indigo-500 hover:text-indigo-600 transition-colors"
             >
               {t.sentenceDrill}
             </button>
             <button
-              onClick={() => onProceed(PracticeMode.Essay)}
+              onClick={() => onProceed(PracticeMode.Essay, material?.requirements)}
               className="flex-1 sm:flex-none px-6 py-3 rounded-xl bg-indigo-600 text-white font-semibold shadow-lg hover:bg-indigo-700 transition-transform hover:scale-105 flex items-center justify-center gap-2"
             >
               {t.startWriting} <ArrowRight size={18} />

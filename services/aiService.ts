@@ -113,13 +113,34 @@ export const generateLearningMaterial = async (username: string, level: StudentL
     Target Audience Level: ${level}.
     Tone: ${config.toneInstruction}
     
-    Task: Create learning materials.
+    Task: Create learning materials and specific writing requirements.
     1. Introduction (in ${explainLang}): Brief and engaging.
     2. Sample Essay (English): STRICTLY ${wordCount.min}-${wordCount.max} words. Use vocabulary suitable for ${config.vocabularyConstraint}.
     3. Key Points/Analysis (in ${explainLang}): Highlight 2-3 key vocabulary or grammar points used in the sample.
+    4. Writing Requirements (to guide student):
+       - General Goal: What is the main objective?
+       - Content Scope: What specific points must be covered?
+       - Style/Tone: e.g., "Formal", "Creative", "Descriptive".
+       - Keywords: List 3-5 keywords that MUST be used.
+       - Structure: e.g., "3 paragraphs: Intro, Body, Conclusion".
+       - Word Count: "${wordCount.label}".
     
     IMPORTANT: Return ONLY valid JSON. No markdown formatting, no conversational text before or after.
-    JSON Format: {"topic": "${topic.replace(/"/g, "'")}", "introduction": "...", "sampleEssay": "...", "analysis": "..."}
+    JSON Format: 
+    {
+      "topic": "${topic.replace(/"/g, "'")}", 
+      "introduction": "...", 
+      "sampleEssay": "...", 
+      "analysis": "...",
+      "requirements": {
+        "generalGoal": "...",
+        "contentScope": "...",
+        "style": "...",
+        "keywords": ["...", "..."],
+        "structure": "...",
+        "wordCountRange": "${wordCount.label}"
+      }
+    }
   `;
 
     const res = await fetch(`${API_BASE}/ai`, {
@@ -150,11 +171,24 @@ export const evaluateWriting = async (
     topic: string,
     content: string,
     lang: AppLanguage,
-    imageBase64?: string
+    imageBase64?: string,
+    requirements?: any // WritingRequirements
 ): Promise<EvaluationResult> => {
     const explainLang = lang === 'cn' ? 'Chinese (Simplified)' : 'English';
     const wordCount = LEVEL_WORD_COUNTS[level];
     const config = LEVEL_CONFIGS[level];
+
+    let requirementPrompt = "";
+    if (requirements) {
+        requirementPrompt = `
+        Specific Writing Requirements to Check:
+        - Goal: ${requirements.generalGoal}
+        - Scope: ${requirements.contentScope}
+        - Style: ${requirements.style}
+        - Keywords to use: ${requirements.keywords?.join(', ')}
+        - Structure: ${requirements.structure}
+        `;
+    }
 
     let systemPrompt = `
     Role: ${config.systemRole}
@@ -174,14 +208,24 @@ export const evaluateWriting = async (
     Task: Evaluate the following student writing.
     Content: "${content.replace(/"/g, "'")}"
     
+    ${requirementPrompt}
+
     Instructions:
     1. Check length (${wordCount.min}-${wordCount.max} words).
-    2. Give a Score (0-100) based on appropriate criteria for this level.
-    3. Provide General Feedback using this template style: "${config.feedbackTemplate}"
-    4. Provide Detailed Corrections. ONLY focus on: ${config.correctionFocus.join(', ')}. Do NOT be too nitpicky for lower levels.
-    5. Provide an Improved Version that elevates the writing while keeping it reachable for this level.
+    2. Check if Specific Writing Requirements are met (if provided).
+    3. Give a Score (0-100) based on appropriate criteria for this level.
+    4. Provide General Feedback using this template style: "${config.feedbackTemplate}"
+    5. Provide Detailed Corrections. ONLY focus on: ${config.correctionFocus.join(', ')}. Do NOT be too nitpicky for lower levels.
+    6. Provide an Improved Version that elevates the writing while keeping it reachable for this level.
     
-    Return JSON: {"score": 0-100, "generalFeedback": "...", "detailedCorrections": [{"original": "...", "correction": "...", "explanation": "..."}], "improvedVersion": "..."}
+    Return JSON: 
+    {
+      "score": 0-100, 
+      "requirementCheck": { "met": boolean, "feedback": "Short comment on which requirements were met/missed" },
+      "generalFeedback": "...", 
+      "detailedCorrections": [{"original": "...", "correction": "...", "explanation": "..."}], 
+      "improvedVersion": "..."
+    }
   `;
 
     if (imageBase64) {
@@ -197,6 +241,7 @@ export const evaluateWriting = async (
     4. GRADE CONTENT: Follow the standard evaluation criteria for Level ${level}.
        - Focus corrections on: ${config.correctionFocus.join(', ')}
        - Use the feedback style: "${config.feedbackTemplate}"
+       ${requirementPrompt ? `- CHECK REQUIREMENTS: ${requirementPrompt}` : ''}
     
     Return JSON format:
     {
@@ -204,6 +249,7 @@ export const evaluateWriting = async (
         "handwritingScore": 0-10,
         "handwritingComment": "Short comment...",
         "transcribedText": "The full text recognized...",
+        "requirementCheck": { "met": boolean, "feedback": "..." },
         "generalFeedback": "...", 
         "detailedCorrections": [{"original": "...", "correction": "...", "explanation": "..."}], 
         "improvedVersion": "..."
