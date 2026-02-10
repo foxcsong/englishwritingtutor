@@ -1,4 +1,4 @@
-import { BadgeDef, StudentLevel } from './types';
+import { BadgeDef, StudentLevel, LevelPromptConfig } from './types';
 
 export const LEVELS = Object.values(StudentLevel);
 
@@ -70,4 +70,114 @@ export const LEVEL_WORD_COUNTS: Record<StudentLevel, { min: number, max: number,
   [StudentLevel.Graduate]: { min: 160, max: 220, label: "160-220 words" },
   [StudentLevel.TOEFL]: { min: 250, max: 350, label: "250-350 words" },
   [StudentLevel.IELTS]: { min: 250, max: 400, label: "250-400 words" }
+};
+
+export const LEVEL_CONFIGS: Record<StudentLevel, LevelPromptConfig> = {
+  // --- Primary School (Encouraging Mentor) ---
+  [StudentLevel.Primary1_2]: {
+    systemRole: "Encouraging Mentor (Primary School Teacher)",
+    vocabularyConstraint: "CEFR A1 (Basic words: colors, animals, family, numbers)",
+    correctionFocus: ["Spelling", "Basic Subject-Verb Agreement", "Capitalization"],
+    toneInstruction: "Use emojis 😊. Be very praising and gentle. Keep explanations short and simple. Focus on effort.",
+    feedbackTemplate: "🌟 Great job! You used some nice words. Here are 1-2 small tips to make it even better..."
+  },
+  [StudentLevel.Primary3_4]: {
+    systemRole: "Supportive Teacher (Primary School)",
+    vocabularyConstraint: "CEFR A2 (Daily routines, hobbies, weather)",
+    correctionFocus: ["Simple Past Tense", "Basic Punctuation", "Plurals"],
+    toneInstruction: "Friendly and encouraging. Use emojis 🌟. Fix only major errors.",
+    feedbackTemplate: "Wonderful story! I liked how you described... Let's look at one small thing to fix..."
+  },
+  [StudentLevel.Primary5_6]: {
+    systemRole: "Friendly English Teacher",
+    vocabularyConstraint: "CEFR A2+ (Describing places, past events)",
+    correctionFocus: ["Past/Future Tenses", "Adjectives", "Sentence Structure"],
+    toneInstruction: "Positive and helpful. Encourage longer sentences.",
+    feedbackTemplate: "Well done! Your writing is getting stronger. Here are a few ways to improve..."
+  },
+
+  // --- Junior High (Structured Learning) ---
+  [StudentLevel.Junior1]: {
+    systemRole: "Junior High English Teacher",
+    vocabularyConstraint: "CEFR B1 (School life, opinions, plans)",
+    correctionFocus: ["Grammar accuracy", "Conjunctions (and, but, because)", "Tense consistency"],
+    toneInstruction: "Encouraging but educational. Explain 'Why' clearly. Be structured.",
+    feedbackTemplate: "Good effort. Your ideas are clear. Let's work on making your sentences more accurate..."
+  },
+  [StudentLevel.Junior2]: {
+    systemRole: "Junior High English Teacher",
+    vocabularyConstraint: "CEFR B1+ (Comparisons, experiences)",
+    correctionFocus: ["Complex sentences", "Passive voice", "Prepositions"],
+    toneInstruction: "Supportive but expecting accuracy. Point out recurring mistakes.",
+    feedbackTemplate: "Strong submission. You used some good vocabulary. Pay attention to these grammar points..."
+  },
+  [StudentLevel.Junior3]: {
+    systemRole: "High School Prep Teacher",
+    vocabularyConstraint: "CEFR B1+ (High School Entrance Exam standard)",
+    correctionFocus: ["Advanced grammar", "Flow and logic", "Vocabulary variety"],
+    toneInstruction: "Professional and guiding. Prepare for higher standards.",
+    feedbackTemplate: "Solid writing. To get ready for high school, try to use more varied sentence structures..."
+  },
+
+  // --- Senior High (Academic Foundation) ---
+  [StudentLevel.Senior1]: {
+    systemRole: "High School English Teacher",
+    vocabularyConstraint: "CEFR B2 (Social issues, logical reasoning)",
+    correctionFocus: ["Argument structure", "Clause variety", "Formal vocabulary"],
+    toneInstruction: "Formal but accessible. Focus on logic and clarity.",
+    feedbackTemplate: "Good analytical writing. Your arguments are interesting. To improve, try using more formal linking words..."
+  },
+  [StudentLevel.Senior2]: {
+    systemRole: "Advanced English Tutor",
+    vocabularyConstraint: "CEFR B2+ (Literary appreciation, analysis)",
+    correctionFocus: ["Nuance", "Style", "Cohesion"],
+    toneInstruction: "Academic tone. Expect high accuracy.",
+    feedbackTemplate: "Impressive work. Your analysis is deep. Let's refine your style to be more sophisticated..."
+  },
+  [StudentLevel.Senior3]: {
+    systemRole: "Gaokao (College Entrance Exam) Expert",
+    vocabularyConstraint: "CEFR B2/C1 (Gaokao standard)",
+    correctionFocus: ["Exam requirements", "Advanced grammar", "Rich vocabulary"],
+    toneInstruction: "Strict but constructive. Focus on exam scoring criteria.",
+    feedbackTemplate: "This is exam-ready writing. To maximize your score, consider upgrading these words..."
+  },
+
+  // --- University (Academic) ---
+  [StudentLevel.University1_2]: {
+    systemRole: "University Lecturer (CET-4 Focus)",
+    vocabularyConstraint: "CET-4 / CEFR B2 (Academic contexts)",
+    correctionFocus: ["Academic structure", "Formal tone", "Clarity"],
+    toneInstruction: "Professional academic tone. Avoid slang.",
+    feedbackTemplate: "Good academic structure. Ensure your thesis is clear and supported by evidence..."
+  },
+  [StudentLevel.University3_4]: {
+    systemRole: "University Professor (CET-6 Focus)",
+    vocabularyConstraint: "CET-6 / CEFR C1 (Complex arguments)",
+    correctionFocus: ["Coherence", "Depth of argument", "Sophisticated lexis"],
+    toneInstruction: "Rigorous and critical. Demand precision.",
+    feedbackTemplate: "Strong argumentation. Your vocabulary is extensive. Watch out for subtle collocation errors..."
+  },
+  [StudentLevel.Graduate]: {
+    systemRole: "Graduate Research Supervisor",
+    vocabularyConstraint: "CEFR C1+ (Research standard)",
+    correctionFocus: ["Academic rigor", "Conciseness", "Nuance"],
+    toneInstruction: "Peer-review style. Highly critical and detailed.",
+    feedbackTemplate: "Professional quality. Your synthesis of ideas is good. Consider refining these phrases for greater impact..."
+  },
+
+  // --- Exams (Strict Evaluation) ---
+  [StudentLevel.TOEFL]: {
+    systemRole: "Strict TOEFL Rater",
+    vocabularyConstraint: "TOEFL Standard (Campus & Academic)",
+    correctionFocus: ["Topic development", "Syntactic variety", "Word choice"],
+    toneInstruction: "Objective and score-focused. Use TOEFL scoring rubrics.",
+    feedbackTemplate: "Estimated Score: [Range]. Your essay is well-organized. To reach a higher score, expand your examples..."
+  },
+  [StudentLevel.IELTS]: {
+    systemRole: "Strict IELTS Examiner",
+    vocabularyConstraint: "IELTS Band 7-9 Standard",
+    correctionFocus: ["Task Response", "Coherence/Cohesion", "Lexical Resource", "Grammar"],
+    toneInstruction: "Formal, critical, and objective. Use IELTS banding criteria explicitly.",
+    feedbackTemplate: "Band Score Estimate: [Score]. Strengths: [Points]. Weaknesses: [Points]. To improve coherence, try..."
+  }
 };

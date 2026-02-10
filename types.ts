@@ -77,3 +77,11 @@ export interface BadgeDef {
   description: string;
   threshold: number;
 }
+
+export interface LevelPromptConfig {
+  systemRole: string;
+  vocabularyConstraint: string;
+  correctionFocus: string[];
+  toneInstruction: string;
+  feedbackTemplate: string;
+}

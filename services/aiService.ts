@@ -1,5 +1,5 @@
 import { StudentLevel, TopicMaterial, EvaluationResult, PracticeMode, AppLanguage, UserConfig } from '../types';
-import { LEVEL_PROMPTS, LEVEL_WORD_COUNTS } from '../constants';
+import { LEVEL_PROMPTS, LEVEL_WORD_COUNTS, LEVEL_CONFIGS } from '../constants';
 
 const API_BASE = '/api';
 
@@ -34,9 +34,13 @@ const extractJson = (text: string) => {
 
 export const generateTopics = async (username: string, level: StudentLevel): Promise<string[]> => {
     const levelContext = LEVEL_PROMPTS[level];
+    const config = LEVEL_CONFIGS[level];
+
     const prompt = `
-    You are an English teacher. Target Level: ${level} (${levelContext}). 
-    Generate 3 distinct, engaging, and age-appropriate English writing topics (titles).
+    Role: ${config.systemRole}
+    Task: Generate 3 engaging English writing topics (titles) for Level: ${level} (${levelContext}).
+    Tone: ${config.toneInstruction}
+    Constraint: Topics must be age-appropriate and interesting.
     Return format: ["Topic 1", "Topic 2", "Topic 3"]
   `;
 
@@ -69,15 +73,20 @@ export const generateTopics = async (username: string, level: StudentLevel): Pro
 export const generateLearningMaterial = async (username: string, level: StudentLevel, topic: string, lang: AppLanguage): Promise<TopicMaterial> => {
     const levelContext = LEVEL_PROMPTS[level];
     const wordCount = LEVEL_WORD_COUNTS[level];
+    const config = LEVEL_CONFIGS[level];
     const explainLang = lang === 'cn' ? 'Chinese (Simplified)' : 'English';
 
     const prompt = `
-    You are an expert English teacher. Level: ${level}. Topic: "${topic.replace(/"/g, "'")}". Feedback Language: ${explainLang}.
-    Target Word Count: ${wordCount.min}-${wordCount.max} words (${wordCount.label}).
-    Provide:
-    1. Introduction (in ${explainLang})
-    2. Sample Essay (English, STRICTLY within ${wordCount.min}-${wordCount.max} words)
-    3. Key Points/Analysis (in ${explainLang})
+    Role: ${config.systemRole}
+    Topic: "${topic.replace(/"/g, "'")}". 
+    Target Audience Level: ${level}.
+    Tone: ${config.toneInstruction}
+    
+    Task: Create learning materials.
+    1. Introduction (in ${explainLang}): Brief and engaging.
+    2. Sample Essay (English): STRICTLY ${wordCount.min}-${wordCount.max} words. Use vocabulary suitable for ${config.vocabularyConstraint}.
+    3. Key Points/Analysis (in ${explainLang}): Highlight 2-3 key vocabulary or grammar points used in the sample.
+    
     Return JSON: {"topic": "${topic.replace(/"/g, "'")}", "introduction": "...", "sampleEssay": "...", "analysis": "..."}
   `;
 
@@ -108,29 +117,56 @@ export const evaluateWriting = async (
 ): Promise<EvaluationResult> => {
     const explainLang = lang === 'cn' ? 'Chinese (Simplified)' : 'English';
     const wordCount = LEVEL_WORD_COUNTS[level];
+    const config = LEVEL_CONFIGS[level];
+
+    let systemPrompt = `
+    Role: ${config.systemRole}
+    Tone: ${config.toneInstruction}
+    Vocabulary Constraint: ${config.vocabularyConstraint}
+    Correction Focus: ${config.correctionFocus.join(', ')}
+    Feedback Language: ${explainLang}
+    Target Level: ${level}
+    Target Word Count: ${wordCount.min}-${wordCount.max} words
+    Topic: "${topic.replace(/"/g, "'")}"
+    Mode: ${mode}
+    `;
 
     let prompt = `
-    English teacher evaluation. Level: ${level}. Topic: "${topic.replace(/"/g, "'")}". Mode: ${mode}. Feedback Language: ${explainLang}.
-    Expected Length: ${wordCount.min}-${wordCount.max} words.
-    Evaluate: "${content.replace(/"/g, "'")}"
-    Check if the length is appropriate (Standard: ${wordCount.min}-${wordCount.max} words). If significantly too short or long, mention it in generalFeedback.
+    ${systemPrompt}
+    
+    Task: Evaluate the following student writing.
+    Content: "${content.replace(/"/g, "'")}"
+    
+    Instructions:
+    1. Check length (${wordCount.min}-${wordCount.max} words).
+    2. Give a Score (0-100) based on appropriate criteria for this level.
+    3. Provide General Feedback using this template style: "${config.feedbackTemplate}"
+    4. Provide Detailed Corrections. ONLY focus on: ${config.correctionFocus.join(', ')}. Do NOT be too nitpicky for lower levels.
+    5. Provide an Improved Version that elevates the writing while keeping it reachable for this level.
+    
     Return JSON: {"score": 0-100, "generalFeedback": "...", "detailedCorrections": [{"original": "...", "correction": "...", "explanation": "..."}], "improvedVersion": "..."}
   `;
 
     if (imageBase64) {
         prompt = `
+    ${systemPrompt}
+    
     TASK: Handwritten Essay Evaluation.
     1. RECOGNIZE: Read the handwritten English text from the provided image.
     2. EVALUATE TRANSCRIPTION: Treat the recognized text as the student's submission.
-    3. ASSESS HANDWRITING: Rate the neatness/legibility on a scale of 0-10 (0=illegible, 10=perfect calligraphy). Provide a short comment on the handwriting style.
-    4. GRADE CONTENT: Grade the essay based on Level: ${level}, Topic: "${topic}". Feedback Language: ${explainLang}.
+    3. ASSESS HANDWRITING: Rate the neatness/legibility on a scale of 0-10 (0=illegible, 10=perfect calligraphy). 
+       - ${config.toneInstruction} (Apply this tone to the handwriting comment too)
+       - Provide a short comment on the handwriting style.
+    4. GRADE CONTENT: Follow the standard evaluation criteria for Level ${level}.
+       - Focus corrections on: ${config.correctionFocus.join(', ')}
+       - Use the feedback style: "${config.feedbackTemplate}"
     
     Return JSON format:
     {
         "score": 0-100, 
         "handwritingScore": 0-10,
-        "handwritingComment": "Short comment on neatness...",
-        "transcribedText": "The full text recognized from the image...",
+        "handwritingComment": "Short comment...",
+        "transcribedText": "The full text recognized...",
         "generalFeedback": "...", 
         "detailedCorrections": [{"original": "...", "correction": "...", "explanation": "..."}], 
         "improvedVersion": "..."
