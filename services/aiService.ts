@@ -105,43 +105,88 @@ export const generateLearningMaterial = async (username: string, level: StudentL
     const levelContext = LEVEL_PROMPTS[level];
     const wordCount = LEVEL_WORD_COUNTS[level];
     const config = LEVEL_CONFIGS[level];
-    const explainLang = lang === 'cn' ? 'Chinese (Simplified)' : 'English';
+    const isChinese = lang === 'cn';
 
-    const prompt = `
-    Role: ${config.systemRole}
-    Topic: "${topic.replace(/"/g, "'")}". 
-    Target Audience Level: ${level}.
-    Tone: ${config.toneInstruction}
-    
-    Task: Create learning materials and specific writing requirements.
-    1. Introduction (in ${explainLang}): Brief and engaging. **MUST be in ${explainLang}.**
-    2. Sample Essay (English): STRICTLY ${wordCount.min}-${wordCount.max} words. Use vocabulary suitable for ${config.vocabularyConstraint}.
-    3. Key Points/Analysis (in ${explainLang}): Highlight 2-3 key vocabulary or grammar points used in the sample. **MUST be in ${explainLang}.**
-    4. Writing Requirements (to guide student):
-       - General Goal: What is the main objective?
-       - Content Scope: What specific points must be covered?
-       - Style/Tone: e.g., "Formal", "Creative", "Descriptive".
-       - Keywords: List 3-5 keywords that MUST be used.
-       - Structure: e.g., "3 paragraphs: Intro, Body, Conclusion".
-       - Word Count: "${wordCount.label}".
-    
-    IMPORTANT: Return ONLY valid JSON. No markdown formatting, no conversational text before or after.
-    JSON Format: 
-    {
-      "topic": "${topic.replace(/"/g, "'")}", 
-      "introduction": "...", 
-      "sampleEssay": "...", 
-      "analysis": "...",
-      "requirements": {
-        "generalGoal": "...",
-        "contentScope": "...",
-        "style": "...",
-        "keywords": ["...", "..."],
-        "structure": "...",
-        "wordCountRange": "${wordCount.label}"
-      }
+    let prompt = '';
+
+    if (isChinese) {
+        prompt = `
+        角色: ${config.systemRole} (请作为一位针对中国学生的英语老师)
+        题目: "${topic.replace(/"/g, "'")}"
+        适用等级: ${level}
+        语气: ${config.toneInstruction}
+
+        任务: 创建英语学习资料和具体的写作要求。
+
+        1. **简介** (中文): 简短有趣地介绍这个话题。
+        2. **范文** (英文): 严格限制在 ${wordCount.min}-${wordCount.max} 词。使用适合 ${config.vocabularyConstraint} 的词汇。
+        3. **重点解析** (中文): 挑选范文中 2-3 个关键的高级词汇或语法点进行讲解。
+        4. **写作要求** (指导学生):
+           - 主要目标: 这篇文章要达成什么目的？
+           - 内容范围: 必须要写的点有哪些？
+           - 风格/语气: 例如 "正式", "有创意", "描述性"。
+           - 关键词: 列出 3-5 个必须使用的单词。
+           - 结构: 例如 "三段式：引入、主体、结论"。
+           - 字数: "${wordCount.label}"。
+
+        **重要**: 
+        - 返回纯 JSON 格式。
+        - **简介**、**重点解析**、**写作要求**中的具体描述必须使用**中文**。
+
+        JSON 格式: 
+        {
+          "topic": "${topic.replace(/"/g, "'")}", 
+          "introduction": "中文简介...", 
+          "sampleEssay": "English Sample Essay...", 
+          "analysis": "中文解析...",
+          "requirements": {
+            "generalGoal": "中文目标...",
+            "contentScope": "中文范围...",
+            "style": "中文风格...",
+            "keywords": ["word1", "word2"],
+            "structure": "中文结构...",
+            "wordCountRange": "${wordCount.label}"
+          }
+        }
+        `;
+    } else {
+        const explainLang = 'English';
+        prompt = `
+        Role: ${config.systemRole}
+        Topic: "${topic.replace(/"/g, "'")}". 
+        Target Audience Level: ${level}.
+        Tone: ${config.toneInstruction}
+        
+        Task: Create learning materials and specific writing requirements.
+        1. Introduction (in ${explainLang}): Brief and engaging.
+        2. Sample Essay (English): STRICTLY ${wordCount.min}-${wordCount.max} words. Use vocabulary suitable for ${config.vocabularyConstraint}.
+        3. Key Points/Analysis (in ${explainLang}): Highlight 2-3 key vocabulary or grammar points used in the sample.
+        4. Writing Requirements (to guide student):
+           - General Goal: What is the main objective?
+           - Content Scope: What specific points must be covered?
+           - Style/Tone: e.g., "Formal", "Creative", "Descriptive".
+           - Keywords: List 3-5 keywords that MUST be used.
+           - Structure: e.g., "3 paragraphs: Intro, Body, Conclusion".
+           - Word Count: "${wordCount.label}".
+        
+        IMPORTANT: Return ONLY valid JSON.
+        JSON Format: 
+        {
+          "topic": "${topic.replace(/"/g, "'")}", 
+          "introduction": "...", 
+          "sampleEssay": "...", 
+          "analysis": "...",
+          "requirements": {
+            "generalGoal": "...",
+            "contentScope": "...",
+            "style": "...",
+            "keywords": ["...", "..."],
+            "structure": "...",
+            "wordCountRange": "${wordCount.label}"
+          }
+        }
+      `;
     }
-  `;
 
     const res = await fetch(`${API_BASE}/ai`, {
         method: 'POST',
@@ -174,98 +219,162 @@ export const evaluateWriting = async (
     imageBase64?: string,
     requirements?: any // WritingRequirements
 ): Promise<EvaluationResult> => {
-    const explainLang = lang === 'cn' ? 'Chinese (Simplified)' : 'English';
+    const isChinese = lang === 'cn';
     const wordCount = LEVEL_WORD_COUNTS[level];
     const config = LEVEL_CONFIGS[level];
 
-    let requirementPrompt = "";
-    if (requirements) {
-        requirementPrompt = `
-        Specific Writing Requirements to Check:
-        - Goal: ${requirements.generalGoal}
-        - Scope: ${requirements.contentScope}
-        - Style: ${requirements.style}
-        - Keywords to use: ${requirements.keywords?.join(', ')}
-        - Structure: ${requirements.structure}
-        `;
-    }
-
-    let systemPrompt = `
-    Role: ${config.systemRole}
-    Tone: ${config.toneInstruction}
-    Vocabulary Constraint: ${config.vocabularyConstraint}
-    Correction Focus: ${config.correctionFocus.join(', ')}
-    Feedback Language: ${explainLang}
-    Target Level: ${level}
-    Target Word Count: ${wordCount.min}-${wordCount.max} words
-    Topic: "${topic.replace(/"/g, "'")}"
-    Mode: ${mode}
-    `;
+    // Helper to get Chinese level description
+    const getCnLevel = (l: StudentLevel) => {
+        if (l.includes('Primary')) return '小学阶段';
+        if (l.includes('Junior')) return '初中阶段';
+        if (l.includes('Senior')) return '高中阶段';
+        if (l.includes('University')) return '大学英语四六级阶段';
+        if (l.includes('TOEFL') || l.includes('IELTS') || l.includes('Graduate')) return '高阶学术/留学考试阶段';
+        return '英语学习者';
+    };
 
     let prompt = '';
 
-    if (imageBase64) {
-        prompt = `
-    ${systemPrompt}
-    
-    TASK: Handwritten Essay Evaluation.
-    1. RECOGNIZE: Read the handwritten English text from the provided image.
-    2. EVALUATE TRANSCRIPTION: Treat the recognized text as the student's submission.
-    3. ASSESS HANDWRITING: Rate the neatness/legibility on a scale of 0-10 (0=illegible, 10=perfect calligraphy). 
-       - ${config.toneInstruction} (Apply this tone to the handwriting comment too)
-       - Provide a short comment on the handwriting style. **MUST be in ${explainLang}.**
-    4. GRADE CONTENT: Follow the standard evaluation criteria for Level ${level}.
-       - Focus corrections on: ${config.correctionFocus.join(', ')}
-       - Use the feedback style: "${config.feedbackTemplate}"
-       ${requirementPrompt ? `- CHECK REQUIREMENTS: ${requirementPrompt}` : ''}
-    
-    IMPORTANT: 
-    - All comments, feedback, explanations, and requirement checks MUST be in ${explainLang}.
-    - Translate the feedback template if necessary.
-    
-    Return JSON format:
-    {
-        "score": 0-100, 
-        "handwritingScore": 0-10,
-        "handwritingComment": "Short comment in ${explainLang}...",
-        "transcribedText": "The full text recognized...",
-        "requirementCheck": { "met": boolean, "feedback": "Feedback in ${explainLang}..." },
-        "generalFeedback": "Feedback in ${explainLang}...", 
-        "detailedCorrections": [{"original": "...", "correction": "...", "explanation": "Explanation in ${explainLang}..."}], 
-        "improvedVersion": "..."
-    }
-    `;
+    if (isChinese) {
+        // --- CHINESE PROMPT BRANCH (Authorized Implementation) ---
+        const cnLevel = getCnLevel(level);
+
+        let reqPrompt = "";
+        if (requirements) {
+            reqPrompt = `
+            【写作要求检查】:
+            - 目标: ${requirements.generalGoal}
+            - 内容范围: ${requirements.contentScope}
+            - 风格: ${requirements.style}
+            - 关键词: ${requirements.keywords?.join(', ')}
+            - 结构: ${requirements.structure}
+            `;
+        }
+
+        const basePrompt = `
+        角色: 你是一位经验丰富的${cnLevel}英语老师。
+        学生等级: ${level}
+        目标字数: ${wordCount.min}-${wordCount.max} 词
+        题目: "${topic.replace(/"/g, "'")}"
+        模式: ${mode}
+
+        你的评分风格:
+        - 语气: ${config.toneInstruction} (请用中文表达这种语气)
+        - 批改侧重: ${config.correctionFocus.join(', ')}
+
+        任务: 批改学生的英语作文。
+        学生作文内容: "${content.replace(/"/g, "'")}"
+
+        ${reqPrompt}
+
+        【核心指令】:
+        1. 检查字数是否达标。
+        2. 如果提供了【写作要求检查】，请核对是否满足。
+        3. 给出评分 (0-100)。
+        4. **总体评价**: 请用**中文**撰写。必须包含鼓励性的开场白（参考: "${config.feedbackTemplate}" 但请翻译成中文）。
+        5. **详细批改**: 指出语法或词汇错误。
+           - "explanation" (解释) 必须用**中文**。
+           - 针对${cnLevel}，不要过于吹毛求疵，重点关注核心错误。
+        6. **润色版本**: 提供一个提升后的版本。
+
+        **重要**: 所有的反馈、评价、解释文字，必须全部使用**中文**！只有引用的英语原文和润色后的英语句子保留英文。
+
+        请返回纯 JSON格式:
+        {
+          "score": 0-100, 
+          "requirementCheck": { "met": boolean, "feedback": "中文反馈：哪些要求做到了，哪些没做到" },
+          "generalFeedback": "中文总体评价...", 
+          "detailedCorrections": [{"original": "错句", "correction": "改正", "explanation": "中文解释错误原因"}], 
+          "improvedVersion": "润色后的全文..."
+        }
+        `;
+
+        if (imageBase64) {
+            prompt = `
+            ${basePrompt}
+            
+            【手写识别特别任务】:
+            1. **识别**: 从图片中读取手写英文。
+            2. **作为提交内容**: 使用识别出的文本进行上述批改。
+            3. **书写评分**: 0-10分 (0=潦草无法辨认, 10=完美书法)。
+               - 给出简短的中文书写点评 ("handwritingComment")。
+            
+            返回 JSON (包含 strict JSON):
+            {
+                "score": 0-100,
+                "handwritingScore": 0-10,
+                "handwritingComment": "中文书写点评...",
+                "transcribedText": "识别出的全文...",
+                "requirementCheck": { "met": boolean, "feedback": "中文反馈..." },
+                "generalFeedback": "中文评价...",
+                "detailedCorrections": [...],
+                "improvedVersion": "..."
+            }
+            `;
+        } else {
+            prompt = basePrompt;
+        }
+
     } else {
-        // Reinforce language for text-only mode too (since we already did some, but let's be thorough)
-        prompt = `
-    ${systemPrompt}
-    
-    Task: Evaluate the following student writing.
-    Content: "${content.replace(/"/g, "'")}"
-    
-    ${requirementPrompt}
+        // --- ENGLISH PROMPT BRANCH (Legacy/International) ---
+        const explainLang = 'English';
+        let requirementPrompt = "";
+        if (requirements) {
+            requirementPrompt = `Specific Writing Requirements: Goal: ${requirements.generalGoal}, Scope: ${requirements.contentScope}, Keywords: ${requirements.keywords?.join(', ')}`;
+        }
 
-    Instructions:
-    1. Check length (${wordCount.min}-${wordCount.max} words).
-    2. Check if Specific Writing Requirements are met (if provided).
-    3. Give a Score (0-100) based on appropriate criteria for this level.
-    4. Provide General Feedback using this template style: "${config.feedbackTemplate}". 
-       **CRITICAL: Write the feedback in ${explainLang}. Translate the template if necessary.**
-    5. Provide Detailed Corrections. ONLY focus on: ${config.correctionFocus.join(', ')}. Do NOT be too nitpicky for lower levels.
-       **CRITICAL: The 'explanation' must be in ${explainLang}.**
-    6. Provide an Improved Version that elevates the writing while keeping it reachable for this level.
-    
-    IMPORTANT: All output text (except the English corrections/samples) MUST be in ${explainLang}.
+        let systemPrompt = `
+        Role: ${config.systemRole}
+        Tone: ${config.toneInstruction}
+        Correction Focus: ${config.correctionFocus.join(', ')}
+        Target Level: ${level}
+        Topic: "${topic.replace(/"/g, "'")}"
+        `;
 
-    Return JSON: 
-    {
-      "score": 0-100, 
-      "requirementCheck": { "met": boolean, "feedback": "Short comment in ${explainLang} on which requirements were met/missed" },
-      "generalFeedback": "...", 
-      "detailedCorrections": [{"original": "...", "correction": "...", "explanation": "..."}], 
-      "improvedVersion": "..."
-    }
-  `;
+        if (imageBase64) {
+            prompt = `
+            ${systemPrompt}
+            TASK: Handwritten Essay Evaluation.
+            1. Recognize text.
+            2. Assess Handwriting (0-10) & Comment.
+            3. Grade Content & Features.
+            ${requirementPrompt ? `Check Requirements: ${requirementPrompt}` : ''}
+            
+            Return JSON:
+            {
+                "score": 0-100, 
+                "handwritingScore": 0-10,
+                "handwritingComment": "Comment...",
+                "transcribedText": "Text...",
+                "requirementCheck": { "met": boolean, "feedback": "..." },
+                "generalFeedback": "...", 
+                "detailedCorrections": [{"original": "...", "correction": "...", "explanation": "..."}], 
+                "improvedVersion": "..."
+            }
+            `;
+        } else {
+            prompt = `
+            ${systemPrompt}
+            Task: Evaluate student writing.
+            Content: "${content.replace(/"/g, "'")}"
+            ${requirementPrompt}
+            
+            Instructions:
+            1. Check length & requirements.
+            2. Score (0-100).
+            3. Feedback template: "${config.feedbackTemplate}"
+            4. Detailed Corrections.
+            
+            Return JSON: 
+            {
+              "score": 0-100, 
+              "requirementCheck": { "met": boolean, "feedback": "..." },
+              "generalFeedback": "...", 
+              "detailedCorrections": [{"original": "...", "correction": "...", "explanation": "..."}], 
+              "improvedVersion": "..."
+            }
+            `;
+        }
     }
 
     const res = await fetch(`${API_BASE}/ai`, {
@@ -319,31 +428,59 @@ export const explainCorrection = async (
     lang: AppLanguage
 ): Promise<ChatResponse> => {
     const config = LEVEL_CONFIGS[level];
-    const explainLang = lang === 'cn' ? 'Chinese (Simplified)' : 'English';
+    const isChinese = lang === 'cn';
 
-    const prompt = `
-    Role: You are an encouraging English Tutor helping a ${level} student.
-    Tone: ${config.toneInstruction}
-    Language: Reply in ${explainLang}.
+    let prompt = '';
 
-    Context:
-    - Student's Original Sentence: "${original.replace(/"/g, "'")}"
-    - Your Correction: "${correction.replace(/"/g, "'")}"
+    if (isChinese) {
+        prompt = `
+        角色: 你是一位鼓励型的英语导师。
+        等级: 辅导 ${level} 学生。
+        语气: ${config.toneInstruction} (请用中文表达)
 
-    Chat History:
-    ${history.map(m => `- ${m.role === 'user' ? 'Student' : 'Tutor'}: ${m.content}`).join('\n')}
+        上下文:
+        - 学生原句: "${original.replace(/"/g, "'")}"
+        - 你的修改: "${correction.replace(/"/g, "'")}"
 
-    Student's Current Question: "${question.replace(/"/g, "'")}"
+        聊天记录:
+        ${history.map(m => `- ${m.role === 'user' ? '学生' : '导师'}: ${m.content}`).join('\n')}
 
-    Task: 
-    - Answer the student's question clearly and concisely.
-    - If they ask "Why", explain the grammar rule simply.
-    - If they ask for examples, provide 1-2 simple examples.
-    - Keep the tone encouraging.
+        学生当前问题: "${question.replace(/"/g, "'")}"
+
+        任务: 
+        - 清晰、简洁地回答学生的问题。**必须使用中文回答**。
+        - 如果问 "为什么"，请简单解释语法规则。
+        - 如果需要例子，提供 1-2 个简单的例句。
+        - 保持鼓励的语气。
+
+        JSON 格式: {"reply": "中文回复内容..."}
+        `;
+    } else {
+        const explainLang = 'English';
+        prompt = `
+        Role: You are an encouraging English Tutor helping a ${level} student.
+        Tone: ${config.toneInstruction}
+        Language: Reply in ${explainLang}.
     
-    IMPORTANT: Return ONLY valid JSON.
-    JSON Format: {"reply": "..."}
-  `;
+        Context:
+        - Student's Original Sentence: "${original.replace(/"/g, "'")}"
+        - Your Correction: "${correction.replace(/"/g, "'")}"
+    
+        Chat History:
+        ${history.map(m => `- ${m.role === 'user' ? 'Student' : 'Tutor'}: ${m.content}`).join('\n')}
+    
+        Student's Current Question: "${question.replace(/"/g, "'")}"
+    
+        Task: 
+        - Answer the student's question clearly and concisely.
+        - If they ask "Why", explain the grammar rule simply.
+        - If they ask for examples, provide 1-2 simple examples.
+        - Keep the tone encouraging.
+        
+        IMPORTANT: Return ONLY valid JSON.
+        JSON Format: {"reply": "..."}
+      `;
+    }
 
     const res = await fetch(`${API_BASE}/ai`, {
         method: 'POST',
