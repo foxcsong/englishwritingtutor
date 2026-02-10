@@ -70,6 +70,15 @@ export interface UserConfig {
   model: string;
 }
 
+export interface ChatMessage {
+  role: 'user' | 'assistant';
+  content: string;
+}
+
+export interface ChatResponse {
+  reply: string;
+}
+
 export type AppLanguage = 'en' | 'cn';
 
 export interface UserProfile {

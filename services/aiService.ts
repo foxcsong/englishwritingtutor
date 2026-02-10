@@ -1,4 +1,4 @@
-import { StudentLevel, TopicMaterial, EvaluationResult, PracticeMode, AppLanguage, UserConfig } from '../types';
+import { StudentLevel, TopicMaterial, EvaluationResult, PracticeMode, AppLanguage, UserConfig, ChatMessage, ChatResponse } from '../types';
 import { LEVEL_PROMPTS, LEVEL_WORD_COUNTS, LEVEL_CONFIGS } from '../constants';
 
 const API_BASE = '/api';
@@ -293,4 +293,58 @@ export const testAIConfig = async (username: string, config: UserConfig): Promis
         const detail = data.details?.error?.message || data.details?.message || data.error;
         throw new Error(detail || "AI 配置验证失败，请检查 Key 或模型名称");
     }
+};
+
+/**
+ * Contextual Follow-up Chat
+ */
+export const explainCorrection = async (
+    username: string,
+    level: StudentLevel,
+    original: string,
+    correction: string,
+    question: string,
+    history: ChatMessage[],
+    lang: AppLanguage
+): Promise<ChatResponse> => {
+    const config = LEVEL_CONFIGS[level];
+    const explainLang = lang === 'cn' ? 'Chinese (Simplified)' : 'English';
+
+    const prompt = `
+    Role: You are an encouraging English Tutor helping a ${level} student.
+    Tone: ${config.toneInstruction}
+    Language: Reply in ${explainLang}.
+
+    Context:
+    - Student's Original Sentence: "${original.replace(/"/g, "'")}"
+    - Your Correction: "${correction.replace(/"/g, "'")}"
+
+    Chat History:
+    ${history.map(m => `- ${m.role === 'user' ? 'Student' : 'Tutor'}: ${m.content}`).join('\n')}
+
+    Student's Current Question: "${question.replace(/"/g, "'")}"
+
+    Task: 
+    - Answer the student's question clearly and concisely.
+    - If they ask "Why", explain the grammar rule simply.
+    - If they ask for examples, provide 1-2 simple examples.
+    - Keep the tone encouraging.
+    
+    IMPORTANT: Return ONLY valid JSON.
+    JSON Format: {"reply": "..."}
+  `;
+
+    const res = await fetch(`${API_BASE}/ai`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, prompt })
+    });
+
+    const data = await res.json();
+    if (!res.ok) {
+        throw new Error(data.error || "解释失败");
+    }
+
+    const content = data.candidates?.[0]?.content?.parts?.[0]?.text || data.choices?.[0]?.message?.content || "";
+    return extractJson(content) as ChatResponse;
 };

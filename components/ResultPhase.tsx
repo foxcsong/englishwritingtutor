@@ -1,11 +1,12 @@
-import React from 'react';
-import { EvaluationResult, AppLanguage } from '../types';
+import React, { useState } from 'react';
+import { EvaluationResult, AppLanguage, StudentLevel } from '../types';
 import { translations } from '../translations';
-import { Download, Check, RefreshCcw, FileText, Layout, Award, Share2, Loader2, Target, AlertTriangle, CheckCircle2 } from 'lucide-react';
+import { Download, Check, RefreshCcw, FileText, Layout, Award, Share2, Loader2, Target, AlertTriangle, CheckCircle2, MessageCircle } from 'lucide-react';
 import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 import * as htmlToImage from 'html-to-image';
 import download from 'downloadjs';
 import ShareCard from './ShareCard';
+import CorrectionChat from './CorrectionChat';
 
 interface ResultPhaseProps {
   result: EvaluationResult;
@@ -13,13 +14,15 @@ interface ResultPhaseProps {
   topic: string;
   lang: AppLanguage;
   username: string;
+  level: StudentLevel;
   onHome: () => void;
 }
 
-const ResultPhase: React.FC<ResultPhaseProps> = ({ result, userContent, topic, lang, username, onHome }) => {
+const ResultPhase: React.FC<ResultPhaseProps> = ({ result, userContent, topic, lang, username, level, onHome }) => {
   const t = translations[lang];
   const cardRef = React.useRef<HTMLDivElement>(null);
   const [isExporting, setIsExporting] = React.useState(false);
+  const [activeChatIdx, setActiveChatIdx] = useState<number | null>(null);
 
   const handleShareImage = async () => {
     if (!cardRef.current) return;
@@ -204,10 +207,32 @@ ${result.improvedVersion}
                   <div className="mb-4 text-emerald-600 font-black flex items-center gap-2 text-lg">
                     <Check size={20} /> {item.correction}
                   </div>
-                  <div className="text-sm text-slate-500 bg-slate-50 p-4 rounded-2xl border border-slate-100">
+                  <div className="text-sm text-slate-500 bg-slate-50 p-4 rounded-2xl border border-slate-100 mb-2">
                     <span className="font-black text-indigo-600 mr-2 uppercase text-[10px] tracking-widest">{t.analysis}</span>
                     <span className="leading-relaxed">{item.explanation}</span>
                   </div>
+
+                  {/* Ask AI Button */}
+                  {activeChatIdx !== idx && (
+                    <button
+                      onClick={() => setActiveChatIdx(idx)}
+                      className="w-full py-2 text-xs font-bold text-indigo-500 hover:text-indigo-700 hover:bg-indigo-50 rounded-xl transition-all flex items-center justify-center gap-2"
+                    >
+                      <MessageCircle size={14} /> Ask AI Tutor
+                    </button>
+                  )}
+
+                  {/* Chat Component */}
+                  {activeChatIdx === idx && (
+                    <CorrectionChat
+                      username={username}
+                      level={level}
+                      original={item.original}
+                      correction={item.correction}
+                      lang={lang}
+                      onClose={() => setActiveChatIdx(null)}
+                    />
+                  )}
                 </div>
               ))}
             </div>

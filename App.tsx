@@ -382,13 +382,14 @@ const App: React.FC = () => {
               />
             )}
 
-            {appState === AppState.Result && userProfile && evaluation && (
+            {appState === AppState.Result && userProfile && userProfile.level && evaluation && (
               <ResultPhase
                 result={evaluation}
                 userContent={currentContent}
                 topic={currentTopic}
                 lang={currentLang}
                 username={userProfile.username}
+                level={userProfile.level}
                 onHome={() => setAppState(AppState.Dashboard)}
               />
             )}
