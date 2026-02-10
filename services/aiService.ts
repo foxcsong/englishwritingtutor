@@ -23,7 +23,15 @@ const extractJson = (text: string) => {
         const fallbackMatch = cleanText.match(/(\{[\s\S]*\}|\[[\s\S]*\])/);
         if (fallbackMatch) {
             try {
-                return JSON.parse(fallbackMatch[0]);
+                const parsed = JSON.parse(fallbackMatch[0]);
+                // Unwrap if wrapped in a single key like "result" or "data"
+                if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+                    const keys = Object.keys(parsed);
+                    if (keys.length === 1 && typeof parsed[keys[0]] === 'object') {
+                        return parsed[keys[0]];
+                    }
+                }
+                return parsed;
             } catch (e3) { }
         }
 
@@ -87,7 +95,8 @@ export const generateLearningMaterial = async (username: string, level: StudentL
     2. Sample Essay (English): STRICTLY ${wordCount.min}-${wordCount.max} words. Use vocabulary suitable for ${config.vocabularyConstraint}.
     3. Key Points/Analysis (in ${explainLang}): Highlight 2-3 key vocabulary or grammar points used in the sample.
     
-    Return JSON: {"topic": "${topic.replace(/"/g, "'")}", "introduction": "...", "sampleEssay": "...", "analysis": "..."}
+    IMPORTANT: Return ONLY valid JSON. No markdown formatting, no conversational text before or after.
+    JSON Format: {"topic": "${topic.replace(/"/g, "'")}", "introduction": "...", "sampleEssay": "...", "analysis": "..."}
   `;
 
     const res = await fetch(`${API_BASE}/ai`, {
