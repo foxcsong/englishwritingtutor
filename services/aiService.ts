@@ -37,13 +37,26 @@ const extractJson = (text: string) => {
         throw new Error("AI 返回格式不正确，无法解析 JSON");
     }
 
-    // Unwrap if wrapped in a single key like "result", "data", "learningRequest", etc.
-    if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
-        const keys = Object.keys(parsed);
-        if (keys.length === 1 && typeof parsed[keys[0]] === 'object' && !Array.isArray(parsed[keys[0]])) {
-            // Heuristic: if the inner object looks like what we want (has 'topic' or 'score'), use it.
-            // Or just unwrap indiscriminately if size is 1.
-            return parsed[keys[0]];
+    // Smart Unwrap: Look for valid TopicMaterial fields (sampleEssay) OR EvaluationResult fields (score)
+    if (parsed && typeof parsed === 'object') {
+        const isTarget = (obj: any) => obj && (obj.sampleEssay || typeof obj.score === 'number');
+
+        // 1. Direct match
+        if (isTarget(parsed)) {
+            return parsed;
+        }
+
+        // 2. Search deeper (1 level deep)
+        for (const key in parsed) {
+            const val = parsed[key];
+            if (isTarget(val)) {
+                return val;
+            }
+        }
+
+        // 3. Fallback: If array, take first item if it matches
+        if (Array.isArray(parsed) && parsed.length > 0) {
+            if (isTarget(parsed[0])) return parsed[0];
         }
     }
 
