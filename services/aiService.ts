@@ -7,37 +7,47 @@ const API_BASE = '/api';
  * 助手函数：从 AI 返回的文本中提取并解析 JSON
  */
 const extractJson = (text: string) => {
+    let parsed: any = null;
     const cleanText = text.trim();
+
     try {
-        return JSON.parse(cleanText);
+        parsed = JSON.parse(cleanText);
     } catch (e) {
         // 尝试从 markdown 代码块中提取
         const match = cleanText.match(/```json\s?([\s\S]*?)\s?```/) || cleanText.match(/```\s?([\s\S]*?)\s?```/);
         if (match && match[1]) {
             try {
-                return JSON.parse(match[1].trim());
+                parsed = JSON.parse(match[1].trim());
             } catch (e2) { }
         }
 
-        // 尝试查找第一个 { 或 [ 到最后一个 } 或 ]
-        const fallbackMatch = cleanText.match(/(\{[\s\S]*\}|\[[\s\S]*\])/);
-        if (fallbackMatch) {
-            try {
-                const parsed = JSON.parse(fallbackMatch[0]);
-                // Unwrap if wrapped in a single key like "result" or "data"
-                if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
-                    const keys = Object.keys(parsed);
-                    if (keys.length === 1 && typeof parsed[keys[0]] === 'object') {
-                        return parsed[keys[0]];
-                    }
-                }
-                return parsed;
-            } catch (e3) { }
+        if (!parsed) {
+            // 尝试查找第一个 { 或 [ 到最后一个 } 或 ]
+            const fallbackMatch = cleanText.match(/(\{[\s\S]*\}|\[[\s\S]*\])/);
+            if (fallbackMatch) {
+                try {
+                    parsed = JSON.parse(fallbackMatch[0]);
+                } catch (e3) { }
+            }
         }
+    }
 
+    if (!parsed) {
         console.error("Failed to parse JSON. Original text:", text);
         throw new Error("AI 返回格式不正确，无法解析 JSON");
     }
+
+    // Unwrap if wrapped in a single key like "result", "data", "learningRequest", etc.
+    if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+        const keys = Object.keys(parsed);
+        if (keys.length === 1 && typeof parsed[keys[0]] === 'object' && !Array.isArray(parsed[keys[0]])) {
+            // Heuristic: if the inner object looks like what we want (has 'topic' or 'score'), use it.
+            // Or just unwrap indiscriminately if size is 1.
+            return parsed[keys[0]];
+        }
+    }
+
+    return parsed;
 };
 
 export const generateTopics = async (username: string, level: StudentLevel): Promise<string[]> => {
