@@ -1,6 +1,7 @@
 import { GoogleGenAI, Type, Schema } from "@google/genai";
 import { StudentLevel, TopicMaterial, EvaluationResult, PracticeMode, AppLanguage } from '../types';
 import { LEVEL_PROMPTS } from '../constants';
+import { getKnowledgeBase } from './knowledgeBaseService';
 
 // Initialize Gemini
 // NOTE: API KEY is managed via process.env.API_KEY as per instructions.
@@ -14,10 +15,19 @@ const MODEL_NAME = 'gemini-3-flash-preview';
  */
 export const generateTopics = async (level: StudentLevel): Promise<string[]> => {
   const levelContext = LEVEL_PROMPTS[level];
-  
+  const kb = await getKnowledgeBase(level);
+
+  let kbContext = "";
+  if (kb && kb.vocabulary.topics && kb.vocabulary.topics.length > 0) {
+    kbContext = `
+    Focus on these themes relevant to the grade level: ${kb.vocabulary.topics.join(', ')}.
+    `;
+  }
+
   const prompt = `
     You are an English teacher for students.
     Target Level: ${level} (${levelContext}).
+    ${kbContext}
     
     Generate 3 distinct, engaging, and age-appropriate English writing topics (titles) for this level.
     Only provide the titles in a JSON array of strings.
@@ -52,13 +62,27 @@ export const generateTopics = async (level: StudentLevel): Promise<string[]> => 
 export const generateLearningMaterial = async (level: StudentLevel, topic: string, lang: AppLanguage): Promise<TopicMaterial> => {
   const levelContext = LEVEL_PROMPTS[level];
   const explainLang = lang === 'cn' ? 'Chinese (Simplified)' : 'English';
-  
+  const kb = await getKnowledgeBase(level);
+
+  let kbRequirements = "";
+  if (kb) {
+    kbRequirements = `
+      Incorporated the following level-specific requirements:
+      Vocabulary to include: ${kb.vocabulary.required_words.join(', ')}.
+      Grammar points to demonstrate: ${kb.grammar.join(', ')}.
+      Writing Standard: ${kb.writing_standards.complexity}.
+      Structure: ${kb.writing_standards.structure}.
+      `;
+  }
+
   const prompt = `
     You are an expert English teacher.
     Level: ${level}.
     Topic: "${topic}".
     Explanation Language: ${explainLang}.
     
+    ${kbRequirements}
+
     1. Write a brief introduction to this writing task (in ${explainLang}).
     2. Provide a high-quality sample essay suitable for this level.
     3. Provide a detailed analysis of the sample (vocabulary, grammar, structure) in ${explainLang}.
@@ -108,6 +132,17 @@ export const evaluateWriting = async (
   const levelContext = LEVEL_PROMPTS[level];
   const isSentence = mode === PracticeMode.Sentence;
   const explainLang = lang === 'cn' ? 'Chinese (Simplified)' : 'English';
+  const kb = await getKnowledgeBase(level);
+
+  let kbCriteria = "";
+  if (kb) {
+    kbCriteria = `
+      Strictly evaluate based on these grade-level standards:
+      Word Count Target: ${kb.writing_standards.word_count}.
+      Grammar Focus: ${kb.correction_focus.join(', ')}.
+      Expected Complexity: ${kb.writing_standards.complexity}.
+      `;
+  }
 
   const prompt = `
     Act as a strict but encouraging English teacher.
@@ -115,6 +150,8 @@ export const evaluateWriting = async (
     Task: ${topic}.
     Mode: ${isSentence ? 'Sentence Drilling (Focus on grammar and usage)' : 'Essay Writing (Focus on structure, coherence, vocabulary, grammar)'}.
     Feedback Language: ${explainLang}.
+
+    ${kbCriteria}
 
     Student Submission:
     "${content}"

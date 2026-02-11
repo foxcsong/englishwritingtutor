@@ -1,5 +1,6 @@
 import { StudentLevel, TopicMaterial, EvaluationResult, PracticeMode, AppLanguage, UserConfig, ChatMessage, ChatResponse } from '../types';
 import { LEVEL_PROMPTS, LEVEL_WORD_COUNTS, LEVEL_CONFIGS } from '../constants';
+import { getKnowledgeBase } from './knowledgeBaseService';
 
 const API_BASE = '/api';
 
@@ -66,12 +67,21 @@ const extractJson = (text: string) => {
 export const generateTopics = async (username: string, level: StudentLevel): Promise<string[]> => {
     const levelContext = LEVEL_PROMPTS[level];
     const config = LEVEL_CONFIGS[level];
+    const kb = await getKnowledgeBase(level);
+
+    let kbContext = "";
+    if (kb && kb.vocabulary.topics && kb.vocabulary.topics.length > 0) {
+        kbContext = `
+    Focus on these themes relevant to the grade level: ${kb.vocabulary.topics.join(', ')}.
+    `;
+    }
 
     const prompt = `
     Role: ${config.systemRole}
     Task: Generate 3 engaging English writing topics (titles) for Level: ${level} (${levelContext}).
     Tone: ${config.toneInstruction}
     Constraint: Topics must be age-appropriate and interesting.
+    ${kbContext}
     Return format: ["Topic 1", "Topic 2", "Topic 3"]
   `;
 
@@ -106,6 +116,18 @@ export const generateLearningMaterial = async (username: string, level: StudentL
     const wordCount = LEVEL_WORD_COUNTS[level];
     const config = LEVEL_CONFIGS[level];
     const isChinese = lang === 'cn';
+    const kb = await getKnowledgeBase(level);
+
+    let kbRequirements = "";
+    if (kb) {
+        kbRequirements = `
+        Incorporated the following level-specific requirements:
+        Vocabulary to include: ${kb.vocabulary.required_words.join(', ')}.
+        Grammar points to demonstrate: ${kb.grammar.join(', ')}.
+        Writing Standard: ${kb.writing_standards.complexity}.
+        Structure: ${kb.writing_standards.structure}.
+        `;
+    }
 
     let prompt = '';
 
@@ -115,6 +137,10 @@ export const generateLearningMaterial = async (username: string, level: StudentL
         题目: "${topic.replace(/"/g, "'")}"
         适用等级: ${level}
         语气: ${config.toneInstruction}
+
+        语气: ${config.toneInstruction}
+
+        ${kbRequirements}
 
         任务: 创建英语学习资料和具体的写作要求。
 
@@ -159,6 +185,10 @@ export const generateLearningMaterial = async (username: string, level: StudentL
         Target Audience Level: ${level}.
         Tone: ${config.toneInstruction}
         
+        Tone: ${config.toneInstruction}
+        
+        ${kbRequirements}
+
         Task: Create learning materials and specific writing requirements.
         1. Introduction (in ${explainLang}): Brief and engaging.
         2. Sample Essay (English): STRICTLY ${wordCount.min}-${wordCount.max} words. Use vocabulary suitable for ${config.vocabularyConstraint}.
@@ -235,6 +265,17 @@ export const evaluateWriting = async (
         return '英语学习者';
     };
 
+    const kb = await getKnowledgeBase(level);
+    let kbCriteria = "";
+    if (kb) {
+        kbCriteria = `
+        Strictly evaluate based on these grade-level standards:
+        Word Count Target: ${kb.writing_standards.word_count}.
+        Grammar Focus: ${kb.correction_focus.join(', ')}.
+        Expected Complexity: ${kb.writing_standards.complexity}.
+        `;
+    }
+
     let prompt = '';
 
     if (isChinese) {
@@ -263,6 +304,8 @@ export const evaluateWriting = async (
         你的评分风格:
         - 语气: ${config.toneInstruction} (请用中文表达这种语气)
         - 批改侧重: ${config.correctionFocus.join(', ')}
+
+        ${kbCriteria}
 
         任务: 批改学生的英语作文。
         学生作文内容: "${content.replace(/"/g, "'")}"
@@ -330,6 +373,7 @@ export const evaluateWriting = async (
         Correction Focus: ${config.correctionFocus.join(', ')}
         Target Level: ${level}
         Topic: "${topic.replace(/"/g, "'")}"
+        ${kbCriteria}
         `;
 
         if (imageBase64) {
