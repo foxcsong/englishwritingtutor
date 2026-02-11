@@ -1,0 +1,38 @@
+{
+    "level": "Junior1",
+    "description": "Grade 7 / Junior High Year 1 (Lower Intermediate)",
+    "vocabulary": {
+        "topics": [
+            "My New School Life",
+            "Rules and Regulations",
+            "Healthy Lifestyle",
+            "My Favorite Festival",
+            "A Person I Admire"
+        ],
+        "required_words": [
+            "schedule",
+            "exercise",
+            "festival",
+            "important",
+            "opinion"
+        ],
+        "level_description": "500-800 words range. Expressing opinions and describing events."
+    },
+    "grammar": [
+        "Present Simple vs. Present Continuous",
+        "Modal verbs (can, must, have to)",
+        "There be structure",
+        "Countable and Uncountable Nouns"
+    ],
+    "writing_standards": {
+        "word_count": "60-80 words",
+        "complexity": "Clear paragraph structure. Use of linking words (first, second, finally).",
+        "structure": "Introduction, body, conclusion."
+    },
+    "correction_focus": [
+        "Subject-Verb Agreement",
+        "Correct use of articles (a, an, the)",
+        "Spelling of irregular plurals",
+        "Punctuation usage"
+    ]
+}

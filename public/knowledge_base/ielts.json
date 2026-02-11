@@ -1,0 +1,38 @@
+{
+    "level": "IELTS",
+    "description": "International English Language Testing System",
+    "vocabulary": {
+        "topics": [
+            "Education & Employment",
+            "Environment & Pollution",
+            "Modern Technology",
+            "Globalization",
+            "Government Spending"
+        ],
+        "required_words": [
+            "fluctuation",
+            "predominant",
+            "detrimental",
+            "feasible",
+            "mitigate"
+        ],
+        "level_description": "General Training and Academic modules. Band 7+ target."
+    },
+    "grammar": [
+        "Describing trends (shot up, leveled off, plummeted)",
+        "Comparing data (twice as much as, significantly higher)",
+        "Passive voice (Process diagrams)",
+        "Complex sentence structures for argumentation"
+    ],
+    "writing_standards": {
+        "word_count": "150 words (Task 1), 250 words (Task 2)",
+        "complexity": "Task 1: Accurate data reporting. Task 2: Clear position, fully extended arguments.",
+        "structure": "Task 1: Intro, Overview, Details. Task 2: Intro, Body 1, Body 2, Conclusion."
+    },
+    "correction_focus": [
+        "Task Achievement / Response",
+        "Coherence and Cohesion",
+        "Lexical Resource (less common vocabulary)",
+        "Grammatical Range and Accuracy"
+    ]
+}

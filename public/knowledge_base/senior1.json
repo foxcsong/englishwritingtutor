@@ -1,0 +1,38 @@
+{
+    "level": "Senior1",
+    "description": "Grade 10 / Senior High Year 1 (Upper Intermediate)",
+    "vocabulary": {
+        "topics": [
+            "Friendship and Communication",
+            "Cultural Heritage",
+            "Healthy Eating Habits",
+            "Space Exploration",
+            "Natural Disasters"
+        ],
+        "required_words": [
+            "communicate",
+            "situation",
+            "evidence",
+            "congratulation",
+            "organize"
+        ],
+        "level_description": "2500-3000 words range. Focus on logical reasoning and social issues."
+    },
+    "grammar": [
+        "Direct and Indirect Speech",
+        "Attributive Clauses (restrictive and non-restrictive)",
+        "Passive Voice (Present/Past/Future)",
+        "Present Perfect Continuous"
+    ],
+    "writing_standards": {
+        "word_count": "100-120 words",
+        "complexity": "Complex sentence structures. Clear thesis statement.",
+        "structure": "Introduction with thesis, supporting paragraphs, conclusion."
+    },
+    "correction_focus": [
+        "Correct use of relative pronouns",
+        "Passive voice transformation",
+        "Cohesion and coherence linking words",
+        "Avoidance of Chinglish expressions"
+    ]
+}

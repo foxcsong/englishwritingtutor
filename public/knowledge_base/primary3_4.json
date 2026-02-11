@@ -1,0 +1,38 @@
+{
+    "level": "Primary3_4",
+    "description": "Grade 3-4 / Primary School (Elementary)",
+    "vocabulary": {
+        "topics": [
+            "My School Day",
+            "My Hobbies",
+            "My Best Friend",
+            "Weather",
+            "My Favorite Food"
+        ],
+        "required_words": [
+            "always",
+            "because",
+            "school",
+            "favorite",
+            "weekend"
+        ],
+        "level_description": "100-300 words range. Focus on describing daily life."
+    },
+    "grammar": [
+        "Simple Past Tense (regular and common irregular verbs)",
+        "Future using 'going to'",
+        "Prepositions of place (in, on, at, under)",
+        "Comparatives (bigger, faster)"
+    ],
+    "writing_standards": {
+        "word_count": "50-80 words",
+        "complexity": "Compound sentences using 'and', 'but', 'so'.",
+        "structure": "One paragraph with a topic sentence."
+    },
+    "correction_focus": [
+        "Past tense verb forms",
+        "Correct use of prepositions",
+        "Spelling of common words",
+        "Sentence connectivity"
+    ]
+}

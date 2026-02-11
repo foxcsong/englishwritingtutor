@@ -1,0 +1,38 @@
+{
+    "level": "TOEFL",
+    "description": "Test of English as a Foreign Language",
+    "vocabulary": {
+        "topics": [
+            "University Policies",
+            "Academic Lectures (Biology, Art, History)",
+            "Student Preferences (Housing, Classes)",
+            "Technology in Education",
+            "Work vs. Leisure"
+        ],
+        "required_words": [
+            "advocate",
+            "contradict",
+            "subsequent",
+            "nevertheless",
+            "accumulate"
+        ],
+        "level_description": "Academic English. Integration of Reading, Listening, and Writing."
+    },
+    "grammar": [
+        "Synthesizing information (reporting verbs)",
+        "Contrastive structures (However, On the contrary)",
+        "Cause and Effect relationships",
+        "Conditional structures"
+    ],
+    "writing_standards": {
+        "word_count": "300+ words (Independent), 200+ words (Integrated)",
+        "complexity": "Clear synthesis of sources (Integrated). Well-developed arguments (Independent).",
+        "structure": "Introduction, Body Paragraphs (Point-by-point or Block), Conclusion."
+    },
+    "correction_focus": [
+        "Accurate representation of lecture points",
+        "Clear connection between reading and listening",
+        "Essay organization and development",
+        "Grammatical accuracy and lexical range"
+    ]
+}

@@ -1,0 +1,38 @@
+{
+    "level": "University1_2",
+    "description": "University Year 1-2 (CET-4 Standard)",
+    "vocabulary": {
+        "topics": [
+            "Campus Life & Education",
+            "Health & Sports",
+            "Social Networking",
+            "Job Hunting",
+            "Morality & Ethics"
+        ],
+        "required_words": [
+            "opportunity",
+            "challenge",
+            "essential",
+            "positive",
+            "negative"
+        ],
+        "level_description": "4000-4500 words range. CET-4 exam preparation."
+    },
+    "grammar": [
+        "Advanced Passive Voice",
+        "Subjunctive Mood",
+        "Inversion and Emphasis",
+        "Complex Clause combinations"
+    ],
+    "writing_standards": {
+        "word_count": "120-180 words",
+        "complexity": "Formal academic or semi-formal tone. Clear logic.",
+        "structure": "Introduction (Thesis), Body (Arguments), Conclusion."
+    },
+    "correction_focus": [
+        "Logical cohesion (transition words)",
+        "Formal vocabulary choice",
+        "Grammar accuracy in complex structures",
+        "Avoiding colloquialisms"
+    ]
+}

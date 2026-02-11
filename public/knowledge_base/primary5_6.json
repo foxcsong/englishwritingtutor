@@ -1,0 +1,38 @@
+{
+    "level": "Primary5_6",
+    "description": "Grade 5-6 / Primary School (Pre-Intermediate)",
+    "vocabulary": {
+        "topics": [
+            "A Memorable Holiday",
+            "My Future Dream",
+            "Helping Others",
+            "A Great Book/Movie",
+            "Seasons"
+        ],
+        "required_words": [
+            "interesting",
+            "believe",
+            "history",
+            "successful",
+            "environment"
+        ],
+        "level_description": "300-500 words range. Describing events and feelings."
+    },
+    "grammar": [
+        "Future Tense (will vs. going to)",
+        "Present Perfect (for experience - 'have you ever')",
+        "First Conditional (If it rains, I will...)",
+        "Adverbs of frequency (usually, sometimes, never)"
+    ],
+    "writing_standards": {
+        "word_count": "70-100 words",
+        "complexity": "Varied sentence types. Introduction of complex sentences.",
+        "structure": "Clear beginning, middle, and end."
+    },
+    "correction_focus": [
+        "Consistent use of tenses",
+        "Subject-verb agreement in longer sentences",
+        "Punctuation in compound sentences",
+        "Vocabulary variety (avoiding 'good', 'bad')"
+    ]
+}

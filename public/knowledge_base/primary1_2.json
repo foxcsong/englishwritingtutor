@@ -1,0 +1,38 @@
+{
+    "level": "Primary1_2",
+    "description": "Grade 1-2 / Primary School (Beginner)",
+    "vocabulary": {
+        "topics": [
+            "My Family",
+            "My Pet",
+            "My Toys",
+            "Colors and Shapes",
+            "Fruits and Vegetables"
+        ],
+        "required_words": [
+            "like",
+            "have",
+            "color",
+            "play",
+            "friend"
+        ],
+        "level_description": "50-100 words range. Focus on simple, short sentences."
+    },
+    "grammar": [
+        "Simple Present Tense (I like, He plays)",
+        "Present Continuous Tense (I am playing)",
+        "Basic Pronouns (I, You, He, She, It)",
+        "Simple Plurals (cat -> cats)"
+    ],
+    "writing_standards": {
+        "word_count": "30-50 words",
+        "complexity": "Simple sentences (Subject + Verb + Object).",
+        "structure": "3-5 related sentences."
+    },
+    "correction_focus": [
+        "Spelling of basic words",
+        "Capitalization (Start of sentence, Names)",
+        "End punctuation (Period, Question mark)",
+        "Subject-Verb agreement for simple present (He/She likes)"
+    ]
+}

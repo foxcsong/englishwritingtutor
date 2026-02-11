@@ -1,0 +1,38 @@
+{
+    "level": "Senior3",
+    "description": "Grade 12 / Senior High Year 3 (Gaokao Preparation)",
+    "vocabulary": {
+        "topics": [
+            "Chinese Traditional Culture",
+            "Personal Development and Planning",
+            "Technology and Life",
+            "Environmental Conservation",
+            "Social Responsibility"
+        ],
+        "required_words": [
+            "appreciation",
+            "commitment",
+            "perspective",
+            "significance",
+            "psychological"
+        ],
+        "level_description": "3500+ words range. Exam-oriented, high accuracy and complexity."
+    },
+    "grammar": [
+        "Integrated Grammar usage in writing",
+        "Complex Sentence Structures for variety",
+        "Emphatic Structures",
+        "Subjunctive Mood (advanced)"
+    ],
+    "writing_standards": {
+        "word_count": "120-150 words (Gaokao Standard)",
+        "complexity": "High-level vocabulary and diverse sentence structures.",
+        "structure": "Standard exam essay structure (Letter, Notice, Speech, Argumentative)."
+    },
+    "correction_focus": [
+        "Advanced vocabulary substitution",
+        "Sentence variety and flow",
+        "Avoiding grammatical errors perfectly",
+        "Meeting specific exam prompts (e.g., 'Li Hua')"
+    ]
+}

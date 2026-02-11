@@ -1,0 +1,38 @@
+{
+    "level": "Junior2",
+    "description": "Grade 8 / Junior High Year 2 (Intermediate)",
+    "vocabulary": {
+        "topics": [
+            "Advantages and Disadvantages of Internet",
+            "A Travel Plan",
+            "Giving Advice",
+            "Volunteering",
+            "Future Intentions"
+        ],
+        "required_words": [
+            "resolution",
+            "technology",
+            "volunteer",
+            "improvement",
+            "experience"
+        ],
+        "level_description": "1000-1500 words range. Expressing opinions and making comparisons."
+    },
+    "grammar": [
+        "Comparatives and Superlatives",
+        "Simple Future (will vs going to detailed)",
+        "Past Continuous Tense (was/were doing)",
+        "Conditional Sentences Type 1"
+    ],
+    "writing_standards": {
+        "word_count": "70-90 words",
+        "complexity": "Compound and simple complex sentences. Logical flow.",
+        "structure": "Well-organized paragraphs with topic sentences."
+    },
+    "correction_focus": [
+        "Comparative structures (as...as, more than)",
+        "Tense consistency in narrative",
+        "Correct use of infinitives and gerunds (want to do, enjoy doing)",
+        "Sentence variety"
+    ]
+}

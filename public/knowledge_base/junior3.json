@@ -1,35 +1,42 @@
 {
     "level": "Junior3",
-    "description": "Grade 9 / Junior High Year 3",
+    "description": "Grade 9 / Junior High Year 3 (Advanced)",
     "vocabulary": {
         "topics": [
-            "Travel",
-            "Environment",
-            "Technology",
-            "Interpersonal Relationships"
+            "Travel & Culture",
+            "Environmental Protection",
+            "Technology & Future",
+            "Interpersonal Relationships",
+            "Personal Growth"
         ],
         "required_words": [
             "appreciate",
             "challenge",
             "environment",
-            "communicate"
+            "communicate",
+            "experience",
+            "achievement"
         ],
-        "level_description": "2000-2500 words range, focus on abstract concepts."
+        "level_description": "2500+ words range, focus on abstract concepts and logical expression."
     },
     "grammar": [
-        "Present Perfect Tense",
-        "Passive Voice",
-        "Attributive Clauses (that/which/who)",
-        "Adverbial Clauses (although/unless/so that)"
+        "Present Perfect Tense vs. Past Simple",
+        "Past Perfect Tense (had done)",
+        "Passive Voice (various tenses)",
+        "Attributive Clauses (that/which/who/whose)",
+        "Adverbial Clauses (although/unless/so that/even if)",
+        "Object Clauses",
+        "Modal Verbs for deduction (must/can't/could)"
     ],
     "writing_standards": {
-        "word_count": "80-100 words",
-        "complexity": "Compound and complex sentences are expected.",
-        "structure": "Clear introduction, body with supporting details, and conclusion."
+        "word_count": "100-120 words",
+        "complexity": "Use of compound-complex sentences and varied sentence openers.",
+        "structure": "Clear introduction, logical body paragraphs with transitions, and a strong conclusion."
     },
     "correction_focus": [
         "Subject-verb agreement in complex sentences",
-        "Correct use of conjunctions",
-        "Tense consistency"
+        "Correct use of conjunctions and transition words",
+        "Tense consistency and sequence",
+        "Appropriate use of relative pronouns"
     ]
 }
