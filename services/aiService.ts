@@ -301,72 +301,70 @@ export const evaluateWriting = async (
             - 目标: ${requirements.generalGoal}
             - 内容范围: ${requirements.contentScope}
             - 风格: ${requirements.style}
-            - 关键词: ${requirements.keywords?.join(', ')}
             - 结构: ${requirements.structure}
             `;
         }
 
         const basePrompt = `
-        角色: 你是一位经验丰富的${cnLevel}英语老师。
-        学生等级: ${level}
-        目标字数: ${wordCount.min}-${wordCount.max} 词
-        题目: "${topic.replace(/"/g, "'")}"
-        模式: ${mode}
+角色: 你是一位经验丰富的${cnLevel} 英语老师。
+学生等级: ${level}
+目标字数: ${wordCount.min} -${wordCount.max} 词
+题目: "${topic.replace(/"/g, "'")}"
+模式: ${mode}
 
-        - 语气: ${config.toneInstruction} (请用中文表达这种语气)
-        - 批改侧重: ${config.correctionFocus.join(', ')}
-        - **关于关键词**: 提供的关键词仅供参考。如果学生作文质量好，逻辑通顺，即使没有使用全部关键词，也不要扣分。只有在文章完全偏题或质量很差时才考虑关键词的使用情况。
+- 语气: ${config.toneInstruction} (请用中文表达这种语气)
+    - 批改侧重: ${config.correctionFocus.join(', ')}
 
         ${kbCriteria}
 
-        任务: 批改学生的英语作文。
-        学生作文内容: "${content.replace(/"/g, "'")}"
+任务: 批改学生的英语作文。
+学生作文内容: "${content.replace(/"/g, "'")}"
 
         ${reqPrompt}
 
         【核心指令 - 绝对禁令】:
-        1. **禁止**在 "generalFeedback"、"explanation"、"handwritingComment"、"feedback" 字段中输出任何英文句子。
-        2. **必须**将所有原本打算用英文表达的建议、评价、规则解释全部翻译成**中文**。
-        3. 给出评分 (0-100)。
-        4. 总体评价: 必须包含鼓励性的中文开场白。
-        5. **改进建议 (improvedVersion)**: 必须基于学生原文进行润色，禁止脱离原文重新创作。保持原有的结构、想法和逻辑，仅在语法、遣词造句和表达流畅度上进行优化。
+1. ** 禁止 ** 在 "generalFeedback"、"explanation"、"handwritingComment"、"feedback" 字段中输出任何英文句子。
+2. ** 必须 ** 将所有原本打算用英文表达的建议、评价、规则解释全部翻译成 ** 中文 **。
+3. 给出评分(0 - 100)。
+4. 总体评价: 必须包含鼓励性的中文开场白。
+5. ** 改进建议(improvedVersion) **: 必须基于学生原文进行润色，禁止脱离原文重新创作。保持原有的结构、想法和逻辑，仅在语法、遣词造句和表达流畅度上进行优化。
 
-        【正确示例 (JSON)】:
-        {
-          "score": 85,
-          "requirementCheck": { "met": true, "feedback": "文章覆盖了所有要求的点，结构很清晰。" },
-          "generalFeedback": "做得太棒了！你的故事非常精彩，句式很丰富。🌟",
-          "detailedCorrections": [
+        【正确示例(JSON)】:
+{
+    "score": 85,
+        "requirementCheck": { "met": true, "feedback": "文章覆盖了所有要求的点，结构很清晰。" },
+    "generalFeedback": "做得太棒了！你的故事非常精彩，句式很丰富。🌟",
+        "detailedCorrections": [
             { "original": "I has a pen", "correction": "I have a pen", "explanation": "主语是第一人称 I，动词应该用 have。" }
-          ],
-          "improvedVersion": "I have a beautiful pen..."
-        }
+        ],
+            "improvedVersion": "I have a beautiful pen..."
+}
 
-        请参照上述格式和**中文语言要求**返回纯 JSON:
-        `;
+请参照上述格式和 ** 中文语言要求 ** 返回纯 JSON:
+`;
 
         if (imageBase64) {
             prompt = `
             ${basePrompt}
             
             【手写识别特别任务】:
-            1. **识别**: 从图片中读取手写英文。
-            2. **作为提交内容**: 使用识别出的文本进行上述批改。
-            3. **书写评分**: 0-10分 (0=潦草无法辨认, 10=完美书法)。
-               - 给出简短的中文书写点评 ("handwritingComment")。
+1. ** 识别 **: 从图片中读取手写英文。
+2. ** 作为提交内容 **: 使用识别出的文本进行上述批改。
+3. ** 书写评分 **: 0 - 10分(0 = 潦草无法辨认, 10 = 完美书法)。
+- 给出简短的中文书写点评("handwritingComment")。
             
-            返回 JSON (包含 strict JSON):
-            {
-                "score": 0-100,
-                "handwritingScore": 0-10,
-                "handwritingComment": "中文书写点评...",
+            返回 JSON(包含 strict JSON):
+{
+    "score": 0 - 100,
+        "handwritingScore": 0 - 10,
+            "handwritingComment": "中文书写点评...",
                 "transcribedText": "识别出的全文...",
-                "requirementCheck": { "met": boolean, "feedback": "中文反馈..." },
-                "generalFeedback": "中文评价...",
-                "detailedCorrections": [...],
-                "improvedVersion": "..."
-            }
-            `;
+                    "requirementCheck": { "met": boolean, "feedback": "中文反馈..." },
+    "generalFeedback": "中文评价...",
+        "detailedCorrections": [...],
+            "improvedVersion": "..."
+}
+`;
         } else {
             prompt = basePrompt;
         }
@@ -376,62 +374,62 @@ export const evaluateWriting = async (
         const explainLang = 'English';
         let requirementPrompt = "";
         if (requirements) {
-            requirementPrompt = `Specific Writing Requirements: Goal: ${requirements.generalGoal}, Scope: ${requirements.contentScope}, Keywords: ${requirements.keywords?.join(', ')}`;
+            requirementPrompt = `Specific Writing Requirements: Goal: ${requirements.generalGoal}, Scope: ${requirements.contentScope}`;
         }
 
         let systemPrompt = `
-        Role: ${config.systemRole}
-        Tone: ${config.toneInstruction}
+Role: ${config.systemRole}
+Tone: ${config.toneInstruction}
         Correction Focus: ${config.correctionFocus.join(', ')}
         Target Level: ${level}
-        Topic: "${topic.replace(/"/g, "'")}"
+Topic: "${topic.replace(/"/g, "'")}"
         ${kbCriteria}
-        `;
+`;
 
         if (imageBase64) {
             prompt = `
             ${systemPrompt}
-            TASK: Handwritten Essay Evaluation.
+TASK: Handwritten Essay Evaluation.
             1. Recognize text.
-            2. Assess Handwriting (0-10) & Comment.
+            2. Assess Handwriting(0 - 10) & Comment.
             3. Grade Content & Features.
-            ${requirementPrompt ? `Check Requirements: ${requirementPrompt}` : ''}
+    ${requirementPrompt ? `Check Requirements: ${requirementPrompt}` : ''}
             
             Return JSON:
-            {
-                "score": 0-100, 
-                "handwritingScore": 0-10,
-                "handwritingComment": "Comment...",
+{
+    "score": 0 - 100,
+        "handwritingScore": 0 - 10,
+            "handwritingComment": "Comment...",
                 "transcribedText": "Text...",
-                "requirementCheck": { "met": boolean, "feedback": "..." },
-                "generalFeedback": "...", 
-                "detailedCorrections": [{"original": "...", "correction": "...", "explanation": "..."}], 
-                "improvedVersion": "..."
-            }
-            `;
+                    "requirementCheck": { "met": boolean, "feedback": "..." },
+    "generalFeedback": "...",
+        "detailedCorrections": [{ "original": "...", "correction": "...", "explanation": "..." }],
+            "improvedVersion": "..."
+}
+`;
         } else {
             prompt = `
             ${systemPrompt}
-            Task: Evaluate student writing.
-            Content: "${content.replace(/"/g, "'")}"
+Task: Evaluate student writing.
+    Content: "${content.replace(/"/g, "'")}"
             ${requirementPrompt}
-            
-            Instructions:
-            1. Check length & requirements.
-            2. Score (0-100).
+
+Instructions:
+1. Check length & requirements.
+            2. Score(0 - 100).
             3. Feedback template: "${config.feedbackTemplate}"
-            4. Detailed Corrections.
-            5. **Improved Version Guidelines**: The "improvedVersion" must be based on the student's original text. Polishing and refining only. Do NOT rewrite a new essay from scratch. Keep the original structure, ideas, and flow; only improve grammar, vocabulary, and sentence variety.
+4. Detailed Corrections.
+            5. ** Improved Version Guidelines **: The "improvedVersion" must be based on the student's original text. Polishing and refining only. Do NOT rewrite a new essay from scratch. Keep the original structure, ideas, and flow; only improve grammar, vocabulary, and sentence variety.
             
-            Return JSON: 
-            {
-              "score": 0-100, 
-              "requirementCheck": { "met": boolean, "feedback": "..." },
-              "generalFeedback": "...", 
-              "detailedCorrections": [{"original": "...", "correction": "...", "explanation": "..."}], 
-              "improvedVersion": "..."
-            }
-            `;
+            Return JSON:
+{
+    "score": 0 - 100,
+        "requirementCheck": { "met": boolean, "feedback": "..." },
+    "generalFeedback": "...",
+        "detailedCorrections": [{ "original": "...", "correction": "...", "explanation": "..." }],
+            "improvedVersion": "..."
+}
+`;
         }
     }
 
