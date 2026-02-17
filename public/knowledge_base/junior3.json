@@ -1,42 +1,49 @@
 {
-    "level": "Junior3",
-    "description": "Grade 9 / Junior High Year 3 (Advanced)",
+    "level": "Suzhou_Zhongkao_Prep",
+    "description": "Grade 9 / Junior High Year 3 (Suzhou High School Entrance Exam Standard)",
     "vocabulary": {
         "topics": [
-            "Travel & Culture",
-            "Environmental Protection",
-            "Technology & Future",
-            "Interpersonal Relationships",
-            "Personal Growth"
+            "Man & Self (Life habits, Mental health, Personal feelings)",
+            "Man & Society (Traditional Culture, Volunteering, School life)",
+            "Man & Nature (Environmental protection, Low-carbon life)",
+            "Science & Technology (AI impact, Future life)",
+            "Interpersonal Relationships (Getting along with parents/teachers)"
         ],
         "required_words": [
+            "traditional",
             "appreciate",
             "challenge",
-            "environment",
+            "responsibility",
             "communicate",
             "experience",
-            "achievement"
+            "achievement",
+            "necessary",
+            "volunteer",
+            "provide"
         ],
-        "level_description": "2500+ words range, focus on abstract concepts and logical expression."
+        "level_description": "Mastery of 1600-2000 core vocabulary words; focus on high-frequency verbs and transitional phrases."
     },
     "grammar": [
-        "Present Perfect Tense vs. Past Simple",
-        "Past Perfect Tense (had done)",
-        "Passive Voice (various tenses)",
-        "Attributive Clauses (that/which/who/whose)",
-        "Adverbial Clauses (although/unless/so that/even if)",
-        "Object Clauses",
-        "Modal Verbs for deduction (must/can't/could)"
+        "Object Clauses (think/believe/hope that...)",
+        "Attributive Clauses (who/which/that)",
+        "Adverbial Clauses (because/so/although/unless/if/when)",
+        "Passive Voice (General present/past tense)",
+        "It is + adj. + for sb. + to do sth.",
+        "Present Perfect Tense (have/has done)",
+        "Modal Verbs (should/must/can for advice and obligation)"
     ],
     "writing_standards": {
-        "word_count": "100-120 words",
-        "complexity": "Use of compound-complex sentences and varied sentence openers.",
-        "structure": "Clear introduction, logical body paragraphs with transitions, and a strong conclusion."
+        "word_count": "90-110 words (Recommended range for high scores)",
+        "complexity": "Use a mix of simple, compound, and complex sentences. Include at least 2-3 complex sentence structures.",
+        "structure": "Three-paragraph structure: 1. Topic Sentence (Introduction) -> 2. Supporting Details (Body) -> 3. Summary/Opinion (Conclusion).",
+        "cohesion": "Effective use of transition words (e.g., Firstly, Besides, However, In my opinion, All in all)."
     },
     "correction_focus": [
-        "Subject-verb agreement in complex sentences",
-        "Correct use of conjunctions and transition words",
-        "Tense consistency and sequence",
-        "Appropriate use of relative pronouns"
+        "Tense consistency (especially narrative vs. argumentative)",
+        "Subject-verb agreement (Third person singular errors)",
+        "Proper use of conjunctions (avoiding run-on sentences like 'I like it, it is good')",
+        "Spelling and Capitalization",
+        "Chinglish expressions (Focus on authentic collocations)",
+        "Handwriting and neatness (Critical for exam scoring)"
     ]
 }
