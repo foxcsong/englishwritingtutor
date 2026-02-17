@@ -1,49 +1,125 @@
 {
-    "level": "Suzhou_Zhongkao_Prep",
-    "description": "Grade 9 / Junior High Year 3 (Suzhou High School Entrance Exam Standard)",
+    "level": "Suzhou_Zhongkao_Comprehensive",
+    "description": "Grade 9 / Junior High Year 3 (Targeting Full Score in Suzhou Zhongkao)",
+    "curriculum_standard": "Based on 2022 National Curriculum Standards (3 Major Themes, 24 Sub-topics)",
+    "topic_coverage": {
+        "summary": "Comprehensive coverage of Man & Self, Man & Society, and Man & Nature.",
+        "categories": [
+            {
+                "name": "Category 1: Man & Self (Personal Growth & Lifestyle)",
+                "sub_topics": [
+                    "Healthy Living (Physical & Mental Health, Dealing with Stress/Anxiety)",
+                    "Learning Efficiency (Study Habits, Time Management, The 'Double Reduction' Policy)",
+                    "Personal Interests (Hobbies, Reading, Music, Sports)",
+                    "Self-awareness (Strengths/Weaknesses, Future Plans/Dream Job)"
+                ],
+                "example_prompts": [
+                    "How to Deal with Stress",
+                    "My Plan for the Coming Senior High School Life",
+                    "A Good Habit That Helps Me Learn"
+                ]
+            },
+            {
+                "name": "Category 2: Man & Society (Social Responsibility & Interaction)",
+                "sub_topics": [
+                    "Interpersonal Relationships (Family, Teachers, Friends, Resolving Conflicts)",
+                    "Community Service (Volunteering, Helping the Elderly, Charity Sales)",
+                    "Social Etiquette & Rules (Public Behavior, Following Traffic Rules)",
+                    "Safety Education (Self-protection, Internet Safety)"
+                ],
+                "example_prompts": [
+                    "How to Get Along with Parents",
+                    "A Meaningful Volunteer Activity",
+                    "Be a Smart Internet User"
+                ]
+            },
+            {
+                "name": "Category 3: Traditional Culture & Local Pride (Suzhou Context)",
+                "sub_topics": [
+                    "Chinese Festivals & Customs (Spring Festival, Mid-Autumn Festival)",
+                    "Introducing Hometown (Suzhou Gardens, Kunqu Opera, Local Food, Silk)",
+                    "Great People (Famous Chinese Historical Figures/Scientists)",
+                    "Cultural Confidence (Why we should love our traditional culture)"
+                ],
+                "example_prompts": [
+                    "Introducing Suzhou to a Foreign Friend",
+                    "My Favorite Traditional Chinese Festival",
+                    "The Beauty of Chinese Characters"
+                ]
+            },
+            {
+                "name": "Category 4: Man & Nature (Environment & Science)",
+                "sub_topics": [
+                    "Environmental Protection (Garbage Sorting, Low-carbon Life, Protecting Taihu Lake)",
+                    "Science & Technology (AI in Daily Life, Space Exploration, Smart Phones)",
+                    "Human & Animals (Protecting Wild Animals, Pets)"
+                ],
+                "example_prompts": [
+                    "Make Our City Greener",
+                    "Life with AI: Convenience or Challenge?",
+                    "How to Protect Wild Animals"
+                ]
+            },
+            {
+                "name": "Category 5: Values & Morality",
+                "sub_topics": [
+                    "Virtues (Honesty, Kindness, Courage, Perseverance)",
+                    "Role Models (People who move China, Everyday Heroes)",
+                    "Labor Education (Housework, School Cleaning, Farming Experience)"
+                ],
+                "example_prompts": [
+                    "The Importance of Being Honest",
+                    "Learning to Cook/Do Chores",
+                    "My Role Model"
+                ]
+            },
+            {
+                "name": "Category 6: New Question Types (Recent Trends)",
+                "sub_topics": [
+                    "Practical Writing (Notice, Letter of Invitation, Application Letter)",
+                    "Graph/Chart Analysis (Describing data trends and giving opinions)",
+                    "Reading & Writing (Summarizing a passage + Expressing personal views - *2024 Trend*)"
+                ]
+            }
+        ]
+    },
     "vocabulary": {
-        "topics": [
-            "Man & Self (Life habits, Mental health, Personal feelings)",
-            "Man & Society (Traditional Culture, Volunteering, School life)",
-            "Man & Nature (Environmental protection, Low-carbon life)",
-            "Science & Technology (AI impact, Future life)",
-            "Interpersonal Relationships (Getting along with parents/teachers)"
+        "level_requirement": "Proficiency in 1800-2000 words, focusing on topic-specific verbs and adjectives.",
+        "high_frequency_words": [
+            "traditional / culture / heritage",
+            "communicate / understand / relationship",
+            "environment / pollution / protect",
+            "technology / artificial intelligence / convenience",
+            "challenge / opportunity / achieve",
+            "responsible / volunteer / contribute",
+            "mental / physical / psychological",
+            "appreciate / admire / inspire"
         ],
-        "required_words": [
-            "traditional",
-            "appreciate",
-            "challenge",
-            "responsibility",
-            "communicate",
-            "experience",
-            "achievement",
-            "necessary",
-            "volunteer",
-            "provide"
-        ],
-        "level_description": "Mastery of 1600-2000 core vocabulary words; focus on high-frequency verbs and transitional phrases."
+        "phrase_bank": [
+            "play an important role in",
+            "make a contribution to",
+            "devote oneself to",
+            "take action to",
+            "raise awareness of",
+            "broaden one's horizons",
+            "cope with stress"
+        ]
     },
-    "grammar": [
-        "Object Clauses (think/believe/hope that...)",
-        "Attributive Clauses (who/which/that)",
-        "Adverbial Clauses (because/so/although/unless/if/when)",
-        "Passive Voice (General present/past tense)",
-        "It is + adj. + for sb. + to do sth.",
-        "Present Perfect Tense (have/has done)",
-        "Modal Verbs (should/must/can for advice and obligation)"
-    ],
+    "grammar_focus": {
+        "complex_structures": [
+            "Attributive Clauses (who/which/that/whose)",
+            "Object Clauses (I think that... / He asked if...)",
+            "Adverbial Clauses (Although... / Unless... / So that...)",
+            "Passive Voice (is done / was done / can be done)",
+            "It is + adj. + for sb. + to do sth.",
+            "V-ing as Subject/Object (Reading is distinct from...)"
+        ],
+        "sentence_variety": "Use of 'Not only... but also...', 'Neither... nor...', 'Too... to...', 'So... that...'"
+    },
     "writing_standards": {
-        "word_count": "90-110 words (Recommended range for high scores)",
-        "complexity": "Use a mix of simple, compound, and complex sentences. Include at least 2-3 complex sentence structures.",
-        "structure": "Three-paragraph structure: 1. Topic Sentence (Introduction) -> 2. Supporting Details (Body) -> 3. Summary/Opinion (Conclusion).",
-        "cohesion": "Effective use of transition words (e.g., Firstly, Besides, However, In my opinion, All in all)."
-    },
-    "correction_focus": [
-        "Tense consistency (especially narrative vs. argumentative)",
-        "Subject-verb agreement (Third person singular errors)",
-        "Proper use of conjunctions (avoiding run-on sentences like 'I like it, it is good')",
-        "Spelling and Capitalization",
-        "Chinglish expressions (Focus on authentic collocations)",
-        "Handwriting and neatness (Critical for exam scoring)"
-    ]
+        "word_count": "90-110 words (Strict control)",
+        "structure": "Introduction (Topic) -> Body (2-3 Supporting Points) -> Conclusion (Opinion/Hope)",
+        "cohesion": "Mandatory use of transition words: Firstly, Secondly, Furthermore, However, Therefore, In a word.",
+        "scoring_points": "Clear logic, rich vocabulary, correct grammar, and neat handwriting."
+    }
 }
