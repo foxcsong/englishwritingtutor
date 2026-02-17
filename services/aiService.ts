@@ -301,9 +301,9 @@ export const evaluateWriting = async (
         题目: "${topic.replace(/"/g, "'")}"
         模式: ${mode}
 
-        你的评分风格:
         - 语气: ${config.toneInstruction} (请用中文表达这种语气)
         - 批改侧重: ${config.correctionFocus.join(', ')}
+        - **关于关键词**: 提供的关键词仅供参考。如果学生作文质量好，逻辑通顺，即使没有使用全部关键词，也不要扣分。只有在文章完全偏题或质量很差时才考虑关键词的使用情况。
 
         ${kbCriteria}
 
