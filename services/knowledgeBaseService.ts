@@ -4,17 +4,38 @@ export interface KnowledgeBase {
     level: string;
     description: string;
     vocabulary: {
-        topics: string[];
-        required_words: string[];
-        level_description: string;
+        topics?: string[];
+        required_words?: string[];
+        level_description?: string;
+        // New structure support
+        high_frequency_words?: string[];
+        phrase_bank?: string[];
+        level_requirement?: string;
     };
-    grammar: string[];
+    grammar?: string[];
+    // New structure support
+    grammar_focus?: {
+        complex_structures?: string[];
+        sentence_variety?: string;
+    };
     writing_standards: {
         word_count: string;
-        complexity: string;
+        complexity?: string;
         structure: string;
+        cohesion?: string;
+        scoring_points?: string;
     };
-    correction_focus: string[];
+    correction_focus?: string[];
+    // New structure support
+    topic_coverage?: {
+        summary: string;
+        categories: {
+            name: string;
+            sub_topics: string[];
+            example_prompts?: string[];
+        }[];
+    };
+    curriculum_standard?: string;
 }
 
 const levelToFilenameMap: Record<StudentLevel, string> = {

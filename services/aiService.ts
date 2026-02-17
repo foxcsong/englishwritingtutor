@@ -70,10 +70,16 @@ export const generateTopics = async (username: string, level: StudentLevel): Pro
     const kb = await getKnowledgeBase(level);
 
     let kbContext = "";
-    if (kb && kb.vocabulary.topics && kb.vocabulary.topics.length > 0) {
-        kbContext = `
-    Focus on these themes relevant to the grade level: ${kb.vocabulary.topics.join(', ')}.
-    `;
+    if (kb) {
+        const topics = kb.vocabulary.topics ||
+            (kb.topic_coverage?.categories.flatMap(c => c.sub_topics)) ||
+            [];
+
+        if (topics.length > 0) {
+            kbContext = `
+        Focus on these themes relevant to the grade level: ${topics.join(', ')}.
+        `;
+        }
     }
 
     const prompt = `
@@ -120,11 +126,14 @@ export const generateLearningMaterial = async (username: string, level: StudentL
 
     let kbRequirements = "";
     if (kb) {
+        const requiredWords = kb.vocabulary.required_words || kb.vocabulary.high_frequency_words || [];
+        const grammarPoints = kb.grammar || kb.grammar_focus?.complex_structures || [];
+
         kbRequirements = `
         Incorporated the following level-specific requirements:
-        Vocabulary to include: ${kb.vocabulary.required_words.join(', ')}.
-        Grammar points to demonstrate: ${kb.grammar.join(', ')}.
-        Writing Standard: ${kb.writing_standards.complexity}.
+        Vocabulary to include: ${requiredWords.join(', ')}.
+        Grammar points to demonstrate: ${grammarPoints.join(', ')}.
+        Writing Standard: ${kb.writing_standards.complexity || 'Age appropriate complexity'}.
         Structure: ${kb.writing_standards.structure}.
         `;
     }
@@ -268,11 +277,14 @@ export const evaluateWriting = async (
     const kb = await getKnowledgeBase(level);
     let kbCriteria = "";
     if (kb) {
+        const correctionFocus = kb.correction_focus ||
+            (kb.writing_standards.scoring_points ? [kb.writing_standards.scoring_points] : []);
+
         kbCriteria = `
         Strictly evaluate based on these grade-level standards:
         Word Count Target: ${kb.writing_standards.word_count}.
-        Grammar Focus: ${kb.correction_focus.join(', ')}.
-        Expected Complexity: ${kb.writing_standards.complexity}.
+        Grammar Focus: ${correctionFocus.join(', ')}.
+        Expected Complexity: ${kb.writing_standards.complexity || 'Age appropriate'}.
         `;
     }
 
