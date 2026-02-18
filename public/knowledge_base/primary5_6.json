@@ -1,38 +1,83 @@
 {
     "level": "Primary5_6",
-    "description": "Grade 5-6 / Primary School (Pre-Intermediate)",
+    "description": "Grade 5-6 / Primary School (Upper Primary)",
+    "curriculum_standard": "Based on 2022 National Curriculum Standards (Level 2)",
+    "topic_coverage": {
+        "summary": "Focus on daily life, personal interests, family, and simple storytelling.",
+        "categories": [
+            {
+                "name": "Category 1: My Colorful Life (Man & Self)",
+                "sub_topics": [
+                    "My Weekends (Activities, Plans)",
+                    "My Hobbies (Reading, Sports, Collecting)",
+                    "My Dream (Future Job)",
+                    "A Happy Day (Diary entry)"
+                ],
+                "example_prompts": [
+                    "My Busy Weekend",
+                    "I Want to be a Teacher",
+                    "A Happy Sunday"
+                ]
+            },
+            {
+                "name": "Category 2: Family & Friends (Man & Society)",
+                "sub_topics": [
+                    "My Family (Parents' jobs, appearance)",
+                    "Helping at Home (Housework)",
+                    "My Best Friend (Description, Activities together)",
+                    "A Birthday Party"
+                ],
+                "example_prompts": [
+                    "My Hard-working Mother",
+                    "A Letter to My Friend",
+                    "An Unforgettable Birthday Party"
+                ]
+            },
+            {
+                "name": "Category 3: The World Around Me (Man & Nature)",
+                "sub_topics": [
+                    "Seasons (Favorite season, Weather, Clothing)",
+                    "Animals (Zoo visitors, Pets)",
+                    "Traffic Rules (Safety on the road)"
+                ],
+                "example_prompts": [
+                    "My Favorite Season",
+                    "Look at the Traffic Lights"
+                ]
+            }
+        ]
+    },
     "vocabulary": {
-        "topics": [
-            "A Memorable Holiday",
-            "My Future Dream",
-            "Helping Others",
-            "A Great Book/Movie",
-            "Seasons"
+        "level_requirement": "Proficiency in 400-600 words. Can recount simple events.",
+        "high_frequency_words": [
+            "morning / afternoon / evening / tomorrow / yesterday",
+            "sunny / rainy / windy / snowy",
+            "delicious / interesting / busy / tired",
+            "visit / climb / study / clean / wash",
+            "mother / father / grandparents / cousin"
         ],
-        "required_words": [
-            "interesting",
-            "believe",
-            "history",
-            "successful",
-            "environment"
-        ],
-        "level_description": "300-500 words range. Describing events and feelings."
+        "phrase_bank": [
+            "go hiking / go shopping / go fishing",
+            "take a trip",
+            "do homework",
+            "have a good time",
+            "cannot wait to"
+        ]
     },
-    "grammar": [
-        "Future Tense (will vs. going to)",
-        "Present Perfect (for experience - 'have you ever')",
-        "First Conditional (If it rains, I will...)",
-        "Adverbs of frequency (usually, sometimes, never)"
-    ],
+    "grammar_focus": {
+        "complex_structures": [
+            "Past Simple (I went to... / It was...)",
+            "Future with 'be going to' (I am going to...)",
+            "Present Continuous (What are you doing?)",
+            "Modal Verbs (Can / Should / Must)",
+            "Question Words (Who / Whose / Which / When / Where / Why)"
+        ],
+        "sentence_variety": "Using 'and', 'but', 'because' to connect sentences."
+    },
     "writing_standards": {
-        "word_count": "70-100 words",
-        "complexity": "Varied sentence types. Introduction of complex sentences.",
-        "structure": "Clear beginning, middle, and end."
-    },
-    "correction_focus": [
-        "Consistent use of tenses",
-        "Subject-verb agreement in longer sentences",
-        "Punctuation in compound sentences",
-        "Vocabulary variety (avoiding 'good', 'bad')"
-    ]
+        "word_count": "50-80 words",
+        "structure": "Simple narrative structure (Time order).",
+        "cohesion": "Use time connectors: First, Then, Next, Finally.",
+        "scoring_points": "Correct punctuation, correct past tense forms, clear handwriting."
+    }
 }

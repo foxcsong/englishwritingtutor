@@ -1,38 +1,97 @@
 {
     "level": "Senior1",
-    "description": "Grade 10 / Senior High Year 1 (Upper Intermediate)",
-    "vocabulary": {
-        "topics": [
-            "Friendship and Communication",
-            "Cultural Heritage",
-            "Healthy Eating Habits",
-            "Space Exploration",
-            "Natural Disasters"
-        ],
-        "required_words": [
-            "communicate",
-            "situation",
-            "evidence",
-            "congratulation",
-            "organize"
-        ],
-        "level_description": "2500-3000 words range. Focus on logical reasoning and social issues."
+    "description": "Grade 10 / Senior High Year 1 (Foundations & Exploration)",
+    "curriculum_standard": "Based on 2022/2017 National Curriculum Standards (Compulsory 1-3)",
+    "topic_coverage": {
+        "summary": "Focus on adapting to high school, cultural heritage, and varied writing types.",
+        "categories": [
+            {
+                "name": "Category 1: Teen Life (Man & Self)",
+                "sub_topics": [
+                    "High School Life (Challenges, New Friends, Clubs)",
+                    "Healthy Lifestyle (Mental Health, Dealing with Stress)",
+                    "Sports & Athletes (Spirit of Sports)",
+                    "Learning Strategies (How to learn English efficiently)"
+                ],
+                "example_prompts": [
+                    "My First Week at Senior High",
+                    "How to Deal with Stress",
+                    "A Letter of Advice on Learning English"
+                ]
+            },
+            {
+                "name": "Category 2: Culture & travel (Man & Society)",
+                "sub_topics": [
+                    "Travel (The Journey, Landscapes like Peru/Amazon)",
+                    "Cultural Heritage (Amber Room, Great Wall, protecting relics)",
+                    "Festivals & Celebrations (Christmas, Spring Festival, Day of the Dead)",
+                    "Body Language (Cultural differences)"
+                ],
+                "example_prompts": [
+                    "A Travel Journal",
+                    "Protecting Our Cultural Heritage",
+                    "The Festival I Like Best"
+                ]
+            },
+            {
+                "name": "Category 3: Nature & Science (Man & Nature)",
+                "sub_topics": [
+                    "Natural Disasters (Earthquakes, Emergency kits)",
+                    "Wildlife Protection (Endangered species like Tibetan Antelopes)",
+                    "Space Exploration (Astronauts, Future life in space)"
+                ],
+                "example_prompts": [
+                    "A Speech on Wildlife Protection",
+                    "My Dream of Space"
+                ]
+            },
+            {
+                "name": "Category 4: Practical Writing",
+                "sub_topics": [
+                    "Application Letters (Volunteering)",
+                    "Notices (School events)",
+                    "Emails (Inviting friends, Apologizing)",
+                    "Continuation Writing (Narrative endings)"
+                ],
+                "example_prompts": [
+                    "An Application Letter for Volunteers",
+                    "Notice: English Speaking Contest"
+                ]
+            }
+        ]
     },
-    "grammar": [
-        "Direct and Indirect Speech",
-        "Attributive Clauses (restrictive and non-restrictive)",
-        "Passive Voice (Present/Past/Future)",
-        "Present Perfect Continuous"
-    ],
+    "vocabulary": {
+        "level_requirement": "Proficiency in 2000-2500 words. Focus on topic-specific nouns and academic verbs.",
+        "high_frequency_words": [
+            "challenge / opportunity / confident / strategy",
+            "communicate / exchange / appreciate / culture",
+            "environment / disaster / damage / protection",
+            "explore / discover / advance / technology",
+            "extremely / obviously / actually / gradually"
+        ],
+        "phrase_bank": [
+            "adapt to",
+            "make a contribution to",
+            "be responsible for",
+            "take part in",
+            "translate ... into ...",
+            "in danger of"
+        ]
+    },
+    "grammar_focus": {
+        "complex_structures": [
+            "Attributive Clauses (Introduction to 'that', 'which', 'who', 'whose')",
+            "Noun Clauses (Subject/Object clauses with 'what', 'that')",
+            "Passive Voice (Present/Past/Future/Present Continuous)",
+            "Modal Verbs (can/could/may/might/must/should)",
+            "Infinitive and V-ing forms as Subject/Object"
+        ],
+        "sentence_variety": "Use of introductory phrases, transition signals, and mixed sentence types."
+    },
     "writing_standards": {
         "word_count": "100-120 words",
-        "complexity": "Complex sentence structures. Clear thesis statement.",
-        "structure": "Introduction with thesis, supporting paragraphs, conclusion."
-    },
-    "correction_focus": [
-        "Correct use of relative pronouns",
-        "Passive voice transformation",
-        "Cohesion and coherence linking words",
-        "Avoidance of Chinglish expressions"
-    ]
+        "structure": "Clear Introduction -> Supporting Paragraphs (Logic) -> Conclusion.",
+        "cohesion": "Use advanced linkers: Furthermore, Consequently, In contrast, To sum up.",
+        "scoring_points": "Rich vocabulary, varied sentence structures, clear logic, genre appropriateness."
+    }
 }

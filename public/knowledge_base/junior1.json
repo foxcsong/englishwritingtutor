@@ -1,38 +1,104 @@
 {
     "level": "Junior1",
-    "description": "Grade 7 / Junior High Year 1 (Lower Intermediate)",
-    "vocabulary": {
-        "topics": [
-            "My New School Life",
-            "Rules and Regulations",
-            "Healthy Lifestyle",
-            "My Favorite Festival",
-            "A Person I Admire"
-        ],
-        "required_words": [
-            "schedule",
-            "exercise",
-            "festival",
-            "important",
-            "opinion"
-        ],
-        "level_description": "500-800 words range. Expressing opinions and describing events."
+    "description": "Grade 7 / Junior High Year 1 (Transition from Primary to Secondary)",
+    "curriculum_standard": "Based on 2022 National Curriculum Standards (Level 3 Start)",
+    "topic_coverage": {
+        "summary": "Focus on self, family, school life, and basic social interactions.",
+        "categories": [
+            {
+                "name": "Category 1: Man & Self (Personal Life)",
+                "sub_topics": [
+                    "Self-introduction (Name, Age, Appearance, Personality)",
+                    "My Family (Family Members, Jobs, Looks)",
+                    "My Hobbies (Sports, Music, Collections)",
+                    "Daily Routine (Getting up, School schedule, Weekend activities)",
+                    "Healthy Lifestyle (Eating habits, Exercise, Sleeping)"
+                ],
+                "example_prompts": [
+                    "A Letter to a Pen Pal",
+                    "My Happy Family",
+                    "My Favorite Sport"
+                ]
+            },
+            {
+                "name": "Category 2: Man & Society (School & Friends)",
+                "sub_topics": [
+                    "My School (Campus, Classroom, Facilities)",
+                    "School Life (Subjects, Teachers, Classmates)",
+                    "Rules (School rules, Library rules, Home rules)",
+                    "Friendship (My best friend, Helping each other)",
+                    "Festivals (Birthday parties, School Art Festival)"
+                ],
+                "example_prompts": [
+                    "My New School Life",
+                    "Rules in My Class",
+                    "My Best Friend"
+                ]
+            },
+            {
+                "name": "Category 3: Man & Nature (Surroundings)",
+                "sub_topics": [
+                    "Animals (Pets, Zoo animals, Pandas)",
+                    "Seasons & Weather (Favorite season, Weather description)",
+                    "My Community (Park, Shop, Library location)",
+                    "Travel (A trip to...)"
+                ],
+                "example_prompts": [
+                    "My Favorite Animal",
+                    "I Love Spring",
+                    "A Trip to the Zoo"
+                ]
+            },
+            {
+                "name": "Category 4: Traditional Culture (Introductory)",
+                "sub_topics": [
+                    "Spring Festival (Dumplings, Red packets)",
+                    "Mid-Autumn Festival (Mooncakes)",
+                    "Dragon Boat Festival (Zongzi)",
+                    "Chinese Food (Noodles, Rice)"
+                ],
+                "example_prompts": [
+                    "The Spring Festival",
+                    "My Favorite Chinese Food"
+                ]
+            }
+        ]
     },
-    "grammar": [
-        "Present Simple vs. Present Continuous",
-        "Modal verbs (can, must, have to)",
-        "There be structure",
-        "Countable and Uncountable Nouns"
-    ],
+    "vocabulary": {
+        "level_requirement": "Proficiency in 500-800 words. Describe daily life using simple sentences.",
+        "high_frequency_words": [
+            "favorite / interesting / boring / difficult",
+            "morning / afternoon / evening / weekend",
+            "subject / science / math / history",
+            "always / usually / often / sometimes / never",
+            "because / so / but / and",
+            "healthy / delicious / sweet / fresh"
+        ],
+        "phrase_bank": [
+            "get up / go to school / go home",
+            "play soccer / play the guitar",
+            "kind of / a little bit",
+            "be good at",
+            "thanks for",
+            "look forward to"
+        ]
+    },
+    "grammar_focus": {
+        "complex_structures": [
+            "Present Simple (I like... / He likes...)",
+            "Present Continuous (I am doing...)",
+            "Modal Verbs (Can / Must / Have to)",
+            "There be structure (There is/are...)",
+            "Wh-questions (What / Where / When / Why / Who / How)",
+            "Prepositions of Place (in, on, under, behind, next to)"
+        ],
+        "sentence_variety": "Simple Subject-Verb-Object sentences. Compound sentences with 'and', 'but', 'so'."
+    },
     "writing_standards": {
         "word_count": "60-80 words",
         "complexity": "Clear paragraph structure. Use of linking words (first, second, finally).",
-        "structure": "Introduction, body, conclusion."
-    },
-    "correction_focus": [
-        "Subject-Verb Agreement",
-        "Correct use of articles (a, an, the)",
-        "Spelling of irregular plurals",
-        "Punctuation usage"
-    ]
+        "structure": "Simple paragraph structure: Leading sentence -> Supporting details -> Ending sentence.",
+        "cohesion": "Use basic linking words: And, But, So, Then, First.",
+        "scoring_points": "Correct spelling, correct basic grammar (Subject-Verb Agreement), clear handwriting."
+    }
 }

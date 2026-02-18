@@ -1,38 +1,77 @@
 {
     "level": "University3_4",
-    "description": "University Year 3-4 (CET-6 Standard)",
-    "vocabulary": {
-        "topics": [
-            "Artificial Intelligence & Ethics",
-            "Globalization vs. Localization",
-            "Educational Reform",
-            "Environmental Sustainability",
-            "Cultural Confidence"
-        ],
-        "required_words": [
-            "cultivate",
-            "indispensable",
-            "controversial",
-            "integrate",
-            "phenomenon"
-        ],
-        "level_description": "5500-6000 words range. CET-6 exam preparation."
+    "description": "University Year 3-4 / CET-6 (College English Test Band 6)",
+    "curriculum_standard": "Based on National College English Curriculum Requirements (CET-6)",
+    "topic_coverage": {
+        "summary": "Focus on deep social analysis, innovation, and critical thinking quotes.",
+        "categories": [
+            {
+                "name": "Category 1: Innovation & Development",
+                "sub_topics": [
+                    "Artificial Intelligence (Ethics, Employment)",
+                    "Innovation awareness (Creativity in learning)",
+                    "Scientific Spirit (Curiosity, Persistence)"
+                ],
+                "example_prompts": [
+                    "The Importance of Innovation in the Digital Age",
+                    "Man and Computer: Who is the Master?"
+                ]
+            },
+            {
+                "name": "Category 2: Quote/Picture Comments (Critical Thinking)",
+                "sub_topics": [
+                    "Philosophical sayings (e.g., 'Action speaks louder than words')",
+                    "Social Cartoons (Satire on modern habits priority)",
+                    "Traditional Wisdom (Confucius sayings)"
+                ],
+                "example_prompts": [
+                    "Comment on the saying: 'Knowledge is power'",
+                    "A Cartoon about 'Phubbers' (Phone Snubbers)"
+                ]
+            },
+            {
+                "name": "Category 3: In-depth Social Issues",
+                "sub_topics": [
+                    "Education Equality (Rural vs Urban)",
+                    "Aging Society (Care for elderly)",
+                    "Cultural Confidence (Exporting Chinese culture)"
+                ],
+                "example_prompts": [
+                    "How to Address the Aging Population Problem",
+                    "The Importance of Cultural Confidence"
+                ]
+            }
+        ]
     },
-    "grammar": [
-        "Stylistic Inversion",
-        "Absolute Phrase structure",
-        "Rhetorical Questions",
-        "Parallelism"
-    ],
+    "vocabulary": {
+        "level_requirement": "CET-6 Core Vocabulary (5500-6000 words). Advanced abstract concepts.",
+        "high_frequency_words": [
+            "innovation / cultivation / deterioration / implication",
+            "controversial / superficial / indispensable / potential",
+            "acknowledge / facilitate / stimulate / hinder",
+            "simultaneously / excessively / inevitably / appropriately"
+        ],
+        "phrase_bank": [
+            "give priority to",
+            "pave the way for",
+            "pose a threat to",
+            "exert a far-reaching influence on",
+            "in the era of information explosion"
+        ]
+    },
+    "grammar_focus": {
+        "complex_structures": [
+            "Inversion (Never before have we seen...)",
+            "Double Negatives for emphasis",
+            "Advanced Virtual Mood (Had it not been for...)",
+            "Participial Phrases (Having realized the importance of...)"
+        ],
+        "sentence_variety": "Sophisticated sentence variation. Rhetorical questions."
+    },
     "writing_standards": {
         "word_count": "150-200 words",
-        "complexity": "Sophisticated argumentation. Nuanced expression.",
-        "structure": "Problem-Solution, Compare-Contrast, Argumentative."
-    },
-    "correction_focus": [
-        "Depth of thought and critical thinking",
-        "Variety of sentence openers",
-        "Precisely used advanced vocabulary",
-        "Overall coherence and cohesion"
-    ]
+        "structure": "Introduction (Quote/Pic interpretation) -> Argumentation (Why/How) -> Conclusion (Action).",
+        "cohesion": "Seamless logic flow. 'Consequently', 'In this regard'.",
+        "scoring_points": "Depth of understanding, sophisticated language, precise expression."
+    }
 }

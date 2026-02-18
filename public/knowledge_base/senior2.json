@@ -1,38 +1,94 @@
 {
     "level": "Senior2",
-    "description": "Grade 11 / Senior High Year 2 (Advanced)",
-    "vocabulary": {
-        "topics": [
-            "Science and Innovation",
-            "Art and Literature",
-            "Global Warming",
-            "Modern Media",
-            "The Power of Music"
-        ],
-        "required_words": [
-            "phenomenon",
-            "consequence",
-            "contribution",
-            "representative",
-            "characteristic"
-        ],
-        "level_description": "3000-3500 words range. Analytical and critical thinking."
+    "description": "Grade 11 / Senior High Year 2 (Advanced Exploration)",
+    "curriculum_standard": "Based on 2022/2017 National Curriculum Standards (Selective Compulsory)",
+    "topic_coverage": {
+        "summary": "Focus on critical thinking, global issues, technology, and literature.",
+        "categories": [
+            {
+                "name": "Category 1: Technology & Society (Man & Society)",
+                "sub_topics": [
+                    "Artificial Intelligence (AI in daily life, Robots)",
+                    "Social Media (Pros and Cons, Connection vs Isolation)",
+                    "Modern Inventions (Smart homes, Electric cars)",
+                    "Online Learning (Challenges and benefits)"
+                ],
+                "example_prompts": [
+                    "Life in the Future: With or Without Robots?",
+                    "My Views on Social Media Addiction"
+                ]
+            },
+            {
+                "name": "Category 2: Arts & Literature (Man & Society)",
+                "sub_topics": [
+                    "Classic Literature (Review of a book, Favorite character)",
+                    "The Power of Music (Traditional vs Modern)",
+                    "Movies & Drama (Film reviews, Educational value)",
+                    "Art Appreciation (Painting, Photography)"
+                ],
+                "example_prompts": [
+                    "A Review of a Classic Novel",
+                    "How Music Affects Our Emotions"
+                ]
+            },
+            {
+                "name": "Category 3: Global Issues (Man & Nature)",
+                "sub_topics": [
+                    "Environmental Protection (Climate Change, Low-carbon life)",
+                    "Sustainable Development (Green energy, Recycling)",
+                    "Human & Nature (Harmony, Animal rights)"
+                ],
+                "example_prompts": [
+                    "Global Warming: What Can We Do?",
+                    "Living a Low-carbon Life"
+                ]
+            },
+            {
+                "name": "Category 4: Argumentative Skills",
+                "sub_topics": [
+                    "Balanced Viewpoints (On the one hand... On the other hand...)",
+                    "Expressing Opinions (I strongly believe...)",
+                    "Debate Topics (Should students bring phones to school?)"
+                ],
+                "example_prompts": [
+                    "Should We Ban Plastic Bags?",
+                    "Electronic Books vs. Paper Books"
+                ]
+            }
+        ]
     },
-    "grammar": [
-        "Non-finite Verbs (Infinitives, Participles, Gerunds)",
-        "Subjunctive Mood (basics)",
-        "Inversion (Only then did he...)",
-        "Noun Clauses (Subject, Object, Appositive)"
-    ],
+    "vocabulary": {
+        "level_requirement": "Proficiency in 3000-3500 words. Abstract nouns and formal verbs.",
+        "high_frequency_words": [
+            "phenomenon / consequence / significant / alternative",
+            "contribution / representative / characteristic / perspective",
+            "argument / evidence / analyze / conclude",
+            "psychological / emotional / accessible / reliable",
+            "furthermore / nevertheless / therefore / otherwise"
+        ],
+        "phrase_bank": [
+            "play a vital role in",
+            "have a negative/positive impact on",
+            "make efforts to",
+            "take... into consideration",
+            "from my point of view",
+            "tackle the problem of"
+        ]
+    },
+    "grammar_focus": {
+        "complex_structures": [
+            "Non-finite Verbs (Participles as Adverbials/Attributes)",
+            "Inversion (Only then did he... / Not only... but also...)",
+            "Subjunctive Mood (If I were you... / It is high time that...)",
+            "Noun Clauses (Appositive clauses: The fact that...)",
+            "Emphasis (It is ... that ... / Do + verb)"
+        ],
+        "sentence_variety": "Usage of inverted sentences for emphasis. Participle phrases for concise expression."
+    },
     "writing_standards": {
         "word_count": "120-150 words",
-        "complexity": "Varied sentence patterns (inversion, emphasis). Sophisticated vocabulary.",
-        "structure": "Argumentative or expository essays with strong evidence."
-    },
-    "correction_focus": [
-        "Correct use of non-finite verbs",
-        "Complex sentence logic",
-        "Lexical variety and precision",
-        "Formal tone maintenance"
-    ]
+        "structure": "Argumentative Structure: Thesis -> Arguments -> Counter-arguments -> Conclusion.",
+        "cohesion": "Sophisticated use of connective devices.",
+        "scoring_points": "Critical thinking, depth of thought, precise vocabulary, complex grammar usage."
+    }
 }

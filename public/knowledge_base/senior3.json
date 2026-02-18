@@ -1,38 +1,94 @@
 {
     "level": "Senior3",
-    "description": "Grade 12 / Senior High Year 3 (Gaokao Preparation)",
+    "description": "Grade 12 / Senior High Year 3 (Gaokao Preparation & Mastery)",
+    "curriculum_standard": "Based on 2022/2017 National Curriculum Standards (Gaokao Requirements)",
+    "topic_coverage": {
+        "summary": "Focus on comprehensive application, exam-specific formats, and deep cultural expression.",
+        "categories": [
+            {
+                "name": "Category 1: Practical Writing (Gaokao Focus)",
+                "sub_topics": [
+                    "Application Letters (University, Volunteers, Clubs)",
+                    "Speeches (Graduation, Welcome ceremony, Contests)",
+                    "Notices & Announcements (School events, Lost & Found)",
+                    "Letters of Suggestion/Complaint",
+                    "Emails (Interpersonal communication)"
+                ],
+                "example_prompts": [
+                    "A Speech at the Graduation Ceremony",
+                    "An Application Letter for the Asian Games Volunteers",
+                    "A Letter of Advice to a Freshman"
+                ]
+            },
+            {
+                "name": "Category 2: Continuation Writing (Narrative)",
+                "sub_topics": [
+                    "Story Completion (Based on a reading passage)",
+                    "Conflict Resolution (Misunderstandings, Arguments)",
+                    "Acts of Kindness (Helping strangers, Rescue stories)",
+                    "Overcoming Challenges (Personal growth stories)"
+                ],
+                "example_prompts": [
+                    "Continue the Story: The Unexpected Gift",
+                    "Continue the Story: A Rescue in the Storm"
+                ]
+            },
+            {
+                "name": "Category 3: Chinese Culture & Responsibility (Man & Society)",
+                "sub_topics": [
+                    "Introducing China (Tea, Kung Fu, Festivals, History)",
+                    "Social Responsibility (Youth's role, Community service)",
+                    "Traditional Values (Filial piety, Honesty, Hard work)"
+                ],
+                "example_prompts": [
+                    "Introducing Chinese Tea Culture",
+                    "My Understanding of 'Greatness'"
+                ]
+            },
+            {
+                "name": "Category 4: Current Trends & Reviews",
+                "sub_topics": [
+                    "Technology & Ethics (AI, Privacy)",
+                    "Book/Film Reviews (Personal reflection)",
+                    "Healthy Lifestyle Trends"
+                ],
+                "example_prompts": [
+                    "My View on Artificial Intelligence",
+                    "A Meaningful Book I Read"
+                ]
+            }
+        ]
+    },
     "vocabulary": {
-        "topics": [
-            "Chinese Traditional Culture",
-            "Personal Development and Planning",
-            "Technology and Life",
-            "Environmental Conservation",
-            "Social Responsibility"
+        "level_requirement": "Proficiency in 3500+ words. Idiomatic and precise expression.",
+        "high_frequency_words": [
+            "commitment / appreciation / priority / potential",
+            "acknowledge / advocate / guarantee / distinguish",
+            "essential / vital / fundamental / controversial",
+            "consequently / eventually / simultaneously / apparently"
         ],
-        "required_words": [
-            "appreciation",
-            "commitment",
-            "perspective",
-            "significance",
-            "psychological"
-        ],
-        "level_description": "3500+ words range. Exam-oriented, high accuracy and complexity."
+        "phrase_bank": [
+            "spare no effort to",
+            "attach great importance to",
+            "have a profound influence on",
+            "it is universally acknowledged that",
+            "broaden one's horizons",
+            "take immediate action"
+        ]
     },
-    "grammar": [
-        "Integrated Grammar usage in writing",
-        "Complex Sentence Structures for variety",
-        "Emphatic Structures",
-        "Subjunctive Mood (advanced)"
-    ],
+    "grammar_focus": {
+        "complex_structures": [
+            "Integrated Grammar (Seamless combination of clauses)",
+            "Advanced Sentence Patterns (Inversion, Emphasis, Subjunctive)",
+            "Absolute Construction (Weather permitting, ...)",
+            "Paraphrasing skills (Changing sentence structures for better flow)"
+        ],
+        "sentence_variety": "Rhythmic variation of long and short sentences. Masterful use of transitions."
+    },
     "writing_standards": {
-        "word_count": "120-150 words (Gaokao Standard)",
-        "complexity": "High-level vocabulary and diverse sentence structures.",
-        "structure": "Standard exam essay structure (Letter, Notice, Speech, Argumentative)."
-    },
-    "correction_focus": [
-        "Advanced vocabulary substitution",
-        "Sentence variety and flow",
-        "Avoiding grammatical errors perfectly",
-        "Meeting specific exam prompts (e.g., 'Li Hua')"
-    ]
+        "word_count": "150+ words (Continuation Writing), 100-120 (Practical Writing)",
+        "structure": "Highly structured and coherent. Practical: Format is crucial. Narrative: Plot logical flow.",
+        "cohesion": "Natural and smooth transitions. 'Li Hua' style appropriateness.",
+        "scoring_points": "Task fulfillment, coherence and cohesion, lexical resource, grammatical range and accuracy."
+    }
 }

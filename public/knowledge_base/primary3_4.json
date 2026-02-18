@@ -1,38 +1,82 @@
 {
     "level": "Primary3_4",
-    "description": "Grade 3-4 / Primary School (Elementary)",
+    "description": "Grade 3-4 / Primary School (Beginner +)",
+    "curriculum_standard": "Based on 2022 National Curriculum Standards (Level 1)",
+    "topic_coverage": {
+        "summary": "Focus on naming things, simple descriptions, and daily preferences.",
+        "categories": [
+            {
+                "name": "Category 1: Me & My Favorites (Man & Self)",
+                "sub_topics": [
+                    "My Favorites (Color, Food, Animal, Toy)",
+                    "My Body (Describing appearance)",
+                    "My Clothes (What I am wearing)",
+                    "My Room (Describing objects)"
+                ],
+                "example_prompts": [
+                    "My Favorite Color",
+                    "My Cool Toy Car",
+                    "Look at My Room"
+                ]
+            },
+            {
+                "name": "Category 2: School & Friends (Man & Society)",
+                "sub_topics": [
+                    "My School Bag (School supplies)",
+                    "My Classmates (Names and descriptions)",
+                    "Playtime (Games we play)",
+                    "My Teacher (Simple description)"
+                ],
+                "example_prompts": [
+                    "What's in My School Bag?",
+                    "My Nice Teacher"
+                ]
+            },
+            {
+                "name": "Category 3: Daily Life",
+                "sub_topics": [
+                    "My Day (Morning, Noon, Night activities)",
+                    "Meals (Breakfast, Lunch, Dinner)",
+                    "Weather (Sunny, Rainy, Cold, Hot)"
+                ],
+                "example_prompts": [
+                    "My Breakfast",
+                    "It is a Sunny Day"
+                ]
+            }
+        ]
+    },
     "vocabulary": {
-        "topics": [
-            "My School Day",
-            "My Hobbies",
-            "My Best Friend",
-            "Weather",
-            "My Favorite Food"
+        "level_requirement": "Proficiency in 200-400 words. Naming objects and simple actions.",
+        "high_frequency_words": [
+            "red / blue / green / yellow",
+            "apple / banana / rice / milk",
+            "cat / dog / panda / elephant",
+            "school / book / pencil / ruler",
+            "run / jump / swim / dance"
         ],
-        "required_words": [
-            "always",
-            "because",
-            "school",
-            "favorite",
-            "weekend"
-        ],
-        "level_description": "100-300 words range. Focus on describing daily life."
+        "phrase_bank": [
+            "I like...",
+            "I have...",
+            "This is...",
+            "There is...",
+            "good morning / goodbye"
+        ]
     },
-    "grammar": [
-        "Simple Past Tense (regular and common irregular verbs)",
-        "Future using 'going to'",
-        "Prepositions of place (in, on, at, under)",
-        "Comparatives (bigger, faster)"
-    ],
+    "grammar_focus": {
+        "complex_structures": [
+            "Simple Present (I like apples. He likes apples.)",
+            "Can / Can't (I can swim.)",
+            "Present Continuous (I am reading.)",
+            "There be (There is a book.)",
+            "Wh-questions (What is this? Who is he?)"
+        ],
+        "sentence_variety": "Simple subject-verb-object sentences. Yes/No questions."
+    },
     "writing_standards": {
-        "word_count": "50-80 words",
-        "complexity": "Compound sentences using 'and', 'but', 'so'.",
-        "structure": "One paragraph with a topic sentence."
-    },
-    "correction_focus": [
-        "Past tense verb forms",
-        "Correct use of prepositions",
-        "Spelling of common words",
-        "Sentence connectivity"
-    ]
+        "word_count": "30-50 words",
+        "structure": "3-5 related sentences about a topic.",
+        "cohesion": "Use 'and' to join words. Use 'but' simply.",
+        "scoring_points": "Correct capital letters, full stops, and spelling."
+    }
 }

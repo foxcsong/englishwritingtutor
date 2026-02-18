@@ -1,38 +1,100 @@
 {
     "level": "Junior2",
     "description": "Grade 8 / Junior High Year 2 (Intermediate)",
+    "curriculum_standard": "Based on 2022 National Curriculum Standards (Level 4)",
+    "topic_coverage": {
+        "summary": "Focus on personal habits, social rules, travel, and cultural comparisons.",
+        "categories": [
+            {
+                "name": "Category 1: Man & Self (Lifestyle & Growth)",
+                "sub_topics": [
+                    "Healthy Living (Balanced Diet, Exercise, First Aid)",
+                    "Personal Habits (Good vs Bad habits, Time management)",
+                    "Talents & Hobbies (Talent shows, TV programs)",
+                    "My Dream Job (Future intentions, Role models)"
+                ],
+                "example_prompts": [
+                    "How to Keep Healthy",
+                    "A Bad Habit I Want to Break",
+                    "My Dream Job"
+                ]
+            },
+            {
+                "name": "Category 2: Man & Society (Interaction & Rules)",
+                "sub_topics": [
+                    "Manners & Etiquette (Table manners, Public rules)",
+                    "Volunteering (Helping at animal hospitals, Food banks)",
+                    "Interpersonal Relationships (Resolving arguments, Making friends)",
+                    "Shopping & Services (Buying clothes, Ordering food)"
+                ],
+                "example_prompts": [
+                    "Suggestions for Being Polite",
+                    "My Experience as a Volunteer",
+                    "A Letter of Advice to a Friend"
+                ]
+            },
+            {
+                "name": "Category 3: Man & Nature (Exploration)",
+                "sub_topics": [
+                    "Travel Experiences (Vacations, Transport)",
+                    "Natural Disasters (Earthquakes, Rainstorms, Safety)",
+                    "Animals in Danger (Protecting pandas/tigers)",
+                    "Geography (Famous cities, Mount Qomolangma)"
+                ],
+                "example_prompts": [
+                    "An Unforgettable Trip",
+                    "How to Protect Ourselves in an Earthquake",
+                    "Let's Save the Pandas"
+                ]
+            },
+            {
+                "name": "Category 4: Culture & Stories",
+                "sub_topics": [
+                    "Folk Tales (Yu Gong Moves a Mountain, Monkey King)",
+                    "Cartoons & Stories (Mickey Mouse)",
+                    "Cultural Differences (Festivals, Food habits)"
+                ],
+                "example_prompts": [
+                    "My Favorite Story Character",
+                    "Differences Between Chinese and Western Food"
+                ]
+            }
+        ]
+    },
     "vocabulary": {
-        "topics": [
-            "Advantages and Disadvantages of Internet",
-            "A Travel Plan",
-            "Giving Advice",
-            "Volunteering",
-            "Future Intentions"
+        "level_requirement": "Proficiency in 800-1200 words. Express opinions and plans clearly.",
+        "high_frequency_words": [
+            "improve / decision / advice / experience",
+            "necessary / possible / dangerous / traditional",
+            "environment / pollution / protection",
+            "believe / expect / invite / prepare",
+            "although / untill / unless / if",
+            "carefully / loudly / clearly / quietly"
         ],
-        "required_words": [
-            "resolution",
-            "technology",
-            "volunteer",
-            "improvement",
-            "experience"
-        ],
-        "level_description": "1000-1500 words range. Expressing opinions and making comparisons."
+        "phrase_bank": [
+            "used to do / be used to doing",
+            "turn down / turn up / turn off",
+            "make a difference",
+            "care about",
+            "as soon as",
+            "in order to"
+        ]
     },
-    "grammar": [
-        "Comparatives and Superlatives",
-        "Simple Future (will vs going to detailed)",
-        "Past Continuous Tense (was/were doing)",
-        "Conditional Sentences Type 1"
-    ],
+    "grammar_focus": {
+        "complex_structures": [
+            "Comparatives & Superlatives (more/most beautiful, better/best)",
+            "Past Simple vs. Past Continuous (was doing when...)",
+            "Future Tense (will / be going to)",
+            "If-Conditionals (First Conditional: If it rains, I will...)",
+            "Infinitive as Object/Subject (warn sb. to do sth., It's important to do...)",
+            "Adverbial Clauses of Time/Reason (When / While / Before / After / Because)"
+        ],
+        "sentence_variety": "Use of complex sentences with 'If', 'Unless', 'Although'. Using 'It is + adj + to do'."
+    },
     "writing_standards": {
-        "word_count": "70-90 words",
-        "complexity": "Compound and simple complex sentences. Logical flow.",
-        "structure": "Well-organized paragraphs with topic sentences."
-    },
-    "correction_focus": [
-        "Comparative structures (as...as, more than)",
-        "Tense consistency in narrative",
-        "Correct use of infinitives and gerunds (want to do, enjoy doing)",
-        "Sentence variety"
-    ]
+        "word_count": "80-100 words",
+        "structure": "Clear Introduction -> 2-3 Body Paragraphs (Logical sequence) -> Conclusion.",
+        "cohesion": "Use transition words: First of all, What's more, In addition, However, Finally.",
+        "scoring_points": "Logic, correct tense usage (especially Past vs Future), vocabulary variety."
+    }
 }

@@ -1,38 +1,84 @@
 {
     "level": "IELTS",
-    "description": "International English Language Testing System",
+    "description": "International English Language Testing System (Academic & General)",
+    "curriculum_standard": "Based on official IELTS Writing Band Descriptors (Task 1 & 2)",
+    "topic_coverage": {
+        "summary": "Focus on academic argumentation, data analysis, and general correspondence.",
+        "categories": [
+            {
+                "name": "Category 1: Task 2 - Social Issues",
+                "sub_topics": [
+                    "Education (Remote learning vs. Traditional)",
+                    "Technology (AI impact, Social media privacy)",
+                    "Environment (Climate change responsibility)",
+                    "Work & Employment (Work-life balance)",
+                    "Crime & Punishment (Rehabilitation vs Prison)"
+                ],
+                "example_prompts": [
+                    "Discuss the advantages and disadvantages of online study.",
+                    "Should government invest more in arts or science?",
+                    "To what extent do you agree that AI is dangerous?"
+                ]
+            },
+            {
+                "name": "Category 2: Task 1 - Data Reporting (Academic)",
+                "sub_topics": [
+                    "Line Graphs (Trends over time)",
+                    "Bar Charts (Comparisons)",
+                    "Pie Charts (Proportions)",
+                    "Process Diagrams (Man-made or Natural processes)",
+                    "Maps (Changes in layout)"
+                ],
+                "example_prompts": [
+                    "Describe the changes in the town of Westley.",
+                    "Summarize the information in the graph about coffee production."
+                ]
+            },
+            {
+                "name": "Category 3: Task 1 - Letter Writing (General)",
+                "sub_topics": [
+                    "Formal Letters (Complaint, Request, Inquiry)",
+                    "Semi-formal Letters (To landlords, Bosses)",
+                    "Informal Letters (To friends/family)"
+                ],
+                "example_prompts": [
+                    "Write a letter to your manager complaining about the workload.",
+                    "Write a letter to a friend inviting them to a party."
+                ]
+            }
+        ]
+    },
     "vocabulary": {
-        "topics": [
-            "Education & Employment",
-            "Environment & Pollution",
-            "Modern Technology",
-            "Globalization",
-            "Government Spending"
+        "level_requirement": "Band 7+ Range. Precise, less common lexical items, collocations.",
+        "high_frequency_words": [
+            "fluctuation / upward trend / plateau / plummet",
+            "detrimental / beneficial / mandatory / feasible",
+            "mitigate / exacerbate / implement / substantial",
+            "predominant / comprehensive / sophisticated / ambiguous"
         ],
-        "required_words": [
-            "fluctuation",
-            "predominant",
-            "detrimental",
-            "feasible",
-            "mitigate"
-        ],
-        "level_description": "General Training and Academic modules. Band 7+ target."
+        "phrase_bank": [
+            "it is argued that",
+            "a contributing factor",
+            "stem from",
+            "account for",
+            "taken into consideration",
+            "conversely / therefore / consequently"
+        ]
     },
-    "grammar": [
-        "Describing trends (shot up, leveled off, plummeted)",
-        "Comparing data (twice as much as, significantly higher)",
-        "Passive voice (Process diagrams)",
-        "Complex sentence structures for argumentation"
-    ],
+    "grammar_focus": {
+        "complex_structures": [
+            "Passive Voice (Process descriptions)",
+            "Complex Comparisons (X is three times as high as Y)",
+            "Conditionals (2nd and 3rd for hypothetical situations)",
+            "Relative Clauses (Reduced relative clauses)",
+            "Nominalization (Using nouns instead of verbs for formality)"
+        ],
+        "sentence_variety": "Wide range of structures used flexibly and accurately."
+    },
     "writing_standards": {
-        "word_count": "150 words (Task 1), 250 words (Task 2)",
-        "complexity": "Task 1: Accurate data reporting. Task 2: Clear position, fully extended arguments.",
-        "structure": "Task 1: Intro, Overview, Details. Task 2: Intro, Body 1, Body 2, Conclusion."
-    },
-    "correction_focus": [
-        "Task Achievement / Response",
-        "Coherence and Cohesion",
-        "Lexical Resource (less common vocabulary)",
-        "Grammatical Range and Accuracy"
-    ]
+        "word_count": "Task 1: >150 words. Task 2: >250 words.",
+        "structure": "Task 1: Intro -> Overview -> Detail Paragraphs. Task 2: Intro -> Body 1 -> Body 2 -> Conclusion.",
+        "cohesion": "Skillful management of paragraphing and cohesive devices.",
+        "scoring_points": "Task Achievement/Response, Coherence & Cohesion, Lexical Resource, Grammatical Range & Accuracy."
+    }
 }

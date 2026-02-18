@@ -1,38 +1,68 @@
 {
     "level": "TOEFL",
-    "description": "Test of English as a Foreign Language",
+    "description": "Test of English as a Foreign Language (Academic Context)",
+    "curriculum_standard": "Based on TOEFL iBT Writing Section Requirements",
+    "topic_coverage": {
+        "summary": "Focus on academic synthesis and independent argumentation.",
+        "categories": [
+            {
+                "name": "Category 1: Independent Task (Opinion)",
+                "sub_topics": [
+                    "Education (Co-ed vs Single-sex, Online vs In-person)",
+                    "Work & Success (Teamwork vs Independence, Leadership)",
+                    "Lifestyle (City vs Countryside, Money vs Happiness)",
+                    "Technology (Impact on social skills, Reliance on computers)"
+                ],
+                "example_prompts": [
+                    "Do you agree or disagree: It is better to work in a team than alone.",
+                    "Should university education be free for everyone?"
+                ]
+            },
+            {
+                "name": "Category 2: Integrated Task (Reading + Listening)",
+                "sub_topics": [
+                    "Biology (Animal behavior, Evolution theories)",
+                    "History (Archaeological findings, Historical theories)",
+                    "Art & Literature (Analysis of movements, Author theories)",
+                    "Environmental Science (Solutions to pollution)"
+                ],
+                "example_prompts": [
+                    "Summarize the points made in the lecture, explaining how they cast doubt on the reading.",
+                    "Explain the professor's solution to the environmental problem described."
+                ]
+            }
+        ]
+    },
     "vocabulary": {
-        "topics": [
-            "University Policies",
-            "Academic Lectures (Biology, Art, History)",
-            "Student Preferences (Housing, Classes)",
-            "Technology in Education",
-            "Work vs. Leisure"
+        "level_requirement": "Academic Proficiency. Subject-specific vacabulary (biology, history, etc.).",
+        "high_frequency_words": [
+            "advocate / contradict / dispute / acknowledge",
+            "subsequent / simultaneous / inevitable / distinct",
+            "feature / hypothesis / theory / evidence",
+            "nevertheless / conversely / in contrast / furthermore"
         ],
-        "required_words": [
-            "advocate",
-            "contradict",
-            "subsequent",
-            "nevertheless",
-            "accumulate"
-        ],
-        "level_description": "Academic English. Integration of Reading, Listening, and Writing."
+        "phrase_bank": [
+            "cast doubt on",
+            "refute the claim that",
+            "the professor argues that",
+            "in the reading passage",
+            "provide a solution to"
+        ]
     },
-    "grammar": [
-        "Synthesizing information (reporting verbs)",
-        "Contrastive structures (However, On the contrary)",
-        "Cause and Effect relationships",
-        "Conditional structures"
-    ],
+    "grammar_focus": {
+        "complex_structures": [
+            "Synthesizing structures (The lecture contradicts the reading by stating...)",
+            "Advanced Conditional Sentences",
+            "Inversion for emphasis",
+            "Subjunctive Mood",
+            "Concessive Clauses (Even though, Despite the fact that)"
+        ],
+        "sentence_variety": "Mixture of compound-complex sentences to show relationship between ideas."
+    },
     "writing_standards": {
-        "word_count": "300+ words (Independent), 200+ words (Integrated)",
-        "complexity": "Clear synthesis of sources (Integrated). Well-developed arguments (Independent).",
-        "structure": "Introduction, Body Paragraphs (Point-by-point or Block), Conclusion."
-    },
-    "correction_focus": [
-        "Accurate representation of lecture points",
-        "Clear connection between reading and listening",
-        "Essay organization and development",
-        "Grammatical accuracy and lexical range"
-    ]
+        "word_count": "Integrated: 150-225 words. Independent: 300+ words.",
+        "structure": "Integrated: Intro -> Point 1 -> Point 2 -> Point 3. Independent: Intro -> Body -> Conclusion.",
+        "cohesion": "Clear signaling of comparison/contrast.",
+        "scoring_points": "Topic Development, Organization, Language Use (Accuracy & Complexity)."
+    }
 }

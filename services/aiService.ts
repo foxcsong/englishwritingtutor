@@ -71,23 +71,41 @@ export const generateTopics = async (username: string, level: StudentLevel): Pro
 
     let kbContext = "";
     if (kb) {
-        const topics = kb.vocabulary.topics ||
-            (kb.topic_coverage?.categories.flatMap(c => c.sub_topics)) ||
-            [];
+        // Collect all categories and sub-topics
+        let categoryContext = "";
 
-        if (topics.length > 0) {
+        if (kb.topic_coverage?.categories) {
+            categoryContext = kb.topic_coverage.categories.map(c =>
+                `- Category "${c.name}": ${c.sub_topics.join(', ')}`
+            ).join('\n');
+        } else if (kb.vocabulary.topics && kb.vocabulary.topics.length > 0) {
+            categoryContext = `- Topics: ${kb.vocabulary.topics.join(', ')}`;
+        }
+
+        if (categoryContext) {
             kbContext = `
-        Focus on these themes relevant to the grade level: ${topics.join(', ')}.
+        Knowledge Base Categories (You MUST explore these):
+        ${categoryContext}
         `;
         }
     }
 
     const prompt = `
     Role: ${config.systemRole}
-    Task: Generate 3 engaging English writing topics (titles) for Level: ${level} (${levelContext}).
+    Task: Generate 3 engaging, creative, and distinct English writing topics (titles) for Level: ${level} (${levelContext}).
+    
+    ${kbContext}
+
+    Instructions:
+    1. ** Traverse Categories **: If Knowledge Base Categories are provided, you MUST select topics from different categories to ensure diversity. Do NOT stick to just one category.
+    2. ** Be Imaginative **: Do not just copy the sub-topic name. Create a specific, interesting scenario or question based on the sub-topic. 
+       - Bad: "My Hobby"
+       - Good: "A Hobby That changed My Life" or "Why I Love Playing Basketball"
+    3. ** Rich Question Bank **: Aim for a mix of personal stories, argumentative topics, and descriptive tasks.
+    
     Tone: ${config.toneInstruction}
     Constraint: Topics must be age-appropriate and interesting.
-    ${kbContext}
+    
     Return format: ["Topic 1", "Topic 2", "Topic 3"]
   `;
 

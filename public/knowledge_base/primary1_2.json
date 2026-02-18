@@ -1,38 +1,66 @@
 {
     "level": "Primary1_2",
-    "description": "Grade 1-2 / Primary School (Beginner)",
+    "description": "Grade 1-2 / Primary School (Starter / Absolute Beginner)",
+    "curriculum_standard": "Based on 2022 National Curriculum Standards (Pre-Level 1)",
+    "topic_coverage": {
+        "summary": "Focus on copying, labeling, and very simple sentence construction.",
+        "categories": [
+            {
+                "name": "Category 1: Introducing Myself",
+                "sub_topics": [
+                    "My Name (I am...)",
+                    "My Age (I am 7 years old)",
+                    "My Family (This is my dad/mom)",
+                    "Greetings (Hello, Hi, Good morning)"
+                ],
+                "example_prompts": [
+                    "Hello, I am [Name]",
+                    "Meet My Family"
+                ]
+            },
+            {
+                "name": "Category 2: My World",
+                "sub_topics": [
+                    "Colors (I see red)",
+                    "Numbers (One, two, three...)",
+                    "Animals (It is a cat)",
+                    "Fruits (I like apples)"
+                ],
+                "example_prompts": [
+                    "I Like Red",
+                    "This is a Cat"
+                ]
+            }
+        ]
+    },
     "vocabulary": {
-        "topics": [
-            "My Family",
-            "My Pet",
-            "My Toys",
-            "Colors and Shapes",
-            "Fruits and Vegetables"
+        "level_requirement": "Proficiency in 50-100 words. Assessing basic recognition.",
+        "high_frequency_words": [
+            "one / two / three / four / five",
+            "red / blue / yellow",
+            "dad / mom / sister / brother",
+            "cat / dog / bird",
+            "hello / hi / bye"
         ],
-        "required_words": [
-            "like",
-            "have",
-            "color",
-            "play",
-            "friend"
-        ],
-        "level_description": "50-100 words range. Focus on simple, short sentences."
+        "phrase_bank": [
+            "I am...",
+            "This is...",
+            "I like...",
+            "It is..."
+        ]
     },
-    "grammar": [
-        "Simple Present Tense (I like, He plays)",
-        "Present Continuous Tense (I am playing)",
-        "Basic Pronouns (I, You, He, She, It)",
-        "Simple Plurals (cat -> cats)"
-    ],
+    "grammar_focus": {
+        "complex_structures": [
+            "Verb 'to be' (I am, You are, It is)",
+            "Simple commands (Stand up, Sit down)",
+            "Pronouns (I, You, He, She, It)"
+        ],
+        "sentence_variety": "Single simple sentences."
+    },
     "writing_standards": {
-        "word_count": "30-50 words",
-        "complexity": "Simple sentences (Subject + Verb + Object).",
-        "structure": "3-5 related sentences."
-    },
-    "correction_focus": [
-        "Spelling of basic words",
-        "Capitalization (Start of sentence, Names)",
-        "End punctuation (Period, Question mark)",
-        "Subject-Verb agreement for simple present (He/She likes)"
-    ]
+        "word_count": "10-30 words (or single sentences)",
+        "structure": "Single sentences or a list of words.",
+        "cohesion": "N/A",
+        "scoring_points": "Correct handwriting (letters on the line), spacing between words, final punctuation."
+    }
 }

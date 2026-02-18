@@ -1,38 +1,79 @@
 {
     "level": "University1_2",
-    "description": "University Year 1-2 (CET-4 Standard)",
-    "vocabulary": {
-        "topics": [
-            "Campus Life & Education",
-            "Health & Sports",
-            "Social Networking",
-            "Job Hunting",
-            "Morality & Ethics"
-        ],
-        "required_words": [
-            "opportunity",
-            "challenge",
-            "essential",
-            "positive",
-            "negative"
-        ],
-        "level_description": "4000-4500 words range. CET-4 exam preparation."
+    "description": "University Year 1-2 / CET-4 (College English Test Band 4)",
+    "curriculum_standard": "Based on National College English Curriculum Requirements (CET-4)",
+    "topic_coverage": {
+        "summary": "Focus on campus life, social issues, and moral dilemmas.",
+        "categories": [
+            {
+                "name": "Category 1: Campus Life (Man & Society)",
+                "sub_topics": [
+                    "Library Resources (Open to public?)",
+                    "Student Union (Joining clubs)",
+                    "Dormitory Life (Roommate conflicts)",
+                    "Elective Courses (Choosing what interests you)"
+                ],
+                "example_prompts": [
+                    "Should University Libraries Be Open to the Public?",
+                    "My View on Joining Student Clubs"
+                ]
+            },
+            {
+                "name": "Category 2: Technology & Youth (Man & Society)",
+                "sub_topics": [
+                    "Internet Addiction (Gaming, Social media)",
+                    "Online Shopping (Convenience vs Risks)",
+                    "E-learning (MOOCs)",
+                    "Cyber Security (Protecting personal info)"
+                ],
+                "example_prompts": [
+                    "The Harm of Internet Addiction",
+                    "Online Shopping: Blessing or Curse?"
+                ]
+            },
+            {
+                "name": "Category 3: Social & Moral Issues",
+                "sub_topics": [
+                    "Civilized Behavior (Public etiquette)",
+                    "Helping Strangers (Trust crisis)",
+                    "Environmental Awareness (Waste sorting in dorms)"
+                ],
+                "example_prompts": [
+                    "How to Be a Civilized Citizen",
+                    "Trust in Society"
+                ]
+            }
+        ]
     },
-    "grammar": [
-        "Advanced Passive Voice",
-        "Subjunctive Mood",
-        "Inversion and Emphasis",
-        "Complex Clause combinations"
-    ],
+    "vocabulary": {
+        "level_requirement": "CET-4 Core Vocabulary (4000-4500 words).",
+        "high_frequency_words": [
+            "opportunity / challenge / essential / vital",
+            "positive / negative / attitude / mental",
+            "communicate / participate / organize / solve",
+            "resource / access / benefit / drawback"
+        ],
+        "phrase_bank": [
+            "take full advantage of",
+            "make effective use of",
+            "pay attention to",
+            "it is widely believed that",
+            "face the challenge of"
+        ]
+    },
+    "grammar_focus": {
+        "complex_structures": [
+            "Passive Voice (It is suggested that...)",
+            "Subjunctive Mood (It is important that students should...)",
+            "Attributive Clauses (The reason why...)",
+            "Appositive Clauses (The fact that...)"
+        ],
+        "sentence_variety": "Using 'Not only... but also', 'Either... or'. Sentence combining."
+    },
     "writing_standards": {
         "word_count": "120-180 words",
-        "complexity": "Formal academic or semi-formal tone. Clear logic.",
-        "structure": "Introduction (Thesis), Body (Arguments), Conclusion."
-    },
-    "correction_focus": [
-        "Logical cohesion (transition words)",
-        "Formal vocabulary choice",
-        "Grammar accuracy in complex structures",
-        "Avoiding colloquialisms"
-    ]
+        "structure": "Three-paragraph structre: Problem/Phenomenon -> Analysis/Reasons -> Solution/Conclusion.",
+        "cohesion": "Clear transition words: Firstly, Secondly, In addition, To sum up.",
+        "scoring_points": "Relevance to topic, clear logic, correct grammar, appropriate vocabulary."
+    }
 }

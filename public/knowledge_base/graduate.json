@@ -1,38 +1,80 @@
 {
     "level": "Graduate",
-    "description": "Graduate Entrance Exam (Kaoyan English)",
+    "description": "Postgraduate Entrance Exam (Kaoyan) / Graduate Studies",
+    "curriculum_standard": "Based on National Postgraduate Entrance Examination Syllabus (English I & II)",
+    "topic_coverage": {
+        "summary": "Focus on data description (English II) and social cartoon commentary (English I).",
+        "categories": [
+            {
+                "name": "Category 1: English I - Cartoon Commentary (Social Phenomena)",
+                "sub_topics": [
+                    "Social Morality (Helping others, Filial piety)",
+                    "Personal Values (Persistence, Confidence, Cooperation)",
+                    "Environmental Awareness (Pollution, Waste)",
+                    "Cultural Exchange (Globalization of culture)"
+                ],
+                "example_prompts": [
+                    "Write an essay based on the cartoon: 'The Journey'",
+                    "Comment on: 'Love is a Lamp'"
+                ]
+            },
+            {
+                "name": "Category 2: English II - Chart/Graph Description (Trends)",
+                "sub_topics": [
+                    "Economic Trends (Spending habits, GDP)",
+                    "Social demographics (Population aging, Urbanization)",
+                    "Lifestyle Changes (Mobile phone usage, Reading habits)",
+                    "Market Share (Car brands, Phone brands)"
+                ],
+                "example_prompts": [
+                    "Analyze the chart: 'Mobile Phone Subscriptions 2010-2020'",
+                    "Describe the trends in 'College Students' Consumption'"
+                ]
+            },
+            {
+                "name": "Category 3: Practical Writing (Letters/Notices)",
+                "sub_topics": [
+                    "Letters of Resignation/Application",
+                    "Letters of Recommendation",
+                    "Notices (Lost & Found, Meeting)",
+                    "Memos/Reports"
+                ],
+                "example_prompts": [
+                    "Write a Letter Recommending a Book",
+                    "Write a Notice for the Postgraduate Student Union"
+                ]
+            }
+        ]
+    },
     "vocabulary": {
-        "topics": [
-            "Interpretation of Charts/Graphs",
-            "Societal Trends & Statistics",
-            "Cultural Phenomena",
-            "Personal Qualities for Success",
-            "Environmental issues based on cartoons"
+        "level_requirement": "5500+ words. Idiomatic, formal, and precise.",
+        "high_frequency_words": [
+            "illustrate / depict / imply / symbolise",
+            "dramatic / gradual / steady / sharp",
+            "proportion / percentage / statistics / figure",
+            "fundamental / crucial / imperatibe / sustainable"
         ],
-        "required_words": [
-            "illustrate",
-            "demonstrate",
-            "imply",
-            "fundamental",
-            "perspective"
-        ],
-        "level_description": "Advanced academic vocabulary. Descriptive and analytical."
+        "phrase_bank": [
+            "as is vividly shown in the cartoon",
+            "the picture satirizes the phenomenon that",
+            "judging from the figures",
+            "witness a steady increase",
+            "it is high time that we took measures"
+        ]
     },
-    "grammar": [
-        "Passive Voice in reporting data",
-        "Complex Noun Phrases",
-        "Subordinate Clauses for describing trends",
-        "Forms of comparison for data analysis"
-    ],
+    "grammar_focus": {
+        "complex_structures": [
+            "Appositive Clauses (The evidence that...)",
+            "Subject Clauses (What is alarming is that...)",
+            "Inversion (Not only does it reflect..., but it also...)",
+            "Passive Voice in Data Description (It can be seen that...)"
+        ],
+        "sentence_variety": "Formal and objective tone. Complex syntactical structures."
+    },
     "writing_standards": {
-        "word_count": "160-200 words",
-        "complexity": "Academic description of visual data (Part A) or Argumentation (Part B).",
-        "structure": "Description of picture/chart -> Interpretation of meaning -> Comments/Predictions."
-    },
-    "correction_focus": [
-        "Accurate description of data (rapidly, steadily, decline, surge)",
-        "Logical interpretation of symbolic meaning",
-        "Formal academic register",
-        "Syntactic variety"
-    ]
+        "word_count": "160-200 words (English I), 150 words (English II)",
+        "structure": "English I: Describe Pic -> Interpret Meaning -> Comment/Suggestion. English II: Describe Chart -> Analyze Reasons -> Forecast.",
+        "cohesion": "Strong logic and formal transitions.",
+        "scoring_points": "Relevance, clear description, depth of analysis, language accuracy."
+    }
 }
