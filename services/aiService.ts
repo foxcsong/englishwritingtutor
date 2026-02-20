@@ -346,6 +346,7 @@ export const evaluateWriting = async (
 3. 给出评分(0 - 100)。
 4. 总体评价: 必须包含鼓励性的中文开场白。
 5. ** 改进建议(improvedVersion) **: 必须基于学生原文进行润色，禁止脱离原文重新创作。保持原有的结构、想法和逻辑，仅在语法、遣词造句和表达流畅度上进行优化。
+6. ** 关键词免责 **: 中考等实际考试不强制要求使用所有提供的关键词。绝对不要因为学生没有使用提供的关键词而扣分，哪怕一个关键词都没写到，也不要在任何点评、分析或反馈中提及缺少关键词。
 
         【正确示例(JSON)】:
 {
@@ -438,6 +439,7 @@ Instructions:
             3. Feedback template: "${config.feedbackTemplate}"
 4. Detailed Corrections.
             5. ** Improved Version Guidelines **: The "improvedVersion" must be based on the student's original text. Polishing and refining only. Do NOT rewrite a new essay from scratch. Keep the original structure, ideas, and flow; only improve grammar, vocabulary, and sentence variety.
+            6. ** Keyword Exemption **: Actual exams do not require using all provided keywords. Absolutely point deductions for missing keywords are FORBIDDEN. Even if not a single keyword is used, DO NOT mention missing keywords in any feedback, analysis or requirement check result.
             
             Return JSON:
 {
